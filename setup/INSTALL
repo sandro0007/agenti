@@ -1,0 +1,7 @@
+:: INSTALLAZIONE ::
+
+- Creare un DB cmr e popolare il tutto con il dump cmr.sql
+- Modificare i parametri del file di configurazione config.php 
+		./include/config.php
+		./admin/include/config.php
+
