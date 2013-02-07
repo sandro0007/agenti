@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: Feb 07, 2013 alle 12:18
+-- Generato il: Feb 07, 2013 alle 19:15
 -- Versione del server: 5.5.29
 -- Versione PHP: 5.3.10-1ubuntu3.5
 
@@ -100,6 +100,9 @@ CREATE TABLE IF NOT EXISTS `Contratti` (
   `ContrattoStato` varchar(25) NOT NULL COMMENT 'Stato Contratto "Inserito - Lavorazione - Attivato - Rifiutato"',
   `ContrattoFatturato` int(1) NOT NULL COMMENT 'Valorizzato a 0 se ancora non emessa fattura altrimenti valorizzato a 1',
   `ContrattoPagato` int(1) NOT NULL COMMENT 'Fattura Pagata (valorizzato a 0 non pagata - 1 pagata)',
+  `ContrattoPagamento` varchar(50) NOT NULL COMMENT 'Metodo di Pagamento Bimestrale "Bollettino Postale" - "RID" - "MAV"',
+  `ContrattoAttivazione` varchar(50) NOT NULL COMMENT 'U.T. Attivazione : "Contanti" - "Addebito"',
+  `ContrattoFattura` varchar(50) NOT NULL COMMENT 'Ricezione Fattura: "Cartacea" - "Digitale"',
   `ContrattoIndirizzo1` varchar(75) DEFAULT NULL COMMENT 'Indirizzo installazione',
   `ContrattoNumero1` int(4) DEFAULT NULL COMMENT 'Civico installazione',
   `ContrattoCap1` int(5) DEFAULT NULL COMMENT 'CAP installazione',
@@ -112,6 +115,35 @@ CREATE TABLE IF NOT EXISTS `Contratti` (
   PRIMARY KEY (`ContrattoId`),
   KEY `fk_Contratti_Clienti1_idx` (`Clienti_idCliente`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `Offerte`
+--
+
+CREATE TABLE IF NOT EXISTS `Offerte` (
+  `OffertaId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `OffertaNome` varchar(50) NOT NULL COMMENT 'Nome Offerta',
+  `OffertaCanone` decimal(5,2) NOT NULL COMMENT 'Costo Mensile',
+  `OffertaPagamento` varchar(50) NOT NULL COMMENT 'Valori "Mensile" - "Bimestrale"',
+  `OffertaDescrizione` text NOT NULL COMMENT 'Descrizione dettagliata offerta',
+  `OffertaDestinazione` varchar(50) NOT NULL COMMENT 'Valori "Privato" - "Azienda"',
+  `TipologiaId` int(11) NOT NULL COMMENT 'Indice Tipologia',
+  PRIMARY KEY (`OffertaId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Offerte' AUTO_INCREMENT=8 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `Tipologie`
+--
+
+CREATE TABLE IF NOT EXISTS `Tipologie` (
+  `TipologiaId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `TipologiaNome` varchar(50) NOT NULL COMMENT 'Nome Tipologie Offerte Disponibili',
+  PRIMARY KEY (`TipologiaId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione Tipologie Offerte' AUTO_INCREMENT=8 ;
 
 --
 -- Limiti per le tabelle scaricate
