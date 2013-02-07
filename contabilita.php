@@ -88,6 +88,7 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 					<td>Tipologia</td>
 					<td>Stato</td>
 					<td>Fatturato</td>
+					<td>Fattura Saldata</td>
 					<td></td>
 					</tr>";
 	while ($rsContratti = mysql_fetch_assoc($res)){
@@ -111,6 +112,12 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 					} 
 					else {
 						echo "<td style=\" background-color:#FF0000\" >Fattura Da Emettere</td>";
+						}
+				if ($rsContratti['ContrattoPagato'] == '1'){
+					echo "<td style=\" background-color:#90EE90\">Fattura Saldata</td>";
+					} 
+					else {
+						echo "<td style=\" background-color:#FF0000\" >Fattura Da Saldare</td>";
 						}
 		echo "	<td style=\"float:right\" >
 				<form action=\"contabilita.php\" method=\"post\" style=\"float: right;\">

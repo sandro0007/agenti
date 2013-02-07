@@ -1,12 +1,12 @@
 <?
 echo"
 <!DOCTYPE html>
-<html>
-<head>
+    <html lang=\"it\">
+    <head>
+    <meta charset=\"utf-8\">
+    <title>Agenti</title>
  
-    <title>Collegati per amministrare il sito - Agenti</title>
- 
-    <!--Pannello di gestione creato da Mel Riccardo-->
+    <!--Pannello di gestione -->
     <link href=\"css/admin.css\" rel=\"stylesheet\" type=\"text/css\" />
     <link rel=\"stylesheet\" href=\"css/jquery.ui.all.css\">
 	<script src=\"include/jquery-1.9.0.js\"></script>

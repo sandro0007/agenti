@@ -1,5 +1,8 @@
 <?php
 session_start();
+include ('include/header.php');
+require ('include/config.php');
+
 //se non c'è la sessione registrata
 if (!session_is_registered('autorizzato')) {
   echo "<h1>Area riservata, accesso negato.</h1>";
@@ -9,12 +12,10 @@ if (!session_is_registered('autorizzato')) {
  
 //Altrimenti Prelevo il codice identificatico dell'utente loggato
 session_start();
-include ('include/header.php');
-require ('include/config.php');
 $conn=mysql_connect($dbHost,$dbUser,$dbPassword);
 mysql_select_db($dbName);
 $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
-echo "<div><input type=\"text\" id=\"datepicker\" ></div>";
+
 echo $menu;
 
 switch ($_POST['stato']) {
@@ -66,7 +67,6 @@ switch ($_POST['stato']) {
 			//print_r($sqlazienda);
 			if (!mysql_query($sqlazienda))
 			  {
-			   echo $sqlazienda."<br />";
 			  die('Error Inserimento Cliente: ' . mysql_error());
 			  }
 			echo "Azienda ".$_POST['ClienteRagione']." - Inserita Correttamente";
@@ -84,12 +84,22 @@ switch ($_POST['stato']) {
             <input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" autofocus required>
             <input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\"  required>
             <input id=\"ClienteCF\" name=\"ClienteCF\" type=\"text\" placeholder=\"Codice Fiscale\" required><br />
-            <input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" required>
+            <!-- <input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" required> -->
+            <label>Sesso: </label>
+            <select name=\"ClienteSesso\" id=\"ClienteSesso\" placeholder=\"Sesso\" required>
+            <option>M</option>
+            <option>F</option>
+            </select>
             <input id=\"datepicker\" name=\"ClienteDataNascita\" type=\"text\" required>
             <input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" required>
             <input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provincia di Nascita\" required><br />
             <h2>Documenti</h2>
-            <input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" >
+            <label>Documento: </label>
+            <select id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" required>
+				<option>Carta Identit&agrave</option>
+				<option>Patente</option>
+				<option>Passaporto</option>
+            </select>
             <input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" required>
             <input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" required>
             <input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" required>
@@ -124,12 +134,20 @@ switch ($_POST['stato']) {
             <input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" autofocus required>
             <input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\" required>
             <input id=\"ClienteCF\" name=\"ClienteCF\" type=\"text\" placeholder=\"Codice Fiscale\" required><br />
-            <input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" required>
-            <input id=\"ClienteDataNascita\" name=\"ClienteDataNascita\" type=\"text\" placeholder=\"Data di Nascita\" required>
+            <label>Sesso: </label>
+            <select name=\"ClienteSesso\" id=\"ClienteSesso\" placeholder=\"Sesso\" required>
+				<option>M</option>
+				<option>F</option>
+            </select><input id=\"ClienteDataNascita\" name=\"ClienteDataNascita\" type=\"text\" placeholder=\"Data di Nascita\" required>
             <input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" required>
             <input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provincia di Nascita\" required><br />
             <h2>Documenti</h2>
-            <input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" >
+            <label>Documento: </label>
+            <select id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" required>
+				<option>Carta Identit&agrave</option>
+				<option>Patente</option>
+				<option>Passaporto</option>
+            </select>
             <input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" required>
             <input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" required>
             <input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" required>

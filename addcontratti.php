@@ -30,14 +30,14 @@ if(isset($_POST['step'])){
 			echo"<form action=\"addcontratti.php\" method=\"post\">
 			<fieldset>
 				<label>Tipologia</label>
-				<select>
+				<select name=\"TipologiaId\">
 				<option>...</option>
 				";
 				while($rsTipologie = mysql_fetch_assoc($res)){
 					echo "<option value=\"".$rsTipologie['TipologiaId']."\">".$rsTipologie['TipologiaNome']."</option>";
 					}
 			echo"</select>
-			<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$_POST['idCliente']."\" >
+			<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$_POST['IdCliente']."\" >
 			<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"".$_POST['ClienteTipologia']."\" >
 			<input id=\"step\" name=\"step\" type=\"hidden\" value=\"2\" >
 			</fieldset>
@@ -53,8 +53,53 @@ if(isset($_POST['step'])){
 				echo "Profilo Privato";
 				}
 			if ($_POST['ClienteTipologia'] == 'Azienda'){
-				echo "Profilo Azienda";
+				$sql = "SELECT * FROM Offerte WHERE TipologiaId = '".$_POST['TipologiaId']."' and OffertaDestinazione = 'Azienda'";
+				$res = mysql_query($sql);
+				echo"<form action=\"addcontratti.php\" method=\"post\">
+				<fieldset>
+					<label>Offerte</label>
+					<select name=\"OffertaId\">
+					<option>...</option>
+					";
+					while($rsOfferte = mysql_fetch_assoc($res)){
+						echo "<option value=\"".$rsOfferte['OffertaId']."\">".$rsOfferte['OffertaNome']."</option>";
+						}
+				echo"</select>
+				<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$_POST['IdCliente']."\" >
+				<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"".$_POST['ClienteTipologia']."\" >
+				<input id=\"step\" name=\"step\" type=\"hidden\" value=\"3\" >
+				</fieldset>
+				<fieldset id=\"actions\">
+				<input type=\"submit\" id=\"submit\" value=\"avanti\">
+				</fieldset>
+				</form>";
 				}
+			break;
+		case 3:
+			echo "<h3>Completa Informazioni</h3>";
+			echo "<p>Completa il contratto in ogni sua parte;</p>";
+			$sql = "SELECT * FROM Offerte WHERE OffertaId = '".$_POST['OffertaId']."'";
+			$res = mysql_query($sql);
+			$rsOfferte = mysql_fetch_assoc($res);
+			echo "<table border=\"1\">
+					<tr>
+						<td>Nome</td>
+						<td>Canone</td>
+						<td>Fatturazione</td>
+					</tr>
+					<tr>
+						<td>".$rsOfferte['OffertaNome']."</td>
+						<td>".$rsOfferte['OffertaCanone']."</td>
+						<td>".$rsOfferte['OffertaPagamento']."</td>
+					</tr>
+					<tr>
+						<td colspan=\"3\">Descrizione</td>
+					</tr>
+					<tr>
+						<td colspan=\"3\">".$rsOfferte['OffertaDescrizione']."</td>
+					</tr>
+			</table>";
+			print_r($_POST);
 			break;
 	}
 }	else {

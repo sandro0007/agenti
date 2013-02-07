@@ -37,11 +37,6 @@ if(isset($stato)){
 		case more:
 			echo "Richiesta Dettaglio Contratti numero ".$_POST['ContrattoId']."";
 			break;
-			
-		case add:
-			echo "Richiesta inserimento per cliente - ".$_POST['IdCliente']." e agente ".$cod."";
-			break;
-			
 		}
 	}
 	else

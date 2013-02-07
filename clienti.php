@@ -1,5 +1,7 @@
 <?php
 session_start();
+include ('include/header.php');
+require ('include/config.php');
 //se non c'è la sessione registrata
 if (!session_is_registered('autorizzato')) {
   echo "<h1>Area riservata, accesso negato.</h1>";
@@ -9,8 +11,6 @@ if (!session_is_registered('autorizzato')) {
  
 //Altrimenti Prelevo il codice identificatico dell'utente loggato
 session_start();
-include ('include/header.php');
-require ('include/config.php');
 $conn=mysql_connect($dbHost,$dbUser,$dbPassword);
 mysql_select_db($dbName);
 $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
@@ -97,10 +97,10 @@ if(isset($_POST['stato'])){
 						<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 
 					</fieldset>
 				</form>
-				<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+				<form action=\"addcontratti.php\" method=\"post\" style=\"float: right;\">
 						<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
 						<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"".$rsCliente['ClienteTipologia']."\" >
-						<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"add\" >
+						<input id=\"stato\" name=\"step\" type=\"hidden\" value=\"1\" >
 						<input name=\"Aggiungi Contratto\" type=\"image\" src=\"image\addcontract.gif\" alt=\"Aggiungi Contratto\" title=\"Aggiungi Contratto\"> 
 					</fieldset>
 				</form>
@@ -168,10 +168,10 @@ if(isset($_POST['stato'])){
 						<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 
 					</fieldset>
 				</form>
-				<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+				<form action=\"addcontratti.php\" method=\"post\" style=\"float: right;\">
 						<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
 						<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"".$rsCliente['ClienteTipologia']."\" >
-						<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"add\" >
+						<input id=\"stato\" name=\"step\" type=\"hidden\" value=\"1\" >
 						<input name=\"Aggiungi Contratto\" type=\"image\" src=\"image\addcontract.gif\" alt=\"Aggiungi Contratto\" title=\"Aggiungi Contratto\"> 
 					</fieldset>
 				</form>
@@ -233,10 +233,10 @@ else {
 						<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 
 					</fieldset>
 				</form>
-				<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+				<form action=\"addcontratti.php\" method=\"post\" style=\"float: right;\">
 						<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
 						<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"".$rsCliente['ClienteTipologia']."\" >
-						<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"add\" >
+						<input id=\"stato\" name=\"step\" type=\"hidden\" value=\"1\" >
 						<input name=\"Aggiungi Contratto\" type=\"image\" src=\"image\addcontract.gif\" alt=\"Aggiungi Contratto\" title=\"Aggiungi Contratto\"> 
 					</fieldset>
 				</form>
