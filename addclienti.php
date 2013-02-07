@@ -14,37 +14,29 @@ require ('include/config.php');
 $conn=mysql_connect($dbHost,$dbUser,$dbPassword);
 mysql_select_db($dbName);
 $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
-
-
+echo "<div><input type=\"text\" id=\"datepicker\" ></div>";
 echo $menu;
 
 switch ($_POST['stato']) {
     case add:
-			$indirizzo2 = $_POST['ClienteIndirizzo2'];
-			$numero2 = $_POST['ClienteNumero2'];
-			$cap2 = $_POST['ClienteCap2'];
-			$citta2 = $_POST['ClienteCitta2'];
-			$indirizzo3 = $_POST['ClienteIndirizzo3'];
-			$numero3 = $_POST['ClienteNumero3'];
-			$cap3 = $_POST['ClienteCap3'];
-			$citta3 = $_POST['ClienteCitta3'];
-			
         if ($_POST['ClienteTipologia'] == 'Privato') {
 			
 			$sqlprivato = "INSERT INTO `Clienti` 
 						(`idCliente`, `ClienteNome`, `ClienteCognome`, 
 							`ClienteRagione`, `ClienteCF`, `ClientePI`, `ClienteMail`, 
-								`ClienteIndirizzo1`, `ClienteNumero1`, `ClienteCap1`, `ClienteCitta1`, 
-									`ClienteIndirizzo2`, `ClienteNumero2`, `ClienteCap2`, `ClienteCitta2`, 
-										`ClienteIndirizzo3`, `ClienteNumero3`, `ClienteCap3`, `ClienteCitta3`,
-											`ClienteTipologia` ,
-											`Agenti_idAgenti`) 
+								`ClienteTelefono`, `ClienteFax`, `ClienteCellulare`,
+								 `ClienteDataNascita`, `ClienteLuogoNascita`, `ClienteProvinciaNascita`,
+								 `ClienteTipoDocumento`, `ClienteNumeroDocumento`, `ClienteEnteDocumento`, `ClienteRilascioDocumento`,
+								`ClienteIndirizzo`, `ClienteNumero`, `ClienteCap`, `ClienteCitta`, 
+									`ClienteTipologia` ,
+										`Agenti_idAgenti`) 
 										VALUES (NULL, '".$_POST['ClienteNome']."', '".$_POST['ClienteCognome']."', 
-											'', '".$_POST['ClienteCF']."', '', '".$_POST['ClienteMail']."', 
-												'".$_POST['ClienteIndirizzo1']."', '".$_POST['ClienteNumero1']."', '".$_POST['ClienteCap1']."', '".$_POST['ClienteCitta1']."', 
-													'".$indirizzo2."', '".$numero2."', '".$cap2."', '".$citta2."', 
-														'".$indirizzo3."', '".$numero3."', '".$cap3."', '".$citta3."', 
-															'".$_POST['ClienteTipologia']."',
+											'', '".$_POST['ClienteCF']."', '', '".$_POST['ClienteMail']."',
+												'".$_POST['ClienteTelefono']."', '".$_POST['ClienteFax']."', '".$_POST['ClienteCellulare']."',
+												'".$_POST['ClienteDataNascita']."', '".$_POST['ClienteLuogoNascita']."', '".$_POST['ClienteProvinciaNascita']."',
+												'".$_POST['ClienteTipoDocumento']."', '".$_POST['ClienteNumeroDocumento']."', '".$_POST['ClienteEnteDocumento']."', '".$_POST['ClienteRilascioDocumento']."',
+												'".$_POST['ClienteIndirizzo']."', '".$_POST['ClienteNumero']."', '".$_POST['ClienteCap']."', '".$_POST['ClienteCitta']."', 
+													'".$_POST['ClienteTipologia']."',
 															'".$cod."');";
 			//print_r($sqlprivato);
 			if (!mysql_query($sqlprivato))
@@ -57,21 +49,24 @@ switch ($_POST['stato']) {
 				$sqlazienda = "INSERT INTO `Clienti` 
 						(`idCliente`, `ClienteNome`, `ClienteCognome`, 
 							`ClienteRagione`, `ClienteCF`, `ClientePI`, `ClienteMail`, 
-								`ClienteIndirizzo1`, `ClienteNumero1`, `ClienteCap1`, `ClienteCitta1`, 
-									`ClienteIndirizzo2`, `ClienteNumero2`, `ClienteCap2`, `ClienteCitta2`, 
-										`ClienteIndirizzo3`, `ClienteNumero3`, `ClienteCap3`, `ClienteCitta3`,
-											`ClienteTipologia` ,
-											`Agenti_idAgenti`) 
-										VALUES (NULL, '', '', 
-											'".$_POST['ClienteRagione']."', '' , '".$_POST['ClientePI']."', '".$_POST['ClienteMail']."', 
-												'".$_POST['ClienteIndirizzo1']."', '".$_POST['ClienteNumero1']."', '".$_POST['ClienteCap1']."', '".$_POST['ClienteCitta1']."', 
-													'".$indirizzo2."', '".$numero2."', '".$cap2."', '".$citta2."', 
-														'".$indirizzo3."', '".$numero3."', '".$cap3."', '".$citta3."', 
-															'".$_POST['ClienteTipologia']."',
-															'".$cod."');";
+								`ClienteTelefono`, `ClienteFax`, `ClienteCellulare`,
+								 `ClienteDataNascita`, `ClienteLuogoNascita`, `ClienteProvinciaNascita`,
+								 `ClienteTipoDocumento`, `ClienteNumeroDocumento`, `ClienteEnteDocumento`, `ClienteRilascioDocumento`,
+								`ClienteIndirizzo`, `ClienteNumero`, `ClienteCap`, `ClienteCitta`, 
+									`ClienteTipologia` ,
+										`Agenti_idAgenti`) 
+										VALUES (NULL, '".$_POST['ClienteNome']."', '".$_POST['ClienteCognome']."', 
+											'".$_POST['ClienteRagione']."', '".$_POST['ClienteCF']."' , '".$_POST['ClientePI']."', '".$_POST['ClienteMail']."', 
+											'".$_POST['ClienteTelefono']."', '".$_POST['ClienteFax']."', '".$_POST['ClienteCellulare']."',
+												'".$_POST['ClienteDataNascita']."', '".$_POST['ClienteLuogoNascita']."', '".$_POST['ClienteProvinciaNascita']."',
+												'".$_POST['ClienteTipoDocumento']."', '".$_POST['ClienteNumeroDocumento']."', '".$_POST['ClienteEnteDocumento']."', '".$_POST['ClienteRilascioDocumento']."',
+												'".$_POST['ClienteIndirizzo']."', '".$_POST['ClienteNumero']."', '".$_POST['ClienteCap']."', '".$_POST['ClienteCitta']."', 
+													'".$_POST['ClienteTipologia']."',
+														'".$cod."');";
 			//print_r($sqlazienda);
 			if (!mysql_query($sqlazienda))
 			  {
+			   echo $sqlazienda."<br />";
 			  die('Error Inserimento Cliente: ' . mysql_error());
 			  }
 			echo "Azienda ".$_POST['ClienteRagione']." - Inserita Correttamente";
@@ -79,32 +74,35 @@ switch ($_POST['stato']) {
         break;
     default:
 		echo "<h2>Aggiungi Nuovo Cliente</h2>
+			
 		     <div class=\"box\" \">
             <a href=\"javascript:slideonlyone('newboxes1');\" >PRIVATO</a>
          </div>
          <div class=\"newboxes2\" id=\"newboxes1\" style=\" display: block;\">
          <form action=\"addclienti.php\" method=\"post\">
         <fieldset id=\"inputs\">
-            <input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\" autofocus required>
-            <input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" required>
+            <input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" autofocus required>
+            <input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\"  required>
             <input id=\"ClienteCF\" name=\"ClienteCF\" type=\"text\" placeholder=\"Codice Fiscale\" required><br />
-            <h2>Recapito E-Mail</h2>
+            <input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" required>
+            <input id=\"datepicker\" name=\"ClienteDataNascita\" type=\"text\" required>
+            <input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" required>
+            <input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provincia di Nascita\" required><br />
+            <h2>Documenti</h2>
+            <input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" >
+            <input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" required>
+            <input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" required>
+            <input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" required>
+            <h2>Recapiti</h2>
+            <input id=\"ClienteTelefono\" name=\"ClienteTelefono\" type=\"text\" placeholder=\"Telefono\" >
+            <input id=\"ClienteFax\" name=\"ClienteFax\" type=\"text\" placeholder=\"Fax\" >
+            <input id=\"ClienteCellulare\" name=\"ClienteCellulare\" type=\"text\" placeholder=\"Cellulare\" >
             <input id=\"ClienteMail\" name=\"ClienteMail\" type=\"text\" placeholder=\"E-Mail\" required>
             <h2>Dati Fatturazione</h2>
-            <input id=\"ClienteIndirizzo1\" name=\"ClienteIndirizzo1\" type=\"text\" placeholder=\"Indirizzo\" required>
-            <input id=\"ClienteNumero1\" name=\"ClienteNumero1\" type=\"text\" placeholder=\"Numero Civico\" required>
-            <input id=\"ClienteCap1\" name=\"ClienteCap1\" type=\"text\" placeholder=\"C.A.P.\" required>
-            <input id=\"ClienteCitta1\" name=\"ClienteCitta1\" type=\"text\" placeholder=\"Citt&agrave\" required>
-            <h2>Dati Installazione</h2>
-            <input id=\"ClienteIndirizzo2\" name=\"ClienteIndirizzo2\" type=\"text\" placeholder=\"Indirizzo\" >
-            <input id=\"ClienteNumero2\" name=\"ClienteNumero2\" type=\"text\" placeholder=\"Numero Civico\" >
-            <input id=\"ClienteCap2\" name=\"ClienteCap2\" type=\"text\" placeholder=\"C.A.P.\">
-            <input id=\"ClienteCitta2\" name=\"ClienteCitta2\" type=\"text\" placeholder=\"Citt&agrave\" >
-            <h2>Dati Spedizione</h2>
-            <input id=\"ClienteIndirizzo3\" name=\"ClienteIndirizzo3\" type=\"text\" placeholder=\"Indirizzo\" >
-            <input id=\"ClienteNumero3\" name=\"ClienteNumero3\" type=\"text\" placeholder=\"Numero Civico\" >
-            <input id=\"ClienteCap3\" name=\"ClienteCap3\" type=\"text\" placeholder=\"C.A.P.\">
-            <input id=\"ClienteCitta3\" name=\"ClienteCitta3\" type=\"text\" placeholder=\"Citt&agrave\">
+            <input id=\"ClienteIndirizzo\" name=\"ClienteIndirizzo\" type=\"text\" placeholder=\"Indirizzo\" required>
+            <input id=\"ClienteNumero\" name=\"ClienteNumero\" type=\"text\" placeholder=\"Numero Civico\" required>
+            <input id=\"ClienteCap\" name=\"ClienteCap\" type=\"text\" placeholder=\"C.A.P.\" required>
+            <input id=\"ClienteCitta\" name=\"ClienteCitta\" type=\"text\" placeholder=\"Citt&agrave\" required>
             <input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"add\" >
             <input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"Privato\" >
             <input id=\"Agenti_idAgenti\" name=\"Agenti_idAgenti\" type=\"hidden\" value=\"".$cod."\" >
@@ -122,23 +120,29 @@ switch ($_POST['stato']) {
         <fieldset id=\"inputs\">
             <input id=\"ClienteRagione\" name=\"ClienteRagione\" type=\"text\" placeholder=\"Ragione Sociale\" autofocus required>
             <input id=\"ClientePI\" name=\"ClientePI\" type=\"text\" placeholder=\"Partita Iva\" required><br />
-            <h2>Recapito E-Mail</h2>
+            <h2>Legale Rappresentate</h2>
+            <input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" autofocus required>
+            <input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\" required>
+            <input id=\"ClienteCF\" name=\"ClienteCF\" type=\"text\" placeholder=\"Codice Fiscale\" required><br />
+            <input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" required>
+            <input id=\"ClienteDataNascita\" name=\"ClienteDataNascita\" type=\"text\" placeholder=\"Data di Nascita\" required>
+            <input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" required>
+            <input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provincia di Nascita\" required><br />
+            <h2>Documenti</h2>
+            <input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" >
+            <input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" required>
+            <input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" required>
+            <input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" required>
+            <h2>Recapiti</h2>
+            <input id=\"ClienteTelefono\" name=\"ClienteTelefono\" type=\"text\" placeholder=\"Telefono\" >
+            <input id=\"ClienteFax\" name=\"ClienteFax\" type=\"text\" placeholder=\"Fax\" >
+            <input id=\"ClienteCellulare\" name=\"ClienteCellulare\" type=\"text\" placeholder=\"Cellulare\" >
             <input id=\"ClienteMail\" name=\"ClienteMail\" type=\"text\" placeholder=\"E-Mail\" required>
             <h2>Dati Fatturazione</h2>
-            <input id=\"ClienteIndirizzo1\" name=\"ClienteIndirizzo1\" type=\"text\" placeholder=\"Indirizzo\" required>
-            <input id=\"ClienteNumero1\" name=\"ClienteNumero1\" type=\"text\" placeholder=\"Numero Civico\" required>
-            <input id=\"ClienteCap1\" name=\"ClienteCap1\" type=\"text\" placeholder=\"C.A.P.\" required>
-            <input id=\"ClienteCitta1\" name=\"ClienteCitta1\" type=\"text\" placeholder=\"Citt&agrave\" required>
-            <h2>Dati Installazione</h2>
-            <input id=\"ClienteIndirizzo2\" name=\"ClienteIndirizzo2\" type=\"text\" placeholder=\"Indirizzo\" >
-            <input id=\"ClienteNumero2\" name=\"ClienteNumero2\" type=\"text\" placeholder=\"Numero Civico\" >
-            <input id=\"ClienteCap2\" name=\"ClienteCap2\" type=\"text\" placeholder=\"C.A.P.\">
-            <input id=\"ClienteCitta2\" name=\"ClienteCitta2\" type=\"text\" placeholder=\"Citt&agrave\" >
-            <h2>Dati Spedizione</h2>
-            <input id=\"ClienteIndirizzo3\" name=\"ClienteIndirizzo3\" type=\"text\" placeholder=\"Indirizzo\" >
-            <input id=\"ClienteNumero3\" name=\"ClienteNumero3\" type=\"text\" placeholder=\"Numero Civico\" >
-            <input id=\"ClienteCap3\" name=\"ClienteCap3\" type=\"text\" placeholder=\"C.A.P.\">
-            <input id=\"ClienteCitta3\" name=\"ClienteCitta3\" type=\"text\" placeholder=\"Citt&agrave\">
+            <input id=\"ClienteIndirizzo\" name=\"ClienteIndirizzo\" type=\"text\" placeholder=\"Indirizzo\" required>
+            <input id=\"ClienteNumero\" name=\"ClienteNumero\" type=\"text\" placeholder=\"Numero Civico\" required>
+            <input id=\"ClienteCap\" name=\"ClienteCap\" type=\"text\" placeholder=\"C.A.P.\" required>
+            <input id=\"ClienteCitta\" name=\"ClienteCitta\" type=\"text\" placeholder=\"Citt&agrave\" required>
             <input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"add\" >
             <input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"Azienda\" >
             <input id=\"Agenti_idAgenti\" name=\"Agenti_idAgenti\" type=\"hidden\" value=\"".$cod."\" >

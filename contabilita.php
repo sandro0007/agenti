@@ -21,24 +21,47 @@ echo $menu;
 if(isset($_POST['stato'])){
 	switch($_POST['stato']){
 		case update:
-			if ($_POST['ContrattoFatturato'] == '0') {
-					$setFattura = '1';
+				if ($_POST['ContrattoFatturato'] == '0') {
+						$setFattura = '1';
+						$sql = "UPDATE  `Contratti` SET  
+						`ContrattoFatturato` =  '".$setFattura."'
+							WHERE  `ContrattoId` =".$_POST['ContrattoId']."";
+					if (!mysql_query($sql))
+					  {
+					  die('Error Aggiornamento Cliente: ' . mysql_error());
+					  }
+				echo '<script language=javascript>document.location.href="contabilita.php?id=ok"</script>';
 				}
+				
+				if ($_POST['ContrattoFatturato'] == '1' and $_POST['ContrattoPagato'] == '0') {
+						$setFattura = '0';
+						$sql = "UPDATE  `Contratti` SET  
+						`ContrattoFatturato` =  '".$setFattura."'
+							WHERE  `ContrattoId` =".$_POST['ContrattoId']."";
+							if (!mysql_query($sql))
+							  {
+							  die('Error Aggiornamento Cliente: ' . mysql_error());
+							  }
+						echo '<script language=javascript>document.location.href="contabilita.php?id=ok"</script>';
+						}
 				else {
-					$setFattura = '0';
-					}
-			$sql = "UPDATE  `Contratti` SET  
-					`ContrattoFatturato` =  '".$setFattura."'
-						WHERE  `ContrattoId` =".$_POST['ContrattoId']."";
-			if (!mysql_query($sql))
-			  {
-			  die('Error Aggiornamento Cliente: ' . mysql_error());
-			  }
-			echo "<h2>Aggiornamento Contratto Effettuato</h2>";
-			break;
+					echo '<script language=javascript>document.location.href="contabilita.php?id=ko"</script>';
+				}
+				break;
 	}
 }
 
+switch($_GET['id']){
+		case ok:
+			echo "<h2>Aggiornamento Effettuato Correttamente</h2>";
+			break;
+		
+		case ko:
+			echo "<h2>Aggiornamento Non Effettuato - Pagamento fattura effettuato</h2>";
+			break;
+		
+		}
+	
 echo "<h2>Pagina Contabilit&agrave</h2>";
 
 		
@@ -75,6 +98,7 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 		 * $rsContratti['ContrattoTipo']
 		 * $rsContratti['ContrattoStato']
 		 * $rsContratti['ContrattoFatturato']
+		 * $rsContratti['ContrattoPagato']
 		 * 
 		 * */
 		echo "<tr>
@@ -92,7 +116,8 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 				<form action=\"contabilita.php\" method=\"post\" style=\"float: right;\">
 						<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
 						<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
-						<input id=\"ContrattoFatturato\" name=\"ContrattoFatturato\" type=\"hidden\" value=\"".$rsContratti['ContrattoFatturato']."\" >
+						<input id=\"ContrattoFatturato\" name=\"ContrattoFatturato\" type=\"hidden\" value=\"".$rsContratti['ContrattoFatturato']."\" >						
+						<input id=\"ContrattoPagato\" name=\"ContrattoPagato\" type=\"hidden\" value=\"".$rsContratti['ContrattoPagato']."\" >
 						<input name=\"Edita Contratto\" type=\"image\" src=\"image\edit.gif\" alt=\"Edita Contratto\" title=\"Edita Contratto\"> 
 					</fieldset>
 				</form>

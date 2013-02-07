@@ -131,18 +131,10 @@ if(isset($_POST['stato'])){
 		 * $rsCliente['ClienteCF']
 		 * $rsCliente['ClientePI']
 		 * $rsCliente['ClienteMail']
-		 * $rsCliente['ClienteIndirizzo1']
-		 * $rsCliente['ClienteNumero1']
-		 * $rsCliente['ClienteCap1']
-		 * $rsCliente['ClienteCitta1']
-		 * $rsCliente['ClienteIndirizzo2']
-		 * $rsCliente['ClienteNumero2']
-		 * $rsCliente['ClienteCap2']
-		 * $rsCliente['ClienteCitta2']
-		 * $rsCliente['ClienteIndirizzo3']
-		 * $rsCliente['ClienteNumero3']
-		 * $rsCliente['ClienteCap3']
-		 * $rsCliente['ClienteCitta3']
+		 * $rsCliente['ClienteIndirizzo']
+		 * $rsCliente['ClienteNumero']
+		 * $rsCliente['ClienteCap']
+		 * $rsCliente['ClienteCitta']
 		 * $rsCliente['ClienteTipologia']
 		 * 
 		 * */
@@ -193,6 +185,12 @@ if(isset($_POST['stato'])){
 		}
 }
 else {
+	switch($_GET['id']){
+		case 1:
+			echo "<h2>Aggiornamento Effettuato Correttamente</h2>";
+			break;
+		
+		}
 	echo "<h2>Lista Clienti</h2>";
 	$cliente = "SELECT * FROM Clienti where Agenti_idAgenti=".$cod." order by ClienteCognome ASC" ;
 	$res = mysql_query($cliente);

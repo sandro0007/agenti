@@ -34,26 +34,29 @@ if(isset($_POST['stato'])){
 					`ClienteRagione` =  '".$_POST['ClienteRagione']."',
 					`ClienteCF` =  '".$_POST['ClienteCF']."' ,
 					`ClientePI` =  '".$_POST['ClientePI']."',
+					`ClienteDataNascita` =  '".$_POST['ClienteDataNascita']."',
+					`ClienteLuogoNascita` =  '".$_POST['ClienteLuogoNascita']."',
+					`ClienteProvinciaNascita` =  '".$_POST['ClienteProvinciaNascita']."',
+					`ClienteTelefono` =  '".$_POST['ClienteTelefono']."',
+					`ClienteFax` =  '".$_POST['ClienteFax']."',
+					`ClienteCellulare` =  '".$_POST['ClienteCellulare']."',
 					`ClienteMail` =  '".$_POST['ClienteMail']."',
-					`ClienteIndirizzo1` =  '".$_POST['ClienteIndirizzo1']."',
-					`ClienteNumero1` =  '".$_POST['ClienteNumero1']."',
-					`ClienteCap1` =  '".$_POST['ClienteCap1']."',
-					`ClienteCitta1` =  '".$_POST['ClienteCitta1']."',
-					`ClienteIndirizzo2` =  '".$_POST['ClienteIndirizzo2']."',
-					`ClienteNumero2` =  '".$_POST['ClienteNumero2']."',
-					`ClienteCap2` =  '".$_POST['ClienteCap2']."',
-					`ClienteCitta2` =  '".$_POST['ClienteCitta2']."',
-					`ClienteIndirizzo3` =  '".$_POST['ClienteIndirizzo3']."',
-					`ClienteNumero3` =  '".$_POST['ClienteNumero3']."',
-					`ClienteCap3` =  '".$_POST['ClienteCap3']."',
-					`ClienteCitta3` =  '".$_POST['ClienteCitta3']."'
-						WHERE  `idCliente` =".$_POST['idCliente']."";
+					`ClienteSesso` =  '".$_POST['ClienteSesso']."',
+					`ClienteTipoDocumento` =  '".$_POST['ClienteTipoDocumento']."',
+					`ClienteNumeroDocumento` =  '".$_POST['ClienteNumeroDocumento']."',
+					`ClienteEnteDocumento` =  '".$_POST['ClienteEnteDocumento']."',
+					`ClienteRilascioDocumento` =  '".$_POST['ClienteRilascioDocumento']."',				
+					`ClienteIndirizzo` =  '".$_POST['ClienteIndirizzo']."',
+					`ClienteNumero` =  '".$_POST['ClienteNumero']."',
+					`ClienteCap` =  '".$_POST['ClienteCap']."',
+					`ClienteCitta` =  '".$_POST['ClienteCitta']."'
+						WHERE  `idCliente` = '".$_POST['idCliente']."'";
 			if (!mysql_query($sql))
 			  {
+				  echo $sql."<br />";
 			  die('Error Aggiornamento Cliente: ' . mysql_error());
 			  }
-			echo "<h2>Aggiornamento Effettuato Correttamente</h2>";
-			
+			echo '<script language=javascript>document.location.href="clienti.php?id=1"</script>';
 			break;
 			// FINE UPDATE CLIENTE
 			
@@ -77,19 +80,22 @@ if(isset($_POST['stato'])){
 						 * $rsCliente['ClienteRagione']
 						 * $rsCliente['ClienteCF']
 						 * $rsCliente['ClientePI']
+						 * $rsCliente['ClienteDataNascita']
+						 * $rsCliente['ClienteLuogoNascita']
+						 * $rsCliente['ClienteProvinciaNascita']
+						 * $rsCliente['ClienteTelefono']
+						 * $rsCliente['ClienteFax']
+						 * $rsCliente['ClienteCellulare']
 						 * $rsCliente['ClienteMail']
-						 * $rsCliente['ClienteIndirizzo1']
-						 * $rsCliente['ClienteNumero1']
-						 * $rsCliente['ClienteCap1']
-						 * $rsCliente['ClienteCitta1']
-						 * $rsCliente['ClienteIndirizzo2']
-						 * $rsCliente['ClienteNumero2']
-						 * $rsCliente['ClienteCap2']
-						 * $rsCliente['ClienteCitta2']
-						 * $rsCliente['ClienteIndirizzo3']
-						 * $rsCliente['ClienteNumero3']
-						 * $rsCliente['ClienteCap3']
-						 * $rsCliente['ClienteCitta3']
+						 * $rsCliente['ClienteSesso']
+						 * $rsCliente['ClienteTipoDocumento']
+						 * $rsCliente['ClienteNumeroDocumento']
+						 * $rsCliente['ClienteEnteDocumento']
+						 * $rsCliente['ClienteRilascioDocumento']
+						 * $rsCliente['ClienteIndirizzo']
+						 * $rsCliente['ClienteNumero']
+						 * $rsCliente['ClienteCap']
+						 * $rsCliente['ClienteCitta']
 						 * $rsCliente['ClienteTipologia']
 						 * 
 						 * */
@@ -98,26 +104,28 @@ if(isset($_POST['stato'])){
 						if ($rsCliente['ClienteTipologia'] == 'Privato') {
 						echo "<form action=\"schedaclienti.php\" method=\"post\">
 							<fieldset id=\"inputs\">
-								<input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\" autofocus value=\"".$rsCliente['ClienteNome']."\" required>
-								<input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" value=\"".$rsCliente['ClienteCognome']."\"required>
-								<input id=\"ClienteCF\" name=\"ClienteCF\" type=\"text\" placeholder=\"Codice Fiscale\" value=\"".$rsCliente['ClienteCF']."\"required><br />
-								<h2>Recapito E-Mail</h2>
-								<input id=\"ClienteMail\" name=\"ClienteMail\" type=\"text\" placeholder=\"E-Mail\" value=\"".$rsCliente['ClienteMail']."\"required>
+								<input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" value=\"".$rsCliente['ClienteCognome']."\" autofocus required>
+								<input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\"  value=\"".$rsCliente['ClienteNome']."\" required>
+								<input id=\"ClienteCF\" name=\"ClienteCF\" type=\"text\" placeholder=\"Codice Fiscale\" value=\"".$rsCliente['ClienteCF']."\" required><br />
+								<input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" value=\"".$rsCliente['ClienteSesso']."\" required>
+								<input id=\"ClienteDataNascita\" name=\"ClienteDataNascita\" type=\"text\" placeholder=\"Data di Nascita\" value=\"".$rsCliente['ClienteDataNascita']."\" required>
+								<input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" value=\"".$rsCliente['ClienteLuogoNascita']."\" required>
+								<input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provincia di Nascita\" value=\"".$rsCliente['ClienteProvinciaNascita']."\" required><br />
+								<h2>Documenti</h2>
+								<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']."\" >
+								<input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" value=\"".$rsCliente['ClienteNumeroDocumento']."\" required>
+								<input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" value=\"".$rsCliente['ClienteEnteDocumento']."\" required>
+								<input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" value=\"".$rsCliente['ClienteRilascioDocumento']."\" required>
+								<h2>Recapiti</h2>
+								<input id=\"ClienteTelefono\" name=\"ClienteTelefono\" type=\"text\" placeholder=\"Telefono\" value=\"".$rsCliente['ClienteTelefono']."\" >
+								<input id=\"ClienteFax\" name=\"ClienteFax\" type=\"text\" placeholder=\"Fax\" value=\"".$rsCliente['ClienteFax']."\" >
+								<input id=\"ClienteCellulare\" name=\"ClienteCellulare\" type=\"text\" placeholder=\"Cellulare\" value=\"".$rsCliente['ClienteCellulare']."\" >
+								<input id=\"ClienteMail\" name=\"ClienteMail\" type=\"text\" placeholder=\"E-Mail\" value=\"".$rsCliente['ClienteMail']."\" required>
 								<h2>Dati Fatturazione</h2>
-								<input id=\"ClienteIndirizzo1\" name=\"ClienteIndirizzo1\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo1']."\"required>
-								<input id=\"ClienteNumero1\" name=\"ClienteNumero1\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNumero1']."\"required>
-								<input id=\"ClienteCap1\" name=\"ClienteCap1\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap1']."\"required>
-								<input id=\"ClienteCitta1\" name=\"ClienteCitta1\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta1']."\"required>
-								<h2>Dati Installazione</h2>
-								<input id=\"ClienteIndirizzo2\" name=\"ClienteIndirizzo2\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo2']."\">
-								<input id=\"ClienteNumero2\" name=\"ClienteNumero2\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNumero2']."\">
-								<input id=\"ClienteCap2\" name=\"ClienteCap2\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap2']."\">
-								<input id=\"ClienteCitta2\" name=\"ClienteCitta2\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta2']."\" >
-								<h2>Dati Spedizione</h2>
-								<input id=\"ClienteIndirizzo3\" name=\"ClienteIndirizzo3\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo3']."\" >
-								<input id=\"ClienteNumero3\" name=\"ClienteNumero3\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNumero3']."\" >
-								<input id=\"ClienteCap3\" name=\"ClienteCap3\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap3']."\" >
-								<input id=\"ClienteCitta3\" name=\"ClienteCitta3\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta3']."\" >
+								<input id=\"ClienteIndirizzo\" name=\"ClienteIndirizzo\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteNome']."\" required>
+								<input id=\"ClienteNumero\" name=\"ClienteNumero\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNome']."\" required>
+								<input id=\"ClienteCap\" name=\"ClienteCap\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteNome']."\" required>
+								<input id=\"ClienteCitta\" name=\"ClienteCitta\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteNome']."\" required>
 								<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
 								<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"Privato\" >
 								<input id=\"idCliente\" name=\"idCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
@@ -133,23 +141,29 @@ if(isset($_POST['stato'])){
 							<fieldset id=\"inputs\">
 								<input id=\"ClienteRagione\" name=\"ClienteRagione\" type=\"text\" placeholder=\"Ragione Sociale\" value=\"".$rsCliente['ClienteRagione']."\" autofocus required>
 								<input id=\"ClientePI\" name=\"ClientePI\" type=\"text\" placeholder=\"Partita Iva\" value=\"".$rsCliente['ClientePI']."\" required><br />
-								<h2>Recapito E-Mail</h2>
-								<input id=\"ClienteMail\" name=\"ClienteMail\" type=\"text\" placeholder=\"E-Mail\" value=\"".$rsCliente['ClienteMail']."\"required>
+								<h2>Legale Rappresentante</h2>
+								<input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" value=\"".$rsCliente['ClienteCognome']."\" autofocus required>
+								<input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\"  value=\"".$rsCliente['ClienteNome']."\" required>
+								<input id=\"ClienteCF\" name=\"ClienteCF\" type=\"text\" placeholder=\"Codice Fiscale\" value=\"".$rsCliente['ClienteCF']."\" required><br />
+								<input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" value=\"".$rsCliente['ClienteSesso']."\" required>
+								<input id=\"ClienteDataNascita\" name=\"ClienteDataNascita\" type=\"text\" placeholder=\"Data di Nascita\" value=\"".$rsCliente['ClienteDataNascita']."\" required>
+								<input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" value=\"".$rsCliente['ClienteLuogoNascita']."\" required>
+								<input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provincia di Nascita\" value=\"".$rsCliente['ClienteProvinciaNascita']."\" required><br />
+								<h2>Documenti</h2>
+								<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']."\" >
+								<input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" value=\"".$rsCliente['ClienteNumeroDocumento']."\" required>
+								<input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" value=\"".$rsCliente['ClienteEnteDocumento']."\" required>
+								<input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" value=\"".$rsCliente['ClienteRilascioDocumento']."\" required>
+								<h2>Recapiti</h2>
+								<input id=\"ClienteTelefono\" name=\"ClienteTelefono\" type=\"text\" placeholder=\"Telefono\" value=\"".$rsCliente['ClienteTelefono']."\" >
+								<input id=\"ClienteFax\" name=\"ClienteFax\" type=\"text\" placeholder=\"Fax\" value=\"".$rsCliente['ClienteFax']."\" >
+								<input id=\"ClienteCellulare\" name=\"ClienteCellulare\" type=\"text\" placeholder=\"Cellulare\" value=\"".$rsCliente['ClienteCellulare']."\" >
+								<input id=\"ClienteMail\" name=\"ClienteMail\" type=\"text\" placeholder=\"E-Mail\" value=\"".$rsCliente['ClienteMail']."\" required>
 								<h2>Dati Fatturazione</h2>
-								<input id=\"ClienteIndirizzo1\" name=\"ClienteIndirizzo1\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo1']."\"required>
-								<input id=\"ClienteNumero1\" name=\"ClienteNumero1\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNumero1']."\"required>
-								<input id=\"ClienteCap1\" name=\"ClienteCap1\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap1']."\"required>
-								<input id=\"ClienteCitta1\" name=\"ClienteCitta1\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta1']."\"required>
-								<h2>Dati Installazione</h2>
-								<input id=\"ClienteIndirizzo2\" name=\"ClienteIndirizzo2\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo2']."\">
-								<input id=\"ClienteNumero2\" name=\"ClienteNumero2\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNumero2']."\">
-								<input id=\"ClienteCap2\" name=\"ClienteCap2\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap2']."\">
-								<input id=\"ClienteCitta2\" name=\"ClienteCitta2\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta2']."\" >
-								<h2>Dati Spedizione</h2>
-								<input id=\"ClienteIndirizzo3\" name=\"ClienteIndirizzo3\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo3']."\" >
-								<input id=\"ClienteNumero3\" name=\"ClienteNumero3\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNumero3']."\" >
-								<input id=\"ClienteCap3\" name=\"ClienteCap3\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap3']."\" >
-								<input id=\"ClienteCitta3\" name=\"ClienteCitta3\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta3']."\" >
+								<input id=\"ClienteIndirizzo\" name=\"ClienteIndirizzo\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo']."\"required>
+								<input id=\"ClienteNumero\" name=\"ClienteNumero\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNumero']."\"required>
+								<input id=\"ClienteCap\" name=\"ClienteCap\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap']."\"required>
+								<input id=\"ClienteCitta\" name=\"ClienteCitta\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta']."\"required>
 								<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
 								<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"Azienda\" >
 								<input id=\"idCliente\" name=\"idCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
@@ -175,26 +189,29 @@ if(isset($_POST['stato'])){
 				$rsCliente = mysql_fetch_assoc($res);
 					/* *
 					 * 
-					 * $rsCliente['idCliente']
-					 * $rsCliente['ClienteNome']
-					 * $rsCliente['ClienteCognome']
-					 * $rsCliente['ClienteRagione']
-					 * $rsCliente['ClienteCF']
-					 * $rsCliente['ClientePI']
-					 * $rsCliente['ClienteMail']
-					 * $rsCliente['ClienteIndirizzo1']
-					 * $rsCliente['ClienteNumero1']
-					 * $rsCliente['ClienteCap1']
-					 * $rsCliente['ClienteCitta1']
-					 * $rsCliente['ClienteIndirizzo2']
-					 * $rsCliente['ClienteNumero2']
-					 * $rsCliente['ClienteCap2']
-					 * $rsCliente['ClienteCitta2']
-					 * $rsCliente['ClienteIndirizzo3']
-					 * $rsCliente['ClienteNumero3']
-					 * $rsCliente['ClienteCap3']
-					 * $rsCliente['ClienteCitta3']
-					 * $rsCliente['ClienteTipologia']
+						 * $rsCliente['idCliente']
+						 * $rsCliente['ClienteNome']
+						 * $rsCliente['ClienteCognome']
+						 * $rsCliente['ClienteRagione']
+						 * $rsCliente['ClienteCF']
+						 * $rsCliente['ClientePI']
+						 * $rsCliente['ClienteDataNascita']
+						 * $rsCliente['ClienteLuogoNascita']
+						 * $rsCliente['ClienteProvinciaNascita']
+						 * $rsCliente['ClienteTelefono']
+						 * $rsCliente['ClienteFax']
+						 * $rsCliente['ClienteCellulare']
+						 * $rsCliente['ClienteMail']
+						 * $rsCliente['ClienteSesso']
+						 * $rsCliente['ClienteTipoDocumento']
+						 * $rsCliente['ClienteNumeroDocumento']
+						 * $rsCliente['ClienteEnteDocumento']
+						 * $rsCliente['ClienteRilascioDocumento']
+						 * $rsCliente['ClienteIndirizzo']
+						 * $rsCliente['ClienteNumero']
+						 * $rsCliente['ClienteCap']
+						 * $rsCliente['ClienteCitta']
+						 * $rsCliente['ClienteTipologia']
 					 * 
 					 * */
 				if ($rsCliente['ClienteTipologia'] == 'Privato'){
@@ -215,52 +232,42 @@ if(isset($_POST['stato'])){
 						<tr>
 							<td>Codice Fiscale</td>
 							<td>".$rsCliente['ClienteCF']."</td>
+							<td>Sesso</td>
+							<td>".$rsCliente['ClienteSesso']."</td>
+						</tr>
+						<tr>
+							<td>Data di Nascita</td>
+							<td>".$rsCliente['ClienteDataNascita']."</td>
 							<td></td>
 							<td></td>
-						</tr>";
-						if (isset($rsCliente['ClienteIndirizzo1']) and isset($rsCliente['ClienteNumero1']) and isset($rsCliente['ClienteCap1']) and isset($rsCliente['ClienteCitta1'])) {
-								echo "<tr>
-									<td colspan=\"4\">Dati Fatturazione</td>
+						</tr>
+						<tr>
+							<td>Luogo di Nascita</td>
+							<td>".$rsCliente['ClienteLuogoNascita']."</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Provincia di Nascita</td>
+							<td>".$rsCliente['ClienteProvinciaNascita']."</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+									<td colspan=\"4\">Documenti</td>
 								</tr>
 								<tr>
-									<td>Indirizzo</td>
+									<td>Documento</td>
 									<td>Numero</td>
-									<td>CAP</td>
-									<td>Citta</td>
+									<td>Ente</td>
+									<td>DataRilascio</td>
 								</tr>
 								<tr>
-									<td>".$rsCliente['ClienteIndirizzo1']."</td>
-									<td>".$rsCliente['ClienteNumero1']."</td>
-									<td>".$rsCliente['ClienteCap1']."</td>
-									<td>".$rsCliente['ClienteCitta1']."</td>
+									<td>".$rsCliente['ClienteTipoDocumento']."</td>
+									<td>".$rsCliente['ClienteNumeroDocumento']."</td>
+									<td>".$rsCliente['ClienteEnteTipoDocumento']."</td>
+									<td>".$rsCliente['ClienteRilascioTipoDocumento']."</td>
 								</tr>
-								<tr>
-									<td colspan=\"4\"></td>
-								</tr>";
-							}
-						if (isset($rsCliente['ClienteIndirizzo2']) and isset($rsCliente['ClienteNumero2']) and isset($rsCliente['ClienteCap2']) and isset($rsCliente['ClienteCitta2'])) {
-						
-						echo "<tr>
-								<td colspan=\"4\">Dati Installazione</td>
-							</tr>
-							<tr>
-								<td>Indirizzo</td>
-								<td>Numero</td>
-								<td>CAP</td>
-								<td>Citta</td>
-							</tr>
-							<tr>
-								<td>".$rsCliente['ClienteIndirizzo2']."</td>
-								<td>".$rsCliente['ClienteNumero2']."</td>
-								<td>".$rsCliente['ClienteCap2']."</td>
-								<td>".$rsCliente['ClienteCitta2']."</td>
-							</tr>
-							<tr>
-								<td colspan=\"4\"></td>
-							</tr>";
-						}
-						if (isset($rsCliente['ClienteIndirizzo3']) and isset($rsCliente['ClienteNumero3']) and isset($rsCliente['ClienteCap3']) and isset($rsCliente['ClienteCitta3'])) {
-								echo "
 								<tr>
 									<td colspan=\"4\">Dati Fatturazione</td>
 								</tr>
@@ -271,13 +278,11 @@ if(isset($_POST['stato'])){
 									<td>Citta</td>
 								</tr>
 								<tr>
-									<td>".$rsCliente['ClienteIndirizzo3']."</td>
-									<td>".$rsCliente['ClienteNumero3']."</td>
-									<td>".$rsCliente['ClienteCap3']."</td>
-									<td>".$rsCliente['ClienteCitta3']."</td>
-								</tr>";
-						}
-					echo "</table>
+									<td>".$rsCliente['ClienteIndirizzo']."</td>
+									<td>".$rsCliente['ClienteNumero']."</td>
+									<td>".$rsCliente['ClienteCap']."</td>
+									<td>".$rsCliente['ClienteCitta']."</td>
+								</tr></table>
 					
 				";		 
 					}
@@ -295,9 +300,61 @@ if(isset($_POST['stato'])){
 							<td>".$rsCliente['ClientePI']."</td>
 							<td></td>
 							<td></td>
-						</tr>";
-						if (isset($rsCliente['ClienteIndirizzo1']) and isset($rsCliente['ClienteNumero1']) and isset($rsCliente['ClienteCap1']) and isset($rsCliente['ClienteCitta1'])) {
-								echo "<tr>
+						</tr>
+						<tr>
+							<td colspan=\"4\">Legale Rappresentante</td>
+						</tr>
+						<tr>
+							<td>Cognome</td>
+							<td>".$rsCliente['ClienteCognome']."</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Nome</td>
+							<td>".$rsCliente['ClienteNome']."</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Codice Fiscale</td>
+							<td>".$rsCliente['ClienteCF']."</td>
+							<td>Sesso</td>
+							<td>".$rsCliente['ClienteSesso']."</td>
+						</tr>
+						<tr>
+							<td>Data di Nascita</td>
+							<td>".$rsCliente['ClienteDataNascita']."</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Luogo di Nascita</td>
+							<td>".$rsCliente['ClienteLuogoNascita']."</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Provincia di Nascita</td>
+							<td>".$rsCliente['ClienteProvinciaNascita']."</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+									<td colspan=\"4\">Documenti</td>
+								</tr>
+								<tr>
+									<td>Documento</td>
+									<td>Numero</td>
+									<td>Ente</td>
+									<td>DataRilascio</td>
+								</tr>
+								<tr>
+									<td>".$rsCliente['ClienteTipoDocumento']."</td>
+									<td>".$rsCliente['ClienteNumeroDocumento']."</td>
+									<td>".$rsCliente['ClienteEnteTipoDocumento']."</td>
+									<td>".$rsCliente['ClienteRilascioTipoDocumento']."</td>
+								</tr><tr>
 									<td colspan=\"4\">Dati Fatturazione</td>
 								</tr>
 								<tr>
@@ -307,57 +364,12 @@ if(isset($_POST['stato'])){
 									<td>Citta</td>
 								</tr>
 								<tr>
-									<td>".$rsCliente['ClienteIndirizzo1']."</td>
-									<td>".$rsCliente['ClienteNumero1']."</td>
-									<td>".$rsCliente['ClienteCap1']."</td>
-									<td>".$rsCliente['ClienteCitta1']."</td>
+									<td>".$rsCliente['ClienteIndirizzo']."</td>
+									<td>".$rsCliente['ClienteNumero']."</td>
+									<td>".$rsCliente['ClienteCap']."</td>
+									<td>".$rsCliente['ClienteCitta']."</td>
 								</tr>
-								<tr>
-									<td colspan=\"4\"></td>
-								</tr>";
-							}
-						if (isset($rsCliente['ClienteIndirizzo2']) and isset($rsCliente['ClienteNumero2']) and isset($rsCliente['ClienteCap2']) and isset($rsCliente['ClienteCitta2'])) {
-						
-						echo "<tr>
-								<td colspan=\"4\">Dati Installazione</td>
-							</tr>
-							<tr>
-								<td>Indirizzo</td>
-								<td>Numero</td>
-								<td>CAP</td>
-								<td>Citta</td>
-							</tr>
-							<tr>
-								<td>".$rsCliente['ClienteIndirizzo2']."</td>
-								<td>".$rsCliente['ClienteNumero2']."</td>
-								<td>".$rsCliente['ClienteCap2']."</td>
-								<td>".$rsCliente['ClienteCitta2']."</td>
-							</tr>
-							<tr>
-								<td colspan=\"4\"></td>
-							</tr>";
-						}
-						if (isset($rsCliente['ClienteIndirizzo3']) and isset($rsCliente['ClienteNumero3']) and isset($rsCliente['ClienteCap3']) and isset($rsCliente['ClienteCitta3'])) {
-								echo "
-								<tr>
-									<td colspan=\"4\">Dati Fatturazione</td>
-								</tr>
-								<tr>
-									<td>Indirizzo</td>
-									<td>Numero</td>
-									<td>CAP</td>
-									<td>Citta</td>
-								</tr>
-								<tr>
-									<td>".$rsCliente['ClienteIndirizzo3']."</td>
-									<td>".$rsCliente['ClienteNumero3']."</td>
-									<td>".$rsCliente['ClienteCap3']."</td>
-									<td>".$rsCliente['ClienteCitta3']."</td>
-								</tr>";
-						}
-					echo "</table>
-					
-				";
+							</table>";
 				}
 						 
 				// VISUALIZZO TUTTI I CONTRATTI ATTIVI PER IL CLIENTE
