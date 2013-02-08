@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Agenti by xanio</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/xanio/agenti">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/xanio/agenti/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/xanio/agenti/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Agenti</h1>
+          <p>gestione contratti agenti</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/xanio">xanio</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>agenti</h1>
+
+<p>gestione contratti agenti</p>
+
+<p>L'applicativo si occupa di gestire il sistema di contratti stipulati da 
+agenti e gestire i relativi clienti.</p>
+
+<p>I Clienti sono associati ad ogni agente, per distinguerli e poter 
+calcolare il numero di Clienti contattati con quelli con cui è stato
+chiuso il contratto.</p>
+
+<p>I contratti sono basati su profili ben definiti, l'agente una volta 
+caricato il cliente, può associarli uno o più contratti.</p>
+
+<p>I contratti possono avere uno o più allegati</p>
+
+<p>Ogni Agente effettuando il login può aggiungere nuovi clienti o vedere
+i clienti inseriti. NOTA: l'agente non può apportare direttamente 
+modifiche sui dati inseriti, ma può chiederne variazione con apposito
+form.</p>
+
+<p>Ogni agente effettuando il login può aggiungere nuovi contratti o vedere
+i contratti inseriti (e il relativo stato). NOTA: l'agente non può
+apportare direttamente modifiche sui dati inseriti e loro stato, ma può
+richiederne variazione con apposito form.</p>
+
+<p>Ogni agente avrà la possibilità di visualizzare i contratti attivati tramite
+la pagina contabilità. Nel caso sia attivi può emettere la propria fattura
+ed indicare che è stata emessa. L'amministrazione verrà avvisata che è stata
+emessa fattura e può procedere al pagamento. Una volta effettuato il pagamento
+l'agente non potrà più modificare lo stato della contabilità.</p>
+
+<p>I Contratti una volta inseriti, devono seguire un workflow procedurale di
+emissione così composto:</p>
+
+<ul>
+<li>inserimento       -&gt; la pratica è stata inserita dall'agente;</li>
+<li>in lavorazione    -&gt; la pratica è stata presa in consegna dall'amministraione</li>
+<li>scartata          -&gt; la pratica è stata scartata per mancaza dati o errori (form di chierimento)</li>
+<li>attivata          -&gt; la pratica è stata attivata (installazione inclusa)</li>
+</ul>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
