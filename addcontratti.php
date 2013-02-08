@@ -135,7 +135,7 @@ if(isset($_POST['step'])){
 						</select>
 						<br />
 						<label>Numero Pilota</label>
-						<input id=\"LineaPilota\" name=\"LineaPilota\" type=\"text\" placeholder=\"Numero Telefonico Adiacente\"  required>
+						<input id=\"LineaPilota\" name=\"LineaPilota\" type=\"text\" placeholder=\"Numero Telefonico Adiacente\">
 						<br />
 					</div>
 					<div>
@@ -151,6 +151,9 @@ if(isset($_POST['step'])){
 						<br />
 						<label>Numero Linea</label>
 						<input id=\"LineaNumero\" name=\"LineaNumero\" type=\"text\" placeholder=\"Numero Telefonico da Migrare\"  required>
+						<br />
+						<label>Codice Segreto</label>
+						<input id=\"LineaCodice\" name=\"LineaCodice\" type=\"text\" placeholder=\"Codice Migrazione\"  required>
 						<br />
 					</div>
 					<br />
@@ -203,6 +206,7 @@ if(isset($_POST['step'])){
 					<legend>Opzioni</legend><br />
 						<label>IP Statico</label>
 						<select name=\"OpzioneIp\">
+							<option value=\"0\">Nessuno</option>
 							<option value=\"1\">1 Ip Statico</option>
 							<option value=\"4\">4 Ip Statico</option>
 							<option value=\"8\">8 Ip Statico</option>
