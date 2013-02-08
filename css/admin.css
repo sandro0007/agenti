@@ -148,7 +148,105 @@
   box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
  
   }
+
+#inputs select
  
+  {
+ 
+  background: #f9f9f9;
+ 
+  padding: 15px 15px 15px 30px;
+ 
+  margin: 0 0 10px 0;
+ 
+  width: 250px;  353 + 2 + 45 = 400 
+ 
+  border: 1px solid #ccc;
+ 
+  -moz-border-radius: 5px;
+ 
+  -webkit-border-radius: 5px;
+ 
+  border-radius: 5px;
+ 
+  -moz-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+ 
+  -webkit-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+ 
+  box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+ 
+  }	
+  
+ #inputs legend {
+  padding: 0.2em 0.5em;
+  
+  border:1px solid #128F9A;
+  
+  margin: 0 0 0 20px;
+  
+  color:#128F9A;
+  
+  font-size:90%;
+  
+  text-align:left;
+  
+  }
+ 
+ #inputs label
+ 
+  {
+ 
+  background: #f9f9f9 url(../images/login-sprite.png) no-repeat;
+ 
+  padding: 15px 15px 15px 30px;
+ 
+  margin: 0 0 10px 10px;
+ 
+  width: 353px;  353 + 2 + 45 = 400 
+ 
+  border: 1px solid #ccc;
+ 
+  -moz-border-radius: 5px;
+ 
+  -webkit-border-radius: 5px;
+ 
+  border-radius: 5px;
+ 
+  -moz-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+ 
+  -webkit-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+ 
+  box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+ 
+  }	
+ #inputs textarea
+ 
+  {
+ 
+  background: #f9f9f9;
+ 
+  padding: 15px 15px 15px 30px;
+ 
+  margin: 10px 0px 10px 10px;
+ 
+  width: 353px;  353 + 2 + 45 = 400 
+ 
+  border: 1px solid #ccc;
+ 
+  -moz-border-radius: 5px;
+ 
+  -webkit-border-radius: 5px;
+ 
+  border-radius: 5px;
+ 
+  -moz-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+ 
+  -webkit-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+ 
+  box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+ 
+  }	
+
   #username{  background-position: 5px -2px !important;}
  
   #password{  background-position: 5px -52px !important;}
