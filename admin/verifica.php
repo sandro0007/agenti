@@ -11,15 +11,15 @@ mysql_select_db($dbName);
 $username=mysql_real_escape_string($_POST['username']); //faccio l'escape dei caratteri dannosi
 $password=mysql_real_escape_string($_POST['password']); //sha1 cifra la password anche qui in questo modo corrisponde con quella del db
  
- $query = "SELECT * FROM Utenti WHERE User = '$username' AND Password = '$password' ";
+ $query = "SELECT * FROM Admin WHERE AdminUser = '$username' AND AdminPass = '$password' ";
  $ris = mysql_query($query) or die (mysql_error());
  $riga=mysql_fetch_array($ris);  
  
 /*Prelevo l'identificativo dell'utente */
-$cod=$riga['UtenteId'];
+$codadmin=$riga['AdminId'];
  
 /* Effettuo il controllo */
-if ($cod == NULL) $trovato = 0 ;
+if ($codadmin == NULL) $trovato = 0 ;
 else $trovato = 1;  
  
 /* Username e password corrette */
@@ -30,8 +30,8 @@ if($trovato === 1) {
  
   $_SESSION["autorizzato"] = 1;
  
-  /*Registro il codice dell'utente*/
-  $_SESSION['cod'] = $cod;
+  /*Registro il codice dell'amministratore*/
+  $_SESSION['admmin'] = $codadmin;
  
  /*Redirect alla pagina riservata*/
    echo '<script language=javascript>document.location.href="main.php"</script>'; 

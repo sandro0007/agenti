@@ -13,17 +13,17 @@ include ('include/header.php');
 require ('include/config.php');
 $conn=mysql_connect($dbHost,$dbUser,$dbPassword);
 mysql_select_db($dbName);
-$cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
+$codadmin = $_SESSION['admin']; //id cod recuperato nel file di verifica
 
 
 echo $menu;
                         
-echo "INFORMAZIONE AGENTE <br />";
+echo "INFORMAZIONE Amministratore <br />";
 
-$agente = "SELECT * FROM Agenti where idAgenti=".$cod."";
+$agente = "SELECT * FROM Admin where AdminId=".$cod."";
 $res = mysql_query($agente);
 $rsAgente = mysql_fetch_assoc($res);
- echo "Cognome: ".$rsAgente['AgenteCognome']."<br/ >";
- echo "Nome: ".$rsAgente['AgenteNome']."<br/ >";
- echo "e-mail: ".$rsAgente['AgenteMail']."<br/ >"; 
+ echo "User: ".$rsAgente['AdminUser']."<br/ >";
+ echo "Pass: ".$rsAgente['AdminPass']."<br/ >";
+ echo "e-mail: ".$rsAgente['AdminMail']."<br/ >"; 
 ?>

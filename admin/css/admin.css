@@ -524,3 +524,5 @@ border: none;
 	border-width:0px 0px 1px 1px;
 
 }
+
+div#footer{position:absolute;bottom: 0;width: 100%}

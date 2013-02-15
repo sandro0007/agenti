@@ -6,7 +6,6 @@ echo"
  
     <title>Collegati per amministrare il sito - Agenti</title>
  
-    <!--Pannello di gestione creato da Mel Riccardo-->
     <link href=\"css/admin.css\" rel=\"stylesheet\" type=\"text/css\" />
 	<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js\"></script>
 	<script src=\"include/jquery.horizontalNav.js\"></script>

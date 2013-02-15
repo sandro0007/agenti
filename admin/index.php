@@ -4,8 +4,8 @@ require ("include/config.php");
 include ("include/header.php");
 $conn=mysql_connect($dbHost,$dbUser,$dbPassword);
 mysql_select_db($dbName);
-$cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
-if (!isset($_SESSION['cod'])){
+$codadmin = $_SESSION['admin']; //id cod recuperato nel file di verifica
+if (!isset($_SESSION['admin'])){
 // se non loggato
       echo "<form id=\"login\" action=\"verifica.php\" method=\"post\">
         <fieldset id=\"inputs\">
