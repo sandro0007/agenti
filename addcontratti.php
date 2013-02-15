@@ -102,48 +102,46 @@ if(isset($_POST['step'])){
 			$sql = "SELECT * FROM Offerte WHERE OffertaId = '".$_POST['OffertaId']."'";
 			$res = mysql_query($sql);
 			$rsOfferte = mysql_fetch_assoc($res);
-			echo "
-			<fieldset id=\"inputs\" style=\"border:1px solid #128F9A\">
+			echo "<fieldset id=\"inputs\" style=\"border:1px solid #128F9A\">
 					<legend>Dettaglio Offerta</legend><br />
-						<label>Nome</label>
-						<input type=\"text\" value=\"".$rsOfferte['OffertaNome']."\" readonly>
-						<label>Canone</label>
+					<label>Nome</label>
+						<input type=\"text\" value=\"".$rsOfferte['OffertaNome']."\" readonly><br />
+					<label>Canone</label>
 						<input type=\"text\"value=\"".$rsOfferte['OffertaCanone']."\" readonly><br />
-						<label>Fatturazione</label>
+					<label>Fatturazione</label>
 						<input type=\"text\" value=\"".$rsOfferte['OffertaPagamento']."\" readonly><br />
-						<label>Descrizione</label>
+					<label>Descrizione</label><br />
 						<textarea disabled rows=\"4\" cols=\"50\">".$rsOfferte['OffertaDescrizione']."</textarea>
-						<br />
-			</fieldset><br />";
+					</fieldset>
+			<br />";
+			
 			$cliente = "SELECT * FROM Clienti where idCliente=".$_POST['IdCliente']."";
 			$resCliente = mysql_query($cliente);
 			$rsCliente = mysql_fetch_assoc($resCliente);
 			echo "
 				<form action=\"addcontratti.php\" method=\"post\">
 					<fieldset id=\"inputs\" style=\"border:1px solid #128F9A\">
-					<legend>Dati Servizio</legend><br />
-					<div>
-						<a href=\"javascript:slideonlyone('boxattivazione');\" >Nuova Attivazione</a>
-					 </div>
-					 <div class=\"newboxes2\" id=\"boxattivazione\" style=\" display: none;\">
+					<legend>Dati Servizio</legend><br />";
+					
+				echo "<h3>Nuova Attivazione</h3><br />
 						<label>Tipologia linea</label>
-						<select name=\"LineaDati\">
+						<select name=\"LineaDatiAttivazione\">
+							<option value=\"nessuna\">Nessuna</option>
 							<option value=\"isdn\">ISDN</option>
 							<option value=\"pstn\">PSTN - POTS</option>
 							<option value=\"naked\">Solo Dati</option>
 							<option value=\"ibrida\">Dati & Fonia</option>
 						</select>
 						<br />
+						
 						<label>Numero Pilota</label>
 						<input id=\"LineaPilota\" name=\"LineaPilota\" type=\"text\" placeholder=\"Numero Telefonico Adiacente\">
 						<br />
-					</div>
-					<div>
-						<a href=\"javascript:slideonlyone('boxmigrazione');\" >Migrazione Linea</a>
-					 </div>
-					 <div class=\"newboxes2\" id=\"boxmigrazione\" style=\" display: none;\">
-						<label>Tipologia linea</label>
-						<select name=\"LineaDati\">
+						<h3>Migrazione linea esistente</h3>
+						<br />
+						<label>Migrazione Tipologia linea</label>
+						<select name=\"LineaDatiMigrazione\">
+							<option value=\"nessuna\">Nessuna</option>
 							<option value=\"isdn\">ISDN</option>
 							<option value=\"pstn\">PSTN - POTS</option>
 							<option value=\"ibrida\">Dati & Fonia</option>
@@ -154,12 +152,13 @@ if(isset($_POST['step'])){
 						<br />
 						<label>Codice Segreto</label>
 						<input id=\"LineaCodice\" name=\"LineaCodice\" type=\"text\" placeholder=\"Codice Migrazione\"  required>
-						<br />
-					</div>
-					<br />
-					</fieldset>
-					<br />
-					<fieldset id=\"inputs\" style=\"border:1px solid #128F9A\">
+						
+					<br />";
+					
+					echo "</fieldset>
+					<br />";
+					
+				echo "	<fieldset id=\"inputs\" style=\"border:1px solid #128F9A\">
 					<legend>Indirizzo Installazione</legend><br />
 						<label>Indirizzo</label>
 						<input id=\"ClienteIndirizzo1\" name=\"ClienteIndirizzo1\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo']."\" required>

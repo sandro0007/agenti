@@ -38,8 +38,8 @@ switch ($_POST['stato']) {
 												'".$_POST['ClienteTipoDocumento']."', '".$_POST['ClienteNumeroDocumento']."', '".$_POST['ClienteEnteDocumento']."', '".$_POST['ClienteRilascioDocumento']."',
 												'".$_POST['ClienteIndirizzo']."', '".$_POST['ClienteNumero']."', '".$_POST['ClienteCap']."', '".$_POST['ClienteCitta']."', 
 													'".$_POST['ClienteTipologia']."',
-															'".$cod."');";
-			//print_r($sqlprivato);
+															'".$_POST['Agenti_idAgenti']."');";
+			
 			if (!mysql_query($sqlprivato))
 			  {
 			  die('Error Inserimento Cliente: ' . mysql_error());
@@ -63,7 +63,7 @@ switch ($_POST['stato']) {
 												'".$_POST['ClienteTipoDocumento']."', '".$_POST['ClienteNumeroDocumento']."', '".$_POST['ClienteEnteDocumento']."', '".$_POST['ClienteRilascioDocumento']."',
 												'".$_POST['ClienteIndirizzo']."', '".$_POST['ClienteNumero']."', '".$_POST['ClienteCap']."', '".$_POST['ClienteCitta']."', 
 													'".$_POST['ClienteTipologia']."',
-														'".$cod."');";
+														'".$_POST['Agenti_idAgenti']."');";
 			//print_r($sqlazienda);
 			if (!mysql_query($sqlazienda))
 			  {

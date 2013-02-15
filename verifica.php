@@ -11,7 +11,7 @@ mysql_select_db($dbName);
 $username=mysql_real_escape_string($_POST['username']); //faccio l'escape dei caratteri dannosi
 $password=mysql_real_escape_string($_POST['password']); //sha1 cifra la password anche qui in questo modo corrisponde con quella del db
  
- $query = "SELECT * FROM Agenti WHERE AgenteUser = '$username' AND AgentePass = '$password' ";
+ $query = "SELECT * FROM Agenti WHERE AgenteUser = '$username' AND AgentePass = '$password' AND AgenteAbilitato = '1' ";
  $ris = mysql_query($query) or die (mysql_error());
  $riga=mysql_fetch_array($ris);  
  
