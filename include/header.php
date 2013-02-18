@@ -44,6 +44,6 @@ echo"
 	
 </head>
 <body>
-<img src=\"image\logo.png\" alt=\"Linkspace Logo\" height=\"228\"><br />
+<img src=\"image/logo.png\" alt=\"Linkspace Logo\" height=\"228\"><br />
 ";
 ?>

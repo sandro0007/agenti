@@ -31,7 +31,7 @@ if($trovato === 1) {
   $_SESSION["autorizzato"] = 1;
  
   /*Registro il codice dell'amministratore*/
-  $_SESSION['admmin'] = $codadmin;
+  $_SESSION['admin'] = $codadmin;
  
  /*Redirect alla pagina riservata*/
    echo '<script language=javascript>document.location.href="main.php"</script>'; 

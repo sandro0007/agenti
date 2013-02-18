@@ -20,7 +20,7 @@ echo $menu;
                         
 echo "INFORMAZIONE Amministratore <br />";
 
-$agente = "SELECT * FROM Admin where AdminId=".$cod."";
+$agente = "SELECT * FROM Admin where AdminId=".$codadmin."";
 $res = mysql_query($agente);
 $rsAgente = mysql_fetch_assoc($res);
  echo "User: ".$rsAgente['AdminUser']."<br/ >";
