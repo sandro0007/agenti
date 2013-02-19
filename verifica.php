@@ -39,7 +39,7 @@ if($trovato === 1) {
 } else {
  
 /*Username e password errati, redirect alla pagina di login*/
- echo '<script language=javascript>document.location.href="index.php"</script>';
+ echo '<script language=javascript>document.location.href="index.php?id=ko"</script>';
  
 }
 ?>

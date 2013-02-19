@@ -6,6 +6,7 @@ $conn=mysql_connect($dbHost,$dbUser,$dbPassword);
 mysql_select_db($dbName);
 $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
 if (!isset($_SESSION['cod'])){
+	
 // se non loggato
       echo "<form id=\"login\" action=\"verifica.php\" method=\"post\">
         <fieldset id=\"inputs\">
@@ -17,6 +18,11 @@ if (!isset($_SESSION['cod'])){
             <a href=\"index.php\" id=\"back\">Ritorna al sito</a>
         </fieldset>
     </form>";
+    
+    if($_GET['id'] = 'ko'){
+		
+		echo "<center><h3>Accesso non consentito consultare info@linkspace.it</h3></center>";
+		}
 }
 else {
 	echo '<script language=javascript>document.location.href="main.php"</script>';
