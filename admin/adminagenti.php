@@ -93,8 +93,8 @@ switch($_POST['stato']){
 			if ($numrows == 0) {
 			echo "<h3>Siacente Nessuna Corrispondenza Trovata nella ricerca : ".$_POST['AgenteCognome']."".$_POST['AgenteNome']."".$_POST['AgenteId']."";
 			echo "<h2>Lista Agenti</h2>";
-			$cliente = "SELECT * FROM Agenti order by AgenteCognome ASC";
-			$res = mysql_query($cliente);
+			$Agente = "SELECT * FROM Agenti order by AgenteCognome ASC";
+			$res = mysql_query($Agente);
 			echo "
 					<div class=\"tabella\" >
 						<table>
@@ -214,17 +214,25 @@ else {
 			echo "<h2>Aggiornamento Effettuato Correttamente</h2>";
 			break;
 		case ok:
-			echo "<h2>Modifica Accesso Web Agente Effettuata </h2>";
+			echo "<h2>Modifica Agente Effettuata </h2>";
 			break;
 		
 		case ko:
-			echo "<h2>Impossibile Modificare Accesso</h2>";
+			echo "<h2>Impossibile Modificare Agente</h2>";
+			break;
+			
+		case nodel:
+			echo "<h2>Impossibile Cancellare l'Agente, ha dei contratti attivi!</h2>";
+			break;
+			
+		case okdel:
+			echo "<h2>Agente Cancellato Correttamente.</h2>";
 			break;
 		
 		}
 	echo "<h2>Lista Agenti</h2>";
-	$cliente = "SELECT * FROM Agenti order by AgenteCognome ASC";
-	$res = mysql_query($cliente);
+	$Agente = "SELECT * FROM Agenti order by AgenteCognome ASC";
+	$res = mysql_query($Agente);
 	echo "
 			<div class=\"tabella\" >
 				<table>

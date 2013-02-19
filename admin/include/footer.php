@@ -1,4 +1,4 @@
 <?
-echo "<div class=\"footer\">vediamo cosa va</div>
+echo "<div class=\"footer\"></div>
 </body></html>";
 ?>

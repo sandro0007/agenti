@@ -4,6 +4,18 @@
 	$dbUser="cmr";
 	$dbPassword="cmr";
 	
+	// Paginazione
+	
+	// Contratti per pagina
+	$ContrattiPagina = '20';
+	// Agenti per pagina
+	$AgentiPagina = '20';
+	// Clienti per Pagina
+	$ClientiPagina = '20';
+	// Contabilità per pagina
+	$ContabilitàPagina = '20';
+	
+	
 	//menu principale
 	$menu = "<nav class=\"horizontal-nav full-width\">
                             <ul>

@@ -20,168 +20,116 @@ echo $menu;
 
 if(isset($_POST['stato'])){
 	switch($_POST['stato']){
-			//INIZIO DEL CLIENTE
+			//INIZIO DELLLA CANCELLAZIONE AGENTE
 		case del:
-			echo "Richiesta Cancellazione Cliente ".$_POST['IdCliente']."";
-			break;
-			// FINE DEL CLIENTE
-			
-			//INIZIO UPDATE CLIENTE
-		case update:
-			$sql = "UPDATE  `Clienti` SET  
-					`ClienteNome` =  '".$_POST['ClienteNome']."',
-					`ClienteCognome` =  '".$_POST['ClienteCognome']."',
-					`ClienteRagione` =  '".$_POST['ClienteRagione']."',
-					`ClienteCF` =  '".$_POST['ClienteCF']."' ,
-					`ClientePI` =  '".$_POST['ClientePI']."',
-					`ClienteDataNascita` =  '".$_POST['ClienteDataNascita']."',
-					`ClienteLuogoNascita` =  '".$_POST['ClienteLuogoNascita']."',
-					`ClienteProvinciaNascita` =  '".$_POST['ClienteProvinciaNascita']."',
-					`ClienteTelefono` =  '".$_POST['ClienteTelefono']."',
-					`ClienteFax` =  '".$_POST['ClienteFax']."',
-					`ClienteCellulare` =  '".$_POST['ClienteCellulare']."',
-					`ClienteMail` =  '".$_POST['ClienteMail']."',
-					`ClienteSesso` =  '".$_POST['ClienteSesso']."',
-					`ClienteTipoDocumento` =  '".$_POST['ClienteTipoDocumento']."',
-					`ClienteNumeroDocumento` =  '".$_POST['ClienteNumeroDocumento']."',
-					`ClienteEnteDocumento` =  '".$_POST['ClienteEnteDocumento']."',
-					`ClienteRilascioDocumento` =  '".$_POST['ClienteRilascioDocumento']."',				
-					`ClienteIndirizzo` =  '".$_POST['ClienteIndirizzo']."',
-					`ClienteNumero` =  '".$_POST['ClienteNumero']."',
-					`ClienteCap` =  '".$_POST['ClienteCap']."',
-					`ClienteCitta` =  '".$_POST['ClienteCitta']."'
-						WHERE  `idCliente` = '".$_POST['idCliente']."'";
-			if (!mysql_query($sql))
-			  {
-				  echo $sql."<br />";
-			  die('Error Aggiornamento Cliente: ' . mysql_error());
-			  }
-			echo '<script language=javascript>document.location.href="clienti.php?id=1"</script>';
-			break;
-			// FINE UPDATE CLIENTE
-			
-			// INIZIO EDIT CLIENTE
-		case edit:
-			echo "<h2>Richiesta Modifica Cliente</h2>";
-				$contratti = "SELECT * FROM Contratti where Clienti_idCliente = ".$_POST['IdCliente']."";
+			echo "Richiesta Cancellazione Agente ID: ".$_POST['idAgenti']."<br />";
+			$contratti = "SELECT * FROM Agenti_Clienti_Contratti where AgenteId = ".$_POST['idAgenti']."";
 				$res = mysql_query($contratti);
 				$numrows=mysql_num_rows($res);
 					
 				if ($numrows == 0) {
-						//NESSUN CONTRATTO ATTIVO - POSSIBILE EDITARE IL CLIENTE
-					$cliente = "SELECT * FROM Clienti where idCliente=".$_POST['IdCliente']."";
-					$resCliente = mysql_query($cliente);
-					$rsCliente = mysql_fetch_assoc($resCliente);
+						//NESSUN CONTRATTO ATTIVO - POSSIBILE EDITARE IL Agente
+						$sql="DELETE FROM Agenti WHERE idAgenti = ".$_POST['idAgenti']."";
+						if (!mysql_query($sql))
+						  {
+							  echo $sql."<br />";
+						  die('Error Cancellazione Agente: ' . mysql_error());
+						  }
+						echo '<script language=javascript>document.location.href="adminagenti.php?id=okdel"</script>';
+					} 
+					else //SONO PRESENTI CONTRATTI 
+					{
+						// Ritorno il messaggio
+						echo '<script language=javascript>document.location.href="adminagenti.php?id=nodel"</script>';
+						}
+			break;
+			// FINE CANCELLAZIONE AGENTE
+			
+			//INIZIO UPDATE AGENTE
+		case update:
+			$sql = "UPDATE  `Agenti` SET  
+					`AgenteNome` =  '".$_POST['AgenteNome']."',
+					`AgenteCognome` =  '".$_POST['AgenteCognome']."',
+					`AgenteTelefono` =  '".$_POST['AgenteTelefono']."',
+					`AgenteFax` =  '".$_POST['AgenteFax']."',
+					`AgenteCellulare` =  '".$_POST['AgenteCellulare']."',
+					`AgenteMail` =  '".$_POST['AgenteMail']."',	
+					`AgenteIndirizzo` =  '".$_POST['AgenteIndirizzo']."',
+					`AgenteNumero` =  '".$_POST['AgenteNumero']."',
+					`AgenteCap` =  '".$_POST['AgenteCap']."',
+					`AgenteCitta` =  '".$_POST['AgenteCitta']."',
+					`AgenteUser` =  '".$_POST['AgenteUser']."',
+					`AgentePass` =  '".$_POST['AgentePass']."',
+					`AgenteAbilitato` =  '".$_POST['AgenteAbilitato']."'
+						WHERE  `idAgenti` = '".$_POST['idAgente']."'";
+				
+			if (!mysql_query($sql))
+			  {
+				  echo $sql."<br />";
+			  die('Error Aggiornamento Agente: ' . mysql_error());
+			  }
+			echo '<script language=javascript>document.location.href="adminagenti.php?id=ok"</script>';
+			break;
+			// FINE UPDATE AGENTE
+			
+			// INIZIO EDIT AGENTE
+		case edit:
+			echo "<h2>Richiesta Modifica Agente</h2>";
+				
+					$Agente = "SELECT * FROM Agenti where idAgenti=".$_POST['idAgenti']."";
+					$resAgente = mysql_query($Agente);
+					$rsAgente = mysql_fetch_assoc($resAgente);
 					/**
 						 * 
-						 * $rsCliente['idCliente']
-						 * $rsCliente['ClienteNome']
-						 * $rsCliente['ClienteCognome']
-						 * $rsCliente['ClienteRagione']
-						 * $rsCliente['ClienteCF']
-						 * $rsCliente['ClientePI']
-						 * $rsCliente['ClienteDataNascita']
-						 * $rsCliente['ClienteLuogoNascita']
-						 * $rsCliente['ClienteProvinciaNascita']
-						 * $rsCliente['ClienteTelefono']
-						 * $rsCliente['ClienteFax']
-						 * $rsCliente['ClienteCellulare']
-						 * $rsCliente['ClienteMail']
-						 * $rsCliente['ClienteSesso']
-						 * $rsCliente['ClienteTipoDocumento']
-						 * $rsCliente['ClienteNumeroDocumento']
-						 * $rsCliente['ClienteEnteDocumento']
-						 * $rsCliente['ClienteRilascioDocumento']
-						 * $rsCliente['ClienteIndirizzo']
-						 * $rsCliente['ClienteNumero']
-						 * $rsCliente['ClienteCap']
-						 * $rsCliente['ClienteCitta']
-						 * $rsCliente['ClienteTipologia']
+						 * $rsAgente['idAgente']
+						 * $rsAgente['AgenteNome']
+						 * $rsAgente['AgenteCognome']
+						 * $rsAgente['AgenteRagione']				
+						 * $rsAgente['AgenteTelefono']
+						 * $rsAgente['AgenteFax']
+						 * $rsAgente['AgenteCellulare']
+						 * $rsAgente['AgenteMail']
+						 * $rsAgente['AgenteIndirizzo']
+						 * $rsAgente['AgenteNumero']
+						 * $rsAgente['AgenteCap']
+						 * $rsAgente['AgenteCitta']
+						 * $rsAgente['AgenteUser']
+						 * $rsAgente['AgentePass']
+						 * $rsAgente['AgenteAbilitato']
 						 * 
 						 * */
 						 
-						echo "<h2>Modifica Cliente</h2>";
-						if ($rsCliente['ClienteTipologia'] == 'Privato') {
-						echo "<form action=\"schedaclienti.php\" method=\"post\">
-							<fieldset id=\"inputs\">
-								<input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" value=\"".$rsCliente['ClienteCognome']."\" autofocus required>
-								<input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\"  value=\"".$rsCliente['ClienteNome']."\" required>
-								<input id=\"ClienteCF\" name=\"ClienteCF\" type=\"text\" placeholder=\"Codice Fiscale\" value=\"".$rsCliente['ClienteCF']."\" required><br />
-								<input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" value=\"".$rsCliente['ClienteSesso']."\" required>
-								<input id=\"ClienteDataNascita\" name=\"ClienteDataNascita\" type=\"text\" placeholder=\"Data di Nascita\" value=\"".$rsCliente['ClienteDataNascita']."\" required>
-								<input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" value=\"".$rsCliente['ClienteLuogoNascita']."\" required>
-								<input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provincia di Nascita\" value=\"".$rsCliente['ClienteProvinciaNascita']."\" required><br />
-								<h2>Documenti</h2>
-								<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']."\" >
-								<input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" value=\"".$rsCliente['ClienteNumeroDocumento']."\" required>
-								<input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" value=\"".$rsCliente['ClienteEnteDocumento']."\" required>
-								<input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" value=\"".$rsCliente['ClienteRilascioDocumento']."\" required>
-								<h2>Recapiti</h2>
-								<input id=\"ClienteTelefono\" name=\"ClienteTelefono\" type=\"text\" placeholder=\"Telefono\" value=\"".$rsCliente['ClienteTelefono']."\" >
-								<input id=\"ClienteFax\" name=\"ClienteFax\" type=\"text\" placeholder=\"Fax\" value=\"".$rsCliente['ClienteFax']."\" >
-								<input id=\"ClienteCellulare\" name=\"ClienteCellulare\" type=\"text\" placeholder=\"Cellulare\" value=\"".$rsCliente['ClienteCellulare']."\" >
-								<input id=\"ClienteMail\" name=\"ClienteMail\" type=\"text\" placeholder=\"E-Mail\" value=\"".$rsCliente['ClienteMail']."\" required>
-								<h2>Dati Fatturazione</h2>
-								<input id=\"ClienteIndirizzo\" name=\"ClienteIndirizzo\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo']."\" required>
-								<input id=\"ClienteNumero\" name=\"ClienteNumero\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNumero']."\" required>
-								<input id=\"ClienteCap\" name=\"ClienteCap\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap']."\" required>
-								<input id=\"ClienteCitta\" name=\"ClienteCitta\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta']."\" required>
-								<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
-								<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"Privato\" >
-								<input id=\"idCliente\" name=\"idCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
-							</fieldset>
-							<fieldset id=\"actions\">
-								<input type=\"submit\" id=\"submit\" value=\"Aggiorna\">
-							</fieldset>
-						</form>";
-					 }
-					 if ($rsCliente['ClienteTipologia'] == 'Azienda') {
 						 echo "
-							<form action=\"schedaclienti.php\" method=\"post\">
+							<form action=\"schedaagente.php\" method=\"post\">
 							<fieldset id=\"inputs\">
-								<input id=\"ClienteRagione\" name=\"ClienteRagione\" type=\"text\" placeholder=\"Ragione Sociale\" value=\"".$rsCliente['ClienteRagione']."\" autofocus required>
-								<input id=\"ClientePI\" name=\"ClientePI\" type=\"text\" placeholder=\"Partita Iva\" value=\"".$rsCliente['ClientePI']."\" required><br />
-								<h2>Legale Rappresentante</h2>
-								<input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" value=\"".$rsCliente['ClienteCognome']."\" autofocus required>
-								<input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\"  value=\"".$rsCliente['ClienteNome']."\" required>
-								<input id=\"ClienteCF\" name=\"ClienteCF\" type=\"text\" placeholder=\"Codice Fiscale\" value=\"".$rsCliente['ClienteCF']."\" required><br />
-								<input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" value=\"".$rsCliente['ClienteSesso']."\" required>
-								<input id=\"ClienteDataNascita\" name=\"ClienteDataNascita\" type=\"text\" placeholder=\"Data di Nascita\" value=\"".$rsCliente['ClienteDataNascita']."\" required>
-								<input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" value=\"".$rsCliente['ClienteLuogoNascita']."\" required>
-								<input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provincia di Nascita\" value=\"".$rsCliente['ClienteProvinciaNascita']."\" required><br />
-								<h2>Documenti</h2>
-								<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']."\" >
-								<input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" value=\"".$rsCliente['ClienteNumeroDocumento']."\" required>
-								<input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" value=\"".$rsCliente['ClienteEnteDocumento']."\" required>
-								<input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" value=\"".$rsCliente['ClienteRilascioDocumento']."\" required>
+								<h2>Agente</h2>
+								<input id=\"AgenteCognome\" name=\"AgenteCognome\" type=\"text\" placeholder=\"Cognome\" value=\"".$rsAgente['AgenteCognome']."\" autofocus required>
+								<input id=\"AgenteNome\" name=\"AgenteNome\" type=\"text\" placeholder=\"Nome\"  value=\"".$rsAgente['AgenteNome']."\" required>
 								<h2>Recapiti</h2>
-								<input id=\"ClienteTelefono\" name=\"ClienteTelefono\" type=\"text\" placeholder=\"Telefono\" value=\"".$rsCliente['ClienteTelefono']."\" >
-								<input id=\"ClienteFax\" name=\"ClienteFax\" type=\"text\" placeholder=\"Fax\" value=\"".$rsCliente['ClienteFax']."\" >
-								<input id=\"ClienteCellulare\" name=\"ClienteCellulare\" type=\"text\" placeholder=\"Cellulare\" value=\"".$rsCliente['ClienteCellulare']."\" >
-								<input id=\"ClienteMail\" name=\"ClienteMail\" type=\"text\" placeholder=\"E-Mail\" value=\"".$rsCliente['ClienteMail']."\" required>
+								<input id=\"AgenteTelefono\" name=\"AgenteTelefono\" type=\"text\" placeholder=\"Telefono\" value=\"".$rsAgente['AgenteTelefono']."\" >
+								<input id=\"AgenteFax\" name=\"AgenteFax\" type=\"text\" placeholder=\"Fax\" value=\"".$rsAgente['AgenteFax']."\" >
+								<input id=\"AgenteCellulare\" name=\"AgenteCellulare\" type=\"text\" placeholder=\"Cellulare\" value=\"".$rsAgente['AgenteCellulare']."\" >
+								<input id=\"AgenteMail\" name=\"AgenteMail\" type=\"text\" placeholder=\"E-Mail\" value=\"".$rsAgente['AgenteMail']."\" required>
 								<h2>Dati Fatturazione</h2>
-								<input id=\"ClienteIndirizzo\" name=\"ClienteIndirizzo\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo']."\"required>
-								<input id=\"ClienteNumero\" name=\"ClienteNumero\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNumero']."\"required>
-								<input id=\"ClienteCap\" name=\"ClienteCap\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap']."\"required>
-								<input id=\"ClienteCitta\" name=\"ClienteCitta\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta']."\"required>
+								<input id=\"AgenteIndirizzo\" name=\"AgenteIndirizzo\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsAgente['AgenteIndirizzo']."\"required>
+								<input id=\"AgenteNumero\" name=\"AgenteNumero\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsAgente['AgenteNumero']."\"required>
+								<input id=\"AgenteCap\" name=\"AgenteCap\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsAgente['AgenteCap']."\"required>
+								<input id=\"AgenteCitta\" name=\"AgenteCitta\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsAgente['AgenteCitta']."\"required>
+								<h2>Dettagli Accesso WEB</h2>
+								<input id=\"AgenteUser\" name=\"AgenteUser\" type=\"text\" placeholder=\"Username\" value=\"".$rsAgente['AgenteUser']."\"required>
+								<input id=\"AgentePass\" name=\"AgentePass\" type=\"text\" placeholder=\"Password\" value=\"".$rsAgente['AgentePass']."\"required>
+								<input id=\"AgenteAbilitato\" name=\"AgenteAbilitato\" type=\"text\" placeholder=\"Accesso Web\" value=\"".$rsAgente['AgenteAbilitato']."\"required>
+								<input id=\"idAgente\" name=\"idAgente\" type=\"hidden\" value=\"".$rsAgente['idAgenti']."\" >
 								<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
-								<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"Azienda\" >
-								<input id=\"idCliente\" name=\"idCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
 							</fieldset>
 							<fieldset id=\"actions\">
 								<input type=\"submit\" id=\"submit\" value=\"Aggiorna\">
 							</fieldset>
 						</form>";
-						 }
-						 
-				} else {
-						// CONTRATTI PRESENTI - NON E POSSIBILE EDITARE IL CLIENTE 
-					echo "Non posso editare";
-				}
 			break;
-			// FINE EDIT CLIENTE
+			// FINE EDIT AGENTE
 			
-			// INIZIO DETTAGLIO CLIENTE
+			// INIZIO DETTAGLIO AGENTE
 		case more:
 				echo "<h2>Richiesta Dettaglio Agente</h2>";
 				$agente = "SELECT * FROM Agenti where idAgenti =".$_POST['idAgenti']."";
@@ -189,20 +137,20 @@ if(isset($_POST['stato'])){
 				$rsAgente = mysql_fetch_assoc($res);
 					/* *
 					 * 
-						 * $rsCliente['idAgenti']
-						 * $rsCliente['AgenteNome']
-						 * $rsCliente['AgenteCognome']
-						 * $rsCliente['AgenteTelefono']
-						 * $rsCliente['AgenteFax']
-						 * $rsCliente['AgenteCellulare']
-						 * $rsCliente['AgenteMail']
-						 * $rsCliente['AgenteIndirizzo']
-						 * $rsCliente['AgenteNumero']
-						 * $rsCliente['AgenteCap']
-						 * $rsCliente['AgenteCitta']
-						 * $rsCliente['AgenteUser']
-						 * $rsCliente['AgentePass']
-						 * $rsCliente['AgenteAbilitato']
+						 * $rsAgente['idAgenti']
+						 * $rsAgente['AgenteNome']
+						 * $rsAgente['AgenteCognome']
+						 * $rsAgente['AgenteTelefono']
+						 * $rsAgente['AgenteFax']
+						 * $rsAgente['AgenteCellulare']
+						 * $rsAgente['AgenteMail']
+						 * $rsAgente['AgenteIndirizzo']
+						 * $rsAgente['AgenteNumero']
+						 * $rsAgente['AgenteCap']
+						 * $rsAgente['AgenteCitta']
+						 * $rsAgente['AgenteUser']
+						 * $rsAgente['AgentePass']
+						 * $rsAgente['AgenteAbilitato']
 					 * 
 					 * */
 				echo "
@@ -267,7 +215,7 @@ if(isset($_POST['stato'])){
 					</table>";		 
 					
 						 
-				// VISUALIZZO TUTTI I CONTRATTI ATTIVI PER IL CLIENTE
+				// VISUALIZZO TUTTI I CONTRATTI ATTIVI PER L'AGETE
 				
 				$contratti = "SELECT Contratti.* FROM Contratti 
 								JOIN Agenti_Clienti_Contratti 
@@ -331,7 +279,7 @@ if(isset($_POST['stato'])){
 				</div>";
 			}
 			break;
-			// FINE DETTAGLIO CLIENTE
+			// FINE DETTAGLIO AGENTE
 		}
 	}
 	// FINE CONTROLLO VARIABILE SESSIONE
