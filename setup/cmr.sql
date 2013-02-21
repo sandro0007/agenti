@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: Feb 20, 2013 alle 09:38
+-- Generato il: Feb 21, 2013 alle 19:02
 -- Versione del server: 5.5.29
 -- Versione PHP: 5.3.10-1ubuntu3.5
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `Agenti_Clienti_Contratti` (
   PRIMARY KEY (`Id`),
   KEY `fk_Agenti_idx` (`AgenteId`),
   KEY `fk_Contratti_idx` (`ContrattoId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -93,6 +93,7 @@ CREATE TABLE IF NOT EXISTS `Clienti` (
   `ClienteTipoDocumento` varchar(50) NOT NULL COMMENT 'TIpo di Documento',
   `ClienteNumeroDocumento` varchar(10) NOT NULL COMMENT 'Numero Documento',
   `ClienteEnteDocumento` varchar(50) NOT NULL COMMENT 'Ente che ha rilasciato il Documento',
+  `ClienteEnteDiDocumento` varchar(100) NOT NULL COMMENT 'Nome Ente Rilascio Documento',
   `ClienteRilascioDocumento` date NOT NULL COMMENT 'Data Rilascio Documento',
   `ClienteTelefono` varchar(20) DEFAULT NULL COMMENT 'Telefono Fisso',
   `ClienteFax` varchar(20) DEFAULT NULL COMMENT 'Fax',
@@ -117,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `Clienti` (
 CREATE TABLE IF NOT EXISTS `Contratti` (
   `ContrattoId` int(11) NOT NULL AUTO_INCREMENT,
   `ContrattoNome` varchar(50) NOT NULL,
+  `ContrattoData` date NOT NULL COMMENT 'Data Creazione Contratto',
   `ContrattoTipo` varchar(50) NOT NULL COMMENT 'Valori "Privato" - "Azienda"',
   `ContrattoStato` varchar(25) NOT NULL COMMENT 'Stato Contratto "Inserito - Lavorazione - Attivato - Rifiutato"',
   `ContrattoFatturato` int(1) NOT NULL COMMENT 'Valorizzato a 0 se ancora non emessa fattura altrimenti valorizzato a 1',
@@ -132,10 +134,72 @@ CREATE TABLE IF NOT EXISTS `Contratti` (
   `ContrattoNumero2` int(4) DEFAULT NULL COMMENT 'Civico invio corrispondenza',
   `ContrattoCap2` int(5) DEFAULT NULL COMMENT 'CAP invio corrispondenza',
   `ContrattoCitta2` varchar(50) DEFAULT NULL COMMENT 'Citta invio corrispondenza',
+  `ContrattoBanca` varchar(100) NOT NULL COMMENT 'Nome Banca',
+  `ContrattoAgenzia` varchar(100) NOT NULL COMMENT 'Nome Agenzia',
+  `ContrattoLocalita` varchar(100) NOT NULL COMMENT 'Località Agenzia',
+  `ContrattoIntestazione` varchar(100) NOT NULL COMMENT 'Intestazione C/C',
+  `ContrattoIban` varchar(100) NOT NULL COMMENT 'Iban C/C',
+  `ContrattoNote` text NOT NULL COMMENT 'Note Aggiuntive Contratto',
+  `ContrattoProvvigioni` decimal(10,2) NOT NULL COMMENT 'Provvigioni Agente per Contratto',
   `Clienti_idCliente` int(11) NOT NULL,
   PRIMARY KEY (`ContrattoId`),
   KEY `fk_Contratti_Clienti1_idx` (`Clienti_idCliente`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `Contratti_Linea`
+--
+
+CREATE TABLE IF NOT EXISTS `Contratti_Linea` (
+  `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ContrattoId` int(11) NOT NULL,
+  `LineaId` int(11) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Associazione CONTRATTI - LINEA' AUTO_INCREMENT=7 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `Contratti_Offerte`
+--
+
+CREATE TABLE IF NOT EXISTS `Contratti_Offerte` (
+  `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ContrattoId` int(5) NOT NULL,
+  `OffertaId` int(5) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione associazione CONTRATTO - OFFERTA' AUTO_INCREMENT=2 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `Contratti_Opzioni`
+--
+
+CREATE TABLE IF NOT EXISTS `Contratti_Opzioni` (
+  `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ContrattoId` int(11) NOT NULL,
+  `OpzioneId` int(11) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione associazione CONTRATTI - OPZIONI' AUTO_INCREMENT=4 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `Linea`
+--
+
+CREATE TABLE IF NOT EXISTS `Linea` (
+  `LineaId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `LineaPilota` varchar(100) NOT NULL COMMENT 'Numero Pilota Su nuova Attivazione',
+  `LineaDatiAttivazione` varchar(100) NOT NULL COMMENT 'Tipo di Linea "Pots - Isdn - naked"',
+  `LineaDatiMigrazione` varchar(100) NOT NULL COMMENT 'Tipo linea da Migrare',
+  `LineaNumero` varchar(100) NOT NULL COMMENT 'Numero da Migrare',
+  `LineaCodice` varchar(100) NOT NULL COMMENT 'Codice Di Migrazione',
+  PRIMARY KEY (`LineaId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione Linea' AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -153,6 +217,24 @@ CREATE TABLE IF NOT EXISTS `Offerte` (
   `TipologiaId` int(11) NOT NULL COMMENT 'Indice Tipologia',
   PRIMARY KEY (`OffertaId`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Offerte' AUTO_INCREMENT=11 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `Opzioni`
+--
+
+CREATE TABLE IF NOT EXISTS `Opzioni` (
+  `OpzioneId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `OpzioneAP` int(1) NOT NULL DEFAULT '0',
+  `OpzioneElenco` int(1) NOT NULL DEFAULT '0',
+  `OpzioneChie` int(1) NOT NULL DEFAULT '0',
+  `OpzioneClinascosto` int(1) NOT NULL DEFAULT '0',
+  `OpzioneTrasferimento` int(1) NOT NULL DEFAULT '0',
+  `OpzionePubblicita` int(1) NOT NULL DEFAULT '0',
+  `OpzioneSwitch` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`OpzioneId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Opzioni Associate A Contratto' AUTO_INCREMENT=9 ;
 
 -- --------------------------------------------------------
 
