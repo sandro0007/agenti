@@ -5,6 +5,12 @@ include ("include/header.php");
 $conn=mysql_connect($dbHost,$dbUser,$dbPassword);
 mysql_select_db($dbName);
 $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
+
+if($_SESSION["autorizzato"] == '2'){
+		
+		echo "<center><h3>Accesso non consentito consultare info@linkspace.it</h3></center>";
+		}
+
 if (!isset($_SESSION['cod'])){
 	
 // se non loggato
@@ -19,10 +25,7 @@ if (!isset($_SESSION['cod'])){
         </fieldset>
     </form>";
     
-    if($_GET['id'] = 'ko'){
-		
-		echo "<center><h3>Accesso non consentito consultare info@linkspace.it</h3></center>";
-		}
+    
 }
 else {
 	echo '<script language=javascript>document.location.href="main.php"</script>';

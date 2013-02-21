@@ -165,6 +165,7 @@ if(isset($_POST['stato'])){
 } else {
 	echo "<h2>Lista Contratti Agente</h2>";
 	$contratti = "SELECT * FROM Contratti AS C JOIN Agenti_Clienti_Contratti AS A on C.ContrattoId = A.ContrattoId WHERE A.AgenteId = '".$cod."'";
+	//echo $contratti;
 	$res = mysql_query($contratti);
 	echo "
 			<div class=\"tabella\" >

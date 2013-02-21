@@ -189,6 +189,8 @@ else {
 		case 1:
 			echo "<h2>Aggiornamento Effettuato Correttamente</h2>";
 			break;
+		case kocontratto:
+			echo "<h2>Errore Inserimento Contratto : ".$_POST['msg']."</h2>"
 		
 		}
 	echo "<h2>Lista Clienti</h2>";

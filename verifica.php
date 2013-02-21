@@ -37,9 +37,10 @@ if($trovato === 1) {
    echo '<script language=javascript>document.location.href="main.php"</script>'; 
  
 } else {
- 
+	
+ $_SESSION["autorizzato"] = 2;
 /*Username e password errati, redirect alla pagina di login*/
- echo '<script language=javascript>document.location.href="index.php?id=ko"</script>';
+ echo '<script language=javascript>document.location.href="index.php"</script>';
  
 }
 ?>

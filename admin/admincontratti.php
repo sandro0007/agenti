@@ -261,8 +261,8 @@ if(isset($stato)) // se la variabile stato è settata
 					</form>
 					<form action=\"adminclienti.php\" method=\"post\" style=\"float: right;\">
 							<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"more\" >
-							<input id=\"ClienteId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['Clienti_ClienteId']."\" >
-							<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\search.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Cliente\"> 
+							<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsContratti['Clienti_idCliente']."\" >
+							<input name=\"Dettaglio Cliente\" type=\"image\" src=\"image\search.gif\" alt=\"Dettaglio Cliente\" title=\"Dettaglio Cliente\"> 
 						</fieldset>
 					</form>
 					</td>

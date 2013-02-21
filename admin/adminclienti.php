@@ -1,5 +1,7 @@
 <?php
 session_start();
+include ('include/header.php');
+require ('include/config.php');
 //se non c'è la sessione registrata
 if (!session_is_registered('autorizzato')) {
   echo "<h1>Area riservata, accesso negato.</h1>";
@@ -9,17 +11,60 @@ if (!session_is_registered('autorizzato')) {
  
 //Altrimenti Prelevo il codice identificatico dell'utente loggato
 session_start();
-include ('include/header.php');
-require ('include/config.php');
 $conn=mysql_connect($dbHost,$dbUser,$dbPassword);
 mysql_select_db($dbName);
-$cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
+$codadmin = $_SESSION['admin']; //id cod recuperato nel file di verifica
+// Recupero il numero di pagina corrente.
+// Generalmente si utilizza una querystring
+$pag = $_GET['pag'];
+
+// Controllo se $pag è valorizzato...
+// ...in caso contrario gli assegno valore 1
+if (!$pag) $pag = 1; 
+
 echo $menu;
 
-//print_r($_POST);
+echo "
+ <div class=\"box\" \">
+            <a href=\"javascript:slideonlyone('newboxes1');\" >Cerca Cliente</a>
+         </div>
+         <div class=\"newboxes2\" id=\"newboxes1\" style=\" display: none;\">
+         <form action=\"adminclienti.php\" method=\"post\">
+        <fieldset id=\"inputs\">
+            <input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\" autofocus>
+            <input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\">
+            <input id=\"ClienteRagione\" name=\"ClienteRagione\" type=\"text\" placeholder=\"Ragione Sociale\">
+            <input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"search\" >
+			</fieldset> 
+            <fieldset id=\"actions\">
+            <input type=\"submit\" id=\"submit\" value=\"Cerca\">
+			</fieldset>
+           </form>
+         </div>";
 
-if(isset($_POST['stato'])){
-	switch($_POST['stato']){
+// Controllo Resultato
+switch($_GET['id']){
+		case okupdate:
+				echo "<h2>Aggiornamento Effettuato Correttamente</h2>";
+			break;
+		
+		case koupdate:
+				echo "<h2>Aggiornamento Non Effettuato</h2><br />".$_POST['msg'];
+			break;
+			
+		case okserch:
+				echo "<h2>Ricerca Effettuata Correttamente</h2>";
+			break;
+		
+		case kosearch:
+				echo "<h2>Ricerca Non Effettuata</h2><br />".$_POST['msg'];
+			break;
+		
+		}
+// Fine controllo Resultato
+
+if(isset($_POST['stato'])){ // INIZIO CONTROLLO VARIABILE
+	switch($_POST['stato']) {
 			//INIZIO DEL CLIENTE
 		case del:
 			echo "Richiesta Cancellazione Cliente ".$_POST['IdCliente']."";
@@ -45,7 +90,6 @@ if(isset($_POST['stato'])){
 					`ClienteTipoDocumento` =  '".$_POST['ClienteTipoDocumento']."',
 					`ClienteNumeroDocumento` =  '".$_POST['ClienteNumeroDocumento']."',
 					`ClienteEnteDocumento` =  '".$_POST['ClienteEnteDocumento']."',
-					`ClienteEnteDiDocumento` =  '".$_POST['ClienteEnteDiDocumento']."',
 					`ClienteRilascioDocumento` =  '".$_POST['ClienteRilascioDocumento']."',				
 					`ClienteIndirizzo` =  '".$_POST['ClienteIndirizzo']."',
 					`ClienteNumero` =  '".$_POST['ClienteNumero']."',
@@ -53,23 +97,18 @@ if(isset($_POST['stato'])){
 					`ClienteCitta` =  '".$_POST['ClienteCitta']."'
 						WHERE  `idCliente` = '".$_POST['idCliente']."'";
 			if (!mysql_query($sql))
-			  {
-				  echo $sql."<br />";
-			  die('Error Aggiornamento Cliente: ' . mysql_error());
+			  {				  
+				$msg = 'Error Aggiornamento Cliente: ' . mysql_error();
+				echo '<script language=javascript>document.location.href="adminclienti.php?id=koupdate&msg='.$msg.'"</script>';
 			  }
-			echo '<script language=javascript>document.location.href="clienti.php?id=1"</script>';
+			echo '<script language=javascript>document.location.href="adminclienti.php?id=okupdate"</script>';
 			break;
 			// FINE UPDATE CLIENTE
 			
 			// INIZIO EDIT CLIENTE
 		case edit:
 			echo "<h2>Richiesta Modifica Cliente</h2>";
-				$contratti = "SELECT * FROM Contratti where Clienti_idCliente = ".$_POST['IdCliente']."";
-				$res = mysql_query($contratti);
-				$numrows=mysql_num_rows($res);
 					
-				if ($numrows == 0) {
-						//NESSUN CONTRATTO ATTIVO - POSSIBILE EDITARE IL CLIENTE
 					$cliente = "SELECT * FROM Clienti where idCliente=".$_POST['IdCliente']."";
 					$resCliente = mysql_query($cliente);
 					$rsCliente = mysql_fetch_assoc($resCliente);
@@ -101,9 +140,9 @@ if(isset($_POST['stato'])){
 						 * 
 						 * */
 						 
-						echo "<h2>Modifica Cliente</h2>";
+						echo "<h3>Modifica Cliente</h3>";
 						if ($rsCliente['ClienteTipologia'] == 'Privato') {
-						echo "<form action=\"schedaclienti.php\" method=\"post\">
+						echo "<form action=\"adminclienti.php\" method=\"post\">
 							<fieldset id=\"inputs\">
 								<input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" value=\"".$rsCliente['ClienteCognome']."\" autofocus required>
 								<input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\"  value=\"".$rsCliente['ClienteNome']."\" required>
@@ -115,7 +154,6 @@ if(isset($_POST['stato'])){
 								<h2>Documenti</h2>
 								<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']."\" >
 								<input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" value=\"".$rsCliente['ClienteNumeroDocumento']."\" required>
-								<input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" value=\"".$rsCliente['ClienteEnteDocumento']."\" required>
 								<input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" value=\"".$rsCliente['ClienteEnteDocumento']."\" required>
 								<input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" value=\"".$rsCliente['ClienteRilascioDocumento']."\" required>
 								<h2>Recapiti</h2>
@@ -139,7 +177,7 @@ if(isset($_POST['stato'])){
 					 }
 					 if ($rsCliente['ClienteTipologia'] == 'Azienda') {
 						 echo "
-							<form action=\"schedaclienti.php\" method=\"post\">
+							<form action=\"adminclienti.php\" method=\"post\">
 							<fieldset id=\"inputs\">
 								<input id=\"ClienteRagione\" name=\"ClienteRagione\" type=\"text\" placeholder=\"Ragione Sociale\" value=\"".$rsCliente['ClienteRagione']."\" autofocus required>
 								<input id=\"ClientePI\" name=\"ClientePI\" type=\"text\" placeholder=\"Partita Iva\" value=\"".$rsCliente['ClientePI']."\" required><br />
@@ -154,7 +192,6 @@ if(isset($_POST['stato'])){
 								<h2>Documenti</h2>
 								<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']."\" >
 								<input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" value=\"".$rsCliente['ClienteNumeroDocumento']."\" required>
-								<input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" value=\"".$rsCliente['ClienteEnteDocumento']."\" required>
 								<input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" value=\"".$rsCliente['ClienteEnteDocumento']."\" required>
 								<input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" value=\"".$rsCliente['ClienteRilascioDocumento']."\" required>
 								<h2>Recapiti</h2>
@@ -176,18 +213,13 @@ if(isset($_POST['stato'])){
 							</fieldset>
 						</form>";
 						 }
-						 
-				} else {
-						// CONTRATTI PRESENTI - NON E POSSIBILE EDITARE IL CLIENTE 
-					echo "Non posso editare";
-				}
-			break;
-			// FINE EDIT CLIENTE
+						break; // FINE EDIT CLIENTE
 			
 			// INIZIO DETTAGLIO CLIENTE
 		case more:
 				echo "<h2>Richiesta Dettaglio Cliente</h2>";
 				$cliente = "SELECT * FROM Clienti where idCliente=".$_POST['IdCliente']."";
+				//echo $cliente;
 				$res = mysql_query($cliente);
 				$rsCliente = mysql_fetch_assoc($res);
 					/* *
@@ -411,19 +443,19 @@ if(isset($_POST['stato'])){
 								<td>".$rsContratti['ContrattoTipo']."</td>
 								<td>".$rsContratti['ContrattoStato']."</td>
 								<td style=\"float:right\" >
-								<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+								<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 										<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"edit\" >
 										<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
 										<input name=\"Edita Contratto\" type=\"image\" src=\"image\edit.gif\" alt=\"Edita Contratto\" title=\"Edita Contratto\"> 
 									</fieldset>
 								</form>
-								<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+								<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 										<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"del\" >
 										<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
 										<input name=\"Cancella Contratto\" type=\"image\" src=\"image\delete.gif\" alt=\"Cancella Contratto\" title=\"Cancella Contratto\"> 
 									</fieldset>
 								</form>
-								<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+								<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 										<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"more\" >
 										<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
 										<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 
@@ -437,14 +469,175 @@ if(isset($_POST['stato'])){
 			}
 			break;
 			// FINE DETTAGLIO CLIENTE
-		}
-	}
-	// FINE CONTROLLO VARIABILE SESSIONE
-	else
-	{
-		// se viene chiamata direttamente la pagina
-		echo '<script language=javascript>document.location.href="clienti.php"</script>';
-		}
+			
+			case search: // Inizio Risultato Ricerca
+					if(isset($_POST['ClienteNome']) && $_POST['ClienteNome'] != ''){
+						$sql = "SELECT * FROM Clienti WHERE ClienteNome like '%".$_POST['ClienteNome']."%' order by ClienteNome ASC";
+						}
+					if(isset($_POST['ClienteCognome']) && $_POST['ClienteCognome'] != ''){
+						$sql = "SELECT * FROM Clienti WHERE  
+						ClienteCognome like '%".$_POST['ClienteCognome']."%' order by ClienteCognome ASC";
+						}
+					if(isset($_POST['ClienteRagione']) && $_POST['ClienteRagione'] != ''){
+						$sql = "SELECT * FROM Clienti WHERE ClienteRagione like '%".$_POST['ClienteRagione']."%' order by ClienteRagione ASC";
+						}
+					//print_r($sql);
+					$res = mysql_query($sql);
+					$numrows=mysql_num_rows($res);
+					 // nessun risultato trovato
+					if ($numrows == 0) {
+							$msg = 'Nessuna corrispondenza con la Ricerca';
+							echo '<script language=javascript>document.location.href="adminclienti.php?id=kosearch&msg='.$msg.'"</script>';
+						}
+						else // risultato trovato 
+						{
+							echo "<h3>Risultato Ricerca</h3>
+									<div class=\"tabella\" >
+										<table>
+											<tr>
+											<td>Cognome</td>
+											<td>Nome</td>
+											<td>Ragione Sociale</td>
+											<td ></td>
+											</tr>";
+							while ($rsCliente = mysql_fetch_assoc($res)){
+								/**
+								 * 
+								 * $rsCliente['idCliente']
+								 * $rsCliente['ClienteNome']
+								 * $rsCliente['ClienteCognome']
+								 * $rsCliente['ClienteRagione']
+								 * $rsCliente['ClienteCF']
+								 * $rsCliente['ClientePI']
+								 * $rsCliente['ClienteMail']
+								 * $rsCliente['ClienteIndirizzo']
+								 * $rsCliente['ClienteNumero']
+								 * $rsCliente['ClienteCap']
+								 * $rsCliente['ClienteCitta']
+								 * $rsCliente['ClienteTipologia']
+								 * 
+								 * */
 
+								echo "<tr>
+										<td>".$rsCliente['ClienteCognome']."</td>
+										<td>".$rsCliente['ClienteNome']."</td>
+										<td>".$rsCliente['ClienteRagione']."</td>
+										<td style=\"float:right\" >
+										<form action=\"adminclienti.php\" method=\"post\" style=\"float: right;\">
+												<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
+												<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"more\" >
+												<input name=\"Dettaglio Cliente\" type=\"image\" src=\"image\search.gif\" alt=\"Dettaglio\" title=\"Dettaglio Cliente\"> 
+											</fieldset>
+										</form>
+										<form action=\"adminclienti.php\" method=\"post\" style=\"float: right;\">
+												<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
+												<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"edit\" >
+												<input name=\"Edita Cliente\" type=\"image\" src=\"image\edit.gif\" alt=\"Edita Cliente\" title=\"Edita Cliente\"> 
+											</fieldset>
+										</form>
+										<form action=\"adminclienti.php\" method=\"post\" style=\"float: right;\">
+												<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
+												<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"del\" >
+												<input name=\"Cancella Cliente\" type=\"image\" src=\"image\delete.gif\" alt=\"Cancella Cliente\" title=\"Cancella Cliente\"> 
+											</fieldset>
+										</form>
+										<form action=\"adminclienti.php\" method=\"post\" style=\"float: right;\">
+												<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
+												<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"moreall\" >
+												<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 
+											</fieldset>
+										</form>
+										<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
+												<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
+												<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"".$rsCliente['ClienteTipologia']."\" >
+												<input id=\"stato\" name=\"step\" type=\"hidden\" value=\"1\" >
+												<input name=\"Aggiungi Contratto\" type=\"image\" src=\"image\addcontract.gif\" alt=\"Aggiungi Contratto\" title=\"Aggiungi Contratto\"> 
+											</fieldset>
+										</form>
+										</td>
+									</tr>";
+							}
+								echo "</table>
+								</div>";
+							} // Fine Risultato
+				break; // FINE SEARCH
+				
+		
+		} // FINE SWITCH
+} // Fine Controllo Variabili
+
+else // Visualizzazione di default 
+{
+		// Seleziono Tutti i Contratti
+		$query = "SELECT * FROM Clienti";
+		// conto il numero di righe totali
+		$all_rows = mysql_num_rows(mysql_query($query));
+		// definisco il numero totale di pagine
+		$all_pages = ceil($all_rows / $ClientiPagina);
+		// Calcolo da quale record iniziare
+		$first = ($pag - 1) * $ClientiPagina;
+		// Recupero i record per la pagina corrente...
+		// utilizzando LIMIT per partire da $first e contare fino a $ContrattiPagine
+		
+		echo "<h2>Lista Clienti</h2>";
+		$cliente = "SELECT * FROM Clienti LIMIT ".$first.", ".$ClientiPagina."";
+		$res = mysql_query($cliente);
+		echo "
+				<div class=\"tabella\" >
+					<table>
+						<tr>
+						<td>Cognome</td>
+						<td>Nome</td>
+						<td>Ragione Sociale</td>
+						<td></td>
+						</tr>";
+		while ($rsCliente = mysql_fetch_assoc($res)){
+			echo "<tr>
+					<td>".$rsCliente['ClienteCognome']."</td>
+					<td>".$rsCliente['ClienteNome']."</td>
+					<td>".$rsCliente['ClienteRagione']."</td>
+					<td style=\"float:right\" >
+					<form action=\"adminclienti.php\" method=\"post\" style=\"float: right;\">
+							<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
+							<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"more\" >
+							<input name=\"Dettaglio Cliente\" type=\"image\" src=\"image\search.gif\" alt=\"Dettaglio\" title=\"Dettaglio Cliente\"> 
+						</fieldset>
+					</form>
+					<form action=\"adminclienti.php\" method=\"post\" style=\"float: right;\">
+							<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
+							<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"edit\" >
+							<input name=\"Edita Cliente\" type=\"image\" src=\"image\edit.gif\" alt=\"Edita Cliente\" title=\"Edita Cliente\"> 
+						</fieldset>
+					</form>
+					<form action=\"adminclienti.php\" method=\"post\" style=\"float: right;\">
+							<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
+							<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"del\" >
+							<input name=\"Cancella Cliente\" type=\"image\" src=\"image\delete.gif\" alt=\"Cancella Cliente\" title=\"Cancella Cliente\"> 
+						</fieldset>
+					</form>
+					<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
+							<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
+							<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"more\" >
+							<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 
+						</fieldset>
+					</form>
+					</td>
+				</tr>";
+		}
+			echo "</table>
+			</div>";
+}	// Fine Visualizzazione di default 
+// Se le pagine totali sono più di 1...
+			// stampo i link per andare avanti e indietro tra le diverse pagine!
+			if ($all_pages > 1){
+			  if ($pag > 1){
+				echo "<a href=\"" . $_SERVER['PHP_SELF'] . "?pag=" . ($pag - 1) . "\">";
+				echo "Pagina Indietro</a>&nbsp;";
+			  } 
+			  if ($all_pages > $pag){
+				echo "<a href=\"" . $_SERVER['PHP_SELF'] . "?pag=" . ($pag + 1) . "\">";
+				echo "Pagina Avanti</a>";
+			  } 
+			}
 
 ?>

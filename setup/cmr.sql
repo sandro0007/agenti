@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: Feb 07, 2013 alle 19:15
+-- Generato il: Feb 20, 2013 alle 09:38
 -- Versione del server: 5.5.29
 -- Versione PHP: 5.3.10-1ubuntu3.5
 
@@ -23,6 +23,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `Admin`
+--
+
+CREATE TABLE IF NOT EXISTS `Admin` (
+  `AdminId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `AdminUser` varchar(50) NOT NULL,
+  `AdminPass` varchar(50) NOT NULL,
+  `AdminMail` varchar(50) NOT NULL,
+  PRIMARY KEY (`AdminId`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione Utenti Administrator' AUTO_INCREMENT=3 ;
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `Agenti`
 --
 
@@ -30,12 +44,19 @@ CREATE TABLE IF NOT EXISTS `Agenti` (
   `idAgenti` int(11) NOT NULL AUTO_INCREMENT,
   `AgenteNome` varchar(45) DEFAULT NULL,
   `AgenteCognome` varchar(45) DEFAULT NULL,
+  `AgenteTelefono` varchar(50) NOT NULL,
+  `AgenteFax` varchar(50) NOT NULL,
+  `AgenteCellulare` varchar(50) NOT NULL,
   `AgenteMail` varchar(50) DEFAULT NULL,
+  `AgenteIndirizzo` varchar(100) NOT NULL,
+  `AgenteNumero` varchar(10) NOT NULL,
+  `AgenteCap` varchar(5) NOT NULL,
+  `AgenteCitta` varchar(100) NOT NULL,
   `AgenteUser` varchar(45) DEFAULT NULL,
   `AgentePass` varchar(45) DEFAULT NULL,
-  `AgenteAbilitato` tinyint(1) DEFAULT NULL,
+  `AgenteAbilitato` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`idAgenti`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Agenti' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Agenti' AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -66,13 +87,13 @@ CREATE TABLE IF NOT EXISTS `Clienti` (
   `ClienteCF` varchar(45) DEFAULT NULL,
   `ClientePI` varchar(45) DEFAULT NULL,
   `ClienteSesso` varchar(1) DEFAULT NULL COMMENT 'Sesso',
-  `ClienteDataNascita` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data di Nascita',
+  `ClienteDataNascita` date NOT NULL COMMENT 'Data di Nascita',
   `ClienteLuogoNascita` varchar(100) NOT NULL COMMENT 'Luogo di Nascita',
   `ClienteProvinciaNascita` varchar(2) NOT NULL COMMENT 'Provincia di Nascita',
   `ClienteTipoDocumento` varchar(50) NOT NULL COMMENT 'TIpo di Documento',
   `ClienteNumeroDocumento` varchar(10) NOT NULL COMMENT 'Numero Documento',
   `ClienteEnteDocumento` varchar(50) NOT NULL COMMENT 'Ente che ha rilasciato il Documento',
-  `ClienteRilascioDocumento` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Data Rilascio Documento',
+  `ClienteRilascioDocumento` date NOT NULL COMMENT 'Data Rilascio Documento',
   `ClienteTelefono` varchar(20) DEFAULT NULL COMMENT 'Telefono Fisso',
   `ClienteFax` varchar(20) DEFAULT NULL COMMENT 'Fax',
   `ClienteCellulare` varchar(20) DEFAULT NULL COMMENT 'Cellulare',
@@ -85,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `Clienti` (
   `Agenti_idAgenti` int(11) NOT NULL,
   PRIMARY KEY (`idCliente`),
   KEY `fk_Clienti_Agenti_idx` (`Agenti_idAgenti`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 -- --------------------------------------------------------
 
@@ -131,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `Offerte` (
   `OffertaDestinazione` varchar(50) NOT NULL COMMENT 'Valori "Privato" - "Azienda"',
   `TipologiaId` int(11) NOT NULL COMMENT 'Indice Tipologia',
   PRIMARY KEY (`OffertaId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Offerte' AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Offerte' AUTO_INCREMENT=11 ;
 
 -- --------------------------------------------------------
 
@@ -153,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `Tipologie` (
 -- Limiti per la tabella `Clienti`
 --
 ALTER TABLE `Clienti`
-  ADD CONSTRAINT `fk_Clienti_Agenti` FOREIGN KEY (`Agenti_idAgenti`) REFERENCES `Agenti` (`idAgenti`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `Clienti_ibfk_1` FOREIGN KEY (`Agenti_idAgenti`) REFERENCES `Agenti` (`idAgenti`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `Contratti`

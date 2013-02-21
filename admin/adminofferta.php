@@ -120,23 +120,23 @@ if(isset($stato)){
 			
 		case del:
 			echo "Richiesta Cancellazione  Offerta ".$_POST['OffertaId']."";
-			$query = "SELECT * FROM Con WHERE TipologiaId = ".$_POST['TipologiaId']."";
-
-			$res = mysql_query($query);
-			$numrows=mysql_num_rows($res);
-			if ($numrows == 0) // NESSUNA TIPOLOGIA ASSOCIATA - PROCEDO AL DEL
-				{
-					$query2 = "DELETE FROM Tipologie WHERE TipologiaId = ".$_POST['TipologiaId']."";
-					 if (!mysql_query($query2))
-						  {
-							  die('Error Cancellazione Tipologie: ' . mysql_error());
-						  }
-						echo '<script language=javascript>document.location.href="admintipologia.php?id=okdel"</script>';
-				}
-				else // TIPOLOGIA ASSOCIATA 
-				{
-						echo '<script language=javascript>document.location.href="admintipologia.php?id=nodel&num='.$numrows.'"</script>';
-					}
+			//~ $query = "SELECT * FROM Contratti WHERE TipologiaId = ".$_POST['TipologiaId']."";
+//~ 
+			//~ $res = mysql_query($query);
+			//~ $numrows=mysql_num_rows($res);
+			//~ if ($numrows == 0) // NESSUNA Offerta ASSOCIATA - PROCEDO AL DEL
+				//~ {
+					//~ $query2 = "DELETE FROM Tipologie WHERE TipologiaId = ".$_POST['TipologiaId']."";
+					 //~ if (!mysql_query($query2))
+						  //~ {
+						//~ $msg = 'Error Cancellazione Offerta: ' . mysql_error());
+						 //~ echo '<script language=javascript>document.location.href="adminofferta.php?id=okdel"</script>';
+					//~ }
+				//~ }
+				//~ else // Offerta ASSOCIATA 
+				//~ {
+						//~ echo '<script language=javascript>document.location.href="adminofferta.php?id=nodel&num='.$numrows.'"</script>';
+					//~ }
 			break;
 			
 		case edit:
@@ -150,9 +150,21 @@ if(isset($stato)){
 							<fieldset id=\"inputs\">
 								<input id=\"OffertaNome\" name=\"OffertaNome\" type=\"text\" placeholder=\"Nome\"  value=\"".$rsOfferta['OffertaNome']."\" required><br />
 								<input id=\"OffertaCanone\" name=\"OffertaCanone\" type=\"text\" placeholder=\"Canone\"  value=\"".$rsOfferta['OffertaCanone']."\" required><br />
-								<input id=\"OffertaPagamento\" name=\"OffertaPagamento\" type=\"text\" placeholder=\"Pagamento\"  value=\"".$rsOfferta['OffertaPagamento']."\" required><br />
 								<input id=\"OffertaDescrizione\" name=\"OffertaDescrizione\" type=\"text\" placeholder=\"Descrizione\"  value=\"".$rsOfferta['OffertaDescrizione']."\" required><br />
-								<input id=\"OffertaDestinazione\" name=\"OffertaDestinazione\" type=\"text\" placeholder=\"Destinazione\"  value=\"".$rsOfferta['OffertaDestinazione']."\" required><br />";
+								
+								<label>Pagamento: </label>
+								<select name=\"OffertaPagamento\" id=\"OffertaPagamento\" placeholder=\"Pagamento\" required>
+									<option>Mensile</option>
+									<option>Bimestrale</option>
+									<option>Trimestrale</option>
+									<option>Semestrale</option>
+									<option>Annuale</option>
+								</select><br />
+								<label>Destinazione: </label>
+								<select name=\"OffertaDestinazione\" id=\"OffertaPagamento\" placeholder=\"Pagamento\" required>
+									<option>Privato</option>
+									<option>Azienda</option>
+								</select><br />";
 								$query2 = "SELECT * FROM Tipologie";
 								$res2 = mysql_query($query2);
 								echo "<label>Tipologia</label>

@@ -15,11 +15,35 @@ $conn=mysql_connect($dbHost,$dbUser,$dbPassword);
 mysql_select_db($dbName);
 $codadmin = $_SESSION['admin']; //id cod recuperato nel file di verifica
 echo $menu;
+// Form inserimento nuova tipologia
+echo "<div class=\"box\" \">
+            <a href=\"javascript:slideonlyone('newboxes1');\" >Aggiungi Tipologia</a>
+         </div>
+         <div class=\"newboxes2\" id=\"newboxes1\" style=\" display: none;\">
+         <form action=\"admintipologia.php\" method=\"post\">
+        <fieldset id=\"inputs\">
+            <input id=\"TipologiaNome\" name=\"TipologiaNome\" type=\"text\" placeholder=\"Nome\" autofocus required>
+            <input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"add\" >            
+        </fieldset>
+        <fieldset id=\"actions\">
+            <input type=\"submit\" id=\"submit\" value=\"INSERISCI\">
+        </fieldset>
+    </form>
+         </div>";
+// FINE form inserimento         
 
 $stato = $_POST['stato'];
 // CONTROLLO GESTIONE MESSAGGI
 
 switch($_GET['id']){
+		case okadd:
+			echo "<h2>Inserimento Nuova Tipologia Effettuato </h2>";
+			break;
+		
+		case koadd:
+			echo "<h2>Impossibile Inserire Tipologia - ERROR : ".$_GET['msg']."</h2>";
+			break;
+			
 		case okupdate:
 			echo "<h2>Aggiornamento Tipologia Effettuata </h2>";
 			break;
@@ -43,6 +67,26 @@ switch($_GET['id']){
 
 if(isset($stato)){
 	switch($stato){
+		case add:
+			$query = "INSERT INTO  Tipologie (
+						`TipologiaId` ,
+						`TipologiaNome` 
+						)
+						VALUES (
+						'' ,  
+						'".$_POST['TipologiaNome']."'
+						);";
+			if (!mysql_query($query))
+			  {
+					$msg = 'Error Inserimento Tipologia: ' . mysql_error();
+					echo '<script language=javascript>document.location.href="admintipologia.php?id=koadd&msg='.$msg.'"</script>';
+			  } 
+			  else 
+			  {
+					echo '<script language=javascript>document.location.href="admintipologia.php?id=okadd"</script>';
+			}
+			break;
+		
 		case del:
 			echo "Richiesta Cancellazione  Tipologie ".$_POST['TipologiaId']."";
 			$query = "SELECT * FROM Offerte WHERE TipologiaId = ".$_POST['TipologiaId']."";

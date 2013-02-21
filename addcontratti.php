@@ -111,7 +111,7 @@ if(isset($_POST['step'])){
 					<label>Fatturazione</label>
 						<input type=\"text\" value=\"".$rsOfferte['OffertaPagamento']."\" readonly><br />
 					<label>Descrizione</label><br />
-						<textarea disabled rows=\"4\" cols=\"50\">".$rsOfferte['OffertaDescrizione']."</textarea>
+						<textarea readonly rows=\"4\" cols=\"50\">".$rsOfferte['OffertaDescrizione']."</textarea>
 					</fieldset>
 			<br />";
 			
@@ -148,10 +148,10 @@ if(isset($_POST['step'])){
 						</select>
 						<br />
 						<label>Numero Linea</label>
-						<input id=\"LineaNumero\" name=\"LineaNumero\" type=\"text\" placeholder=\"Numero Telefonico da Migrare\"  required>
+						<input id=\"LineaNumero\" name=\"LineaNumero\" type=\"text\" placeholder=\"Numero Telefonico da Migrare\">
 						<br />
 						<label>Codice Segreto</label>
-						<input id=\"LineaCodice\" name=\"LineaCodice\" type=\"text\" placeholder=\"Codice Migrazione\"  required>
+						<input id=\"LineaCodice\" name=\"LineaCodice\" type=\"text\" placeholder=\"Codice Migrazione\">
 						
 					<br />";
 					
@@ -172,13 +172,13 @@ if(isset($_POST['step'])){
 					<fieldset id=\"inputs\" style=\"border:1px solid #128F9A\">
 					<legend>Indirizzo Fatturazione</legend><br />
 						<label>Indirizzo</label>
-						<input id=\"ClienteIndirizzo1\" name=\"ClienteIndirizzo1\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo']."\" required>
+						<input id=\"ClienteIndirizzo2\" name=\"ClienteIndirizzo2\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo']."\" required>
 						<label>Civico</label>
-						<input id=\"ClienteNumero1\" name=\"ClienteNumero1\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNumero']."\" required><br />
+						<input id=\"ClienteNumero2\" name=\"ClienteNumero2\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNumero']."\" required><br />
 						<label>C.A.P.</label>
-						<input id=\"ClienteCap1\" name=\"ClienteCap1\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap']."\" required>
+						<input id=\"ClienteCap2\" name=\"ClienteCap2\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap']."\" required>
 						<label>Citt&agrave</label>
-						<input id=\"ClienteCitta1\" name=\"ClienteCitta1\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta']."\" required>
+						<input id=\"ClienteCitta2\" name=\"ClienteCitta2\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta']."\" required>
 					</fieldset><br />
 					<fieldset id=\"inputs\" style=\"border:1px solid #128F9A\">
 					<legend>Modalit&agrave Pagamento</legend>
@@ -199,6 +199,27 @@ if(isset($_POST['step'])){
 							<option value=\"Digitale\">Fattura su e-mail</option>
 							<option value=\"Cartaceo\">Fattura cartacea con addebito</option>
 						</select><br />
+					</fieldset>
+					<br />
+					<fieldset id=\"inputs\" style=\"border:1px solid #128F9A\">
+					<legend>RID</legend>
+						<label>Banca</label>
+						<input id=\"ContrattoBanca\" name=\"ContrattoBanca\" type=\"text\" placeholder=\"Banca\"><br />
+						<label>Agenzia</label>
+						<input id=\"ContrattoAgenzia\" name=\"ContrattoAgenzia\" type=\"text\" placeholder=\"Agenzia\"><br />
+						<label>Localit&agrave</label>
+						<input id=\"ContrattoLocalita\" name=\"ContrattoLocalita\" type=\"text\" placeholder=\"Localit&agrave\"><br />
+						<label>Intestazione</label>
+						<input id=\"ContrattoIntestazione\" name=\"ContrattoIntestazione\" type=\"text\" placeholder=\"Intestazione\"><br />
+						<label>IBAN</label>
+						<input id=\"ContrattoIban\" name=\"ContrattoIban\" type=\"text\" placeholder=\"IBAN\"><br />
+					</fieldset>
+					<br />
+					<fieldset id=\"inputs\" style=\"border:1px solid #128F9A\">
+					<legend>NOTE</legend>
+						<label>Informazioni Aggiuntive</label>
+						<textarea id=\"ContrattoNote\" name=\"ContrattoNote\" type=\"text\" placeholder=\"Note\">
+						</textarea>
 					</fieldset>
 					<br />
 					<fieldset id=\"inputs\" style=\"border:1px solid #128F9A\">
@@ -227,7 +248,8 @@ if(isset($_POST['step'])){
 						<br />
 						<br />
 						<br />
-						<label style=\"float: left;\">Vuoi ricevere pubblicità?</label><input type=\"checkbox\" name=\"OpzioniPubblicita\" value=\"1\" style=\"float: left;\"><br />
+						<label style=\"float: left;\">Vuoi ricevere pubblicità?</label><input type=\"checkbox\" name=\"OpzioniPubblicita\" value=\"1\" style=\"float: left;\">
+						<label style=\"float: rigth;\">Chiamata in attesa</label><input style=\"float: rigth;\" type=\"checkbox\" name=\"OpzioniAttesa\" value=\"1\">
 					</fieldset><br />
 						<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$_POST['IdCliente']."\" >
 						<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"".$_POST['ClienteTipologia']."\" >
@@ -239,12 +261,514 @@ if(isset($_POST['step'])){
 					</fieldset>
 				</form>
 			";
-			print_r($_POST);
 			break;
 		case 4:
-			echo "<h3>STEP 4 - Creazione Contratto</h3>";
-			print_r($_POST);
+			echo "<h3>STEP 4 - Riepilogo Contratto</h3>";
+			// Prelevo il Cliente
+			$sql = "SELECT * FROM Clienti WHERE idCliente = ".$_POST['IdCliente']."";
+			$res = mysql_query($sql);
+			$rsCliente = mysql_fetch_assoc($res);
+			// Prelevo l'offerta
+			$sql2 = "SELECT * FROM Offerte WHERE OffertaId = ".$_POST['OffertaId'].""; 
+			$res2 = mysql_query($sql2);
+			$rsOfferta = mysql_fetch_assoc($res2);
+			
+			echo "
+			<form action=\"addcontratti.php\" method=\"POST\" name=\"form\">
+				<table border=\"1\" >
+					<tr>
+						<td colspan = \"8\"> Dati Intestatario Contratto</td>
+					</tr>
+					<tr>
+						<td> Cognome</td><td><input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" value=\"".$rsCliente['ClienteCognome']." \" readonly></td>
+						<td> Nome</td><td><input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\" value=\"".$rsCliente['ClienteNome']." \" readonly></td>
+						<td> Codice Fiscale</td><td><input id=\"ClienteCF\" name=\"ClienteCF\" type=\"text\" placeholder=\"Codice Fiscale\" value=\"".$rsCliente['ClienteCF']." \" readonly></td>
+						<td> Sesso</td>
+							<td>";
+							 if ($rsCliente['ClienteSesso'] == 'M' ) 
+									{ 
+										echo "<input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" value=\"".$rsCliente['ClienteSesso']." \" readonly>";
+									} 
+							if ($rsCliente['ClienteSesso'] == 'F' ) 
+								{
+										echo "<input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" value=\"".$rsCliente['ClienteSesso']." \" readonly>";
+										}
+									//~ else 
+									//~ {
+										//~ echo "M<input type=\"checkbox\" name=\"ClienteSesso\" value=\"M\"  readonly/>
+											  //~ F<input type=\"checkbox\" name=\"ClienteSesso\" value=\"F\"  readonly/>";
+										//~ }
+						echo " </td>
+					</tr>
+					<tr>
+						<td>Ragione Sociale</td><td colspan = \"4\"><input id=\"ClienteRagione\" name=\"ClienteRagione\" type=\"text\" placeholder=\"Ragione Sociale\" value=\"".$rsCliente['ClienteRagione']." \" readonly></td>
+						<td>Partita Iva</td><td colspan = \"2\"><input id=\"ClientePI\" name=\"ClientePI\" type=\"text\" placeholder=\"Partita Iva\" value=\"".$rsCliente['ClientePI']." \" readonly></td>
+					</tr>
+					<tr>
+						<td>Data Nascita</td><td><input id=\"ClienteDataNascita\" name=\"ClienteDataNascita\" type=\"text\" placeholder=\"Data di Nascita\" value=\"".$rsCliente['ClienteDataNascita']." \" readonly></td>
+						<td>Luogo di Nascita</td><td colspan = \"3\"><input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" value=\"".$rsCliente['ClienteLuogoNascita']." \" readonly></td>
+						<td>Provincia</td><td><input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provioncia di Nascita\" value=\"".$rsCliente['ClienteProvinciaNascita']." \" readonly></td>
+					</tr>
+					<tr>
+						<td>Indirizzo</td><td><input id=\"ClienteIndirizzo\" name=\"ClienteIndirizzo\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo']." \" readonly></td>
+						<td>Numero</td><td><input id=\"ClienteNumero\" name=\"ClienteNumero\" type=\"text\" placeholder=\"Civico\" value=\"".$rsCliente['ClienteNumero']." \" readonly></td>
+						<td>C.A.P.</td><td><input id=\"ClienteCap\" name=\"ClienteCap\" type=\"text\" placeholder=\"CAP\" value=\"".$rsCliente['ClienteCap']." \" readonly></td>
+						<td>Citt&agrave</td><td><input id=\"ClienteCitta\" name=\"ClienteCitta\" type=\"text\" placeholder=\"Citta\" value=\"".$rsCliente['ClienteCitta']." \" readonly></td>
+					</tr>
+					<tr>
+						<td>Indirizzo Installazione</td><td><input id=\"ClienteIndirizzo1\" name=\"ClienteIndirizzo1\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$_POST['ClienteIndirizzo1']." \" readonly></td>
+						<td>Numero</td><td><input id=\"ClienteNumero1\" name=\"ClienteNumero1\" type=\"text\" placeholder=\"Civico\" value=\"".$_POST['ClienteNumero1']." \" readonly></td>
+						<td>C.A.P.</td><td><input id=\"ClienteCap1\" name=\"ClienteCap1\" type=\"text\" placeholder=\"CAP\" value=\"".$_POST['ClienteCap1']." \" readonly></td>
+						<td>Citt&agrave</td><td><input id=\"ClienteCitta1\" name=\"ClienteCitta1\" type=\"text\" placeholder=\"Citta\" value=\"".$_POST['ClienteCitta1']." \" readonly></td>
+					</tr>
+					<tr>
+						<td>Indirizzo Corrisponenza</td><td><input id=\"ClienteIndirizzo\" name=\"ClienteIndirizzo2\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$_POST['ClienteIndirizzo2']." \" readonly></td>
+						<td>Numero</td><td><input id=\"ClienteNumero2\" name=\"ClienteNumero2\" type=\"text\" placeholder=\"Civico\" value=\"".$_POST['ClienteNumero2']." \" readonly></td>
+						<td>C.A.P.</td><td><input id=\"ClienteCap2\" name=\"ClienteCap2\" type=\"text\" placeholder=\"CAP\" value=\"".$_POST['ClienteCap2']." \" readonly></td>
+						<td>Citt&agrave</td><td><input id=\"ClienteCitta2\" name=\"ClienteCitta2\" type=\"text\" placeholder=\"Citta\" value=\"".$_POST['ClienteCitta2']." \" readonly></td>
+					</tr>
+					<tr>
+						<td>Documento Identit&agrave</td>
+							<td colspan = \"3\">";
+							if ($rsCliente['ClienteTipoDocumento'] == 'CartaIdentita' ) 
+									{ 
+										echo "<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']." \" readonly>";	  
+									}
+							if ($rsCliente['ClienteTipoDocumento'] == 'Patente' ) 
+									{ 
+										echo "<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']." \" readonly>";	  
+									}
+							if ($rsCliente['ClienteTipoDocumento'] == 'Passaporto' ) 
+									{ 
+										echo "<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']." \" readonly>";	  
+									}
+							
+				echo "</td>
+						<td>Numero Documento</td><td><input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documento\" value=\"".$rsCliente['ClienteNumeroDocumento']." \" readonly></td>
+						<td>Rilasciato il </td><td><input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Rilascio Documento\" value=\"".$rsCliente['ClienteRilascioDocumento']." \" readonly></td>
+					</tr>
+					<tr>
+						<td>Rilasciato da</td>
+						<td colspan=\"4\">
+							<input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente di Documento\" value=\"".$rsCliente['ClienteEnteDocumento']." \" readonly>
+						</td>
+						<td> di</td>
+						<td colspan = \"2\"><input id=\"ClienteEnteDiDocumento\" name=\"ClienteEnteDiDocumento\" type=\"text\" placeholder=\"Ente di Documento\" value=\"".$rsCliente['ClienteEnteDiDocumento']." \" readonly></td>
+					</tr>
+					<tr>
+						<td>Telefono</td><td><input id=\"ClienteTelefono\" name=\"ClienteTelefono\" type=\"text\" placeholder=\"Telefono\" value=\"".$rsCliente['ClienteTelefono']." \" readonly></td>
+						<td>Fax</td><td><input id=\"ClienteFax\" name=\"ClienteFax\" type=\"text\" placeholder=\"Fax\" value=\"".$rsCliente['ClienteFax']." \" readonly></td>
+						<td>Cellulare</td><td><input id=\"ClienteCelllulare\" name=\"ClienteCelllulare\" type=\"text\" placeholder=\"Cellulare\" value=\"".$rsCliente['ClienteCelllulare']." \" readonly></td>
+						<td>E-Mail</td><td><input id=\"ClienteMail\" name=\"ClienteMail\" type=\"text\" placeholder=\"E-Mail\" value=\"".$rsCliente['ClienteMail']." \" readonly></td>
+					</tr>
+					<tr>
+						<td colspan = \"8\"> Dati Servizio</td>
+					</tr>
+					<tr>
+						<td>Codice Contratto</td><td><input id=\"OffertaNome\" name=\"OffertaNome\" type=\"text\" placeholder=\"Nome Offerta\" value=\"".$rsOfferta['OffertaNome']." \" readonly></td>
+						<td>Descrizione</td><td colspan =\"3\"><input id=\"OffertaDescrizione\" name=\"OffertaDescrizione\" type=\"text\" placeholder=\"Descrizione\" value=\"".$rsOfferta['OffertaDescrizione']." \" readonly></td>
+						<td>Importo Mensile</td><td><input id=\"OffertaCanone\" name=\"OffertaCanone\" type=\"text\" placeholder=\"Canone\" value=\"".$rsOfferta['OffertaCanone']." \" readonly></td>
+					</tr>
+					<tr>
+						<td>Linea Telefonica:</td>
+						<td>ESISTENTE -> </td><td><input id=\"LineaDatiMigrazione\" name=\"LineaDatiMigrazione\" type=\"text\" placeholder=\"Linea Migrazione\" value=\"".$_POST['LineaDatiMigrazione']." \" readonly></td>
+						<td> Numero Da Migrare</td>
+						<td colspan = \"2\"><input id=\"LineaNumero\" name=\"LineaNumero\" type=\"text\" placeholder=\"Linea Numero Migrazione\" value=\"".$_POST['LineaNumero']." \" readonly></td>
+						<td>Codice Migrazione</td>
+						<td><input id=\"LineaCodice\" name=\"LineaCodice\" type=\"text\" placeholder=\"Codice Migrazione\" value=\"".$_POST['LineaCodice']." \" readonly></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Nuova Attivazione -></td>
+						<td colspan = \"3\"><input id=\"LineaDatiAttivazione\" name=\"LineaDatiAttivazione\" type=\"text\" placeholder=\"Linea Attivazione\" value=\"".$_POST['LineaDatiAttivazione']." \" readonly></td>
+						<td>Numero Pilota</td>
+						<td colspan = \"2\"><input id=\"LineaPilota\" name=\"LineaPilota\" type=\"text\" placeholder=\"Linea Pilota\" value=\"".$_POST['LineaPilota']." \" readonly></td>
+					</tr>
+					<tr>
+						<td>Pagamento Canone</td>
+						<td><input id=\"ContrattoPagamento\" name=\"ContrattoPagamento\" type=\"text\" placeholder=\"Pagamento Canone\" value=\"".$_POST['ContrattoPagamento']." \" readonly></td>
+						<td>U.T. Attivazione</td>
+						<td><input id=\"ContrattoAttivazione\" name=\"ContrattoAttivazione\" type=\"text\" placeholder=\"Attivazione\" value=\"".$_POST['ContrattoAttivazione']." \" readonly></td>
+						<td>Ricezione fattura</td>
+						<td><input id=\"ContrattoFattura\" name=\"ContrattoFattura\" type=\"text\" placeholder=\"Ricezione Fattura\" value=\"".$_POST['ContrattoFattura']." \" readonly></td>
+					</tr>
+					<tr>
+						<td colspan = \"8\"> Servizi Opzionali</td>
+					</tr>
+					<tr>
+						<td>Ip Statito</td>
+						<td colspan = \"7\">";
+							if ($_POST['OpzioneIp'] == '0')
+							{
+								echo "Nessuno<input type=\"checkbox\" name=\"OpzioneIp\" value=\"0\"  checked=\"checked\" />";
+								echo "1 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"1\" />";
+								echo "4 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"4\" />";
+								echo "8 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"8\" />";	  
+								echo "16 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"16\" />";	  
+								echo "32 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"32\" />";	  
+								}
+							if ($_POST['OpzioneIp'] == '1')
+							{
+								echo "Nessuno<input type=\"checkbox\" name=\"OpzioneIp\" value=\"0\"  />";
+								echo "1 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"1\" checked=\"checked\" />";
+								echo "4 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"4\" />";
+								echo "8 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"8\" />";	  
+								echo "16 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"16\" />";	  
+								echo "32 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"32\" />";	  
+								}
+							if ($_POST['OpzioneIp'] == '4')
+							{
+								echo "Nessuno<input type=\"checkbox\" name=\"OpzioneIp\" value=\"0\"   />";
+								echo "1 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"1\" />";
+								echo "4 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"4\" checked=\"checked\" />";
+								echo "8 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"8\" />";	  
+								echo "16 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"16\" />";	  
+								echo "32 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"32\" />";	  
+								}
+							if ($_POST['OpzioneIp'] == '8')
+							{
+								echo "Nessuno<input type=\"checkbox\" name=\"OpzioneIp\" value=\"0\"   />";
+								echo "1 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"1\" />";
+								echo "4 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"4\" />";
+								echo "8 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"8\" checked=\"checked\" />";	  
+								echo "16 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"16\" />";	  
+								echo "32 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"32\" />";	  
+								}
+							if ($_POST['OpzioneIp'] == '16')
+							{
+								echo "Nessuno<input type=\"checkbox\" name=\"OpzioneIp\" value=\"0\"   />";
+								echo "1 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"1\" />";
+								echo "4 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"4\" />";
+								echo "8 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"8\" />";	  
+								echo "16 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"16\" checked=\"checked\" />";	  
+								echo "32 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"32\" />";	  
+								}
+							if ($_POST['OpzioneIp'] == '32')
+							{
+								echo "Nessuno<input type=\"checkbox\" name=\"OpzioneIp\" value=\"0\"   />";
+								echo "1 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"1\" />";
+								echo "4 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"4\" />";
+								echo "8 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"8\" />";	  
+								echo "16 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"16\" />";	  
+								echo "32 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"32\" checked=\"checked\" />";	  
+								}
+								
+				echo "	</td>
+					</tr>
+					<tr>
+						<td colspan = \"4\">";
+							if (isset($_POST['OpzioneAP']))
+							{
+								echo "Acquisto e installazione Access Point<input type=\"checkbox\" name=\"OpzioneAp\" value=\"1\"  checked=\"checked\" />";
+							} else 
+								{
+									echo "Acquisto e installazione Access Point<input type=\"checkbox\" name=\"OpzioneAp\" value=\"0\"  />";
+									}
+							
+						echo "</td>
+						<td colspan = \"4\">";
+							if (isset($_POST['OpzioneElenco']))
+							{
+								echo "Pubblicazione Numero in Elenco Telefonico<input type=\"checkbox\" name=\"OpzioneElenco\" value=\"1\"  checked=\"checked\" />";
+							} else 
+								{
+									echo "Pubblicazione Numero in Elenco Telefonico<input type=\"checkbox\" name=\"OpzioneElenco\" value=\"0\" />";
+									}
+							
+						echo "</td>
+					</tr>
+					<tr>
+						<td colspan = \"4\">";
+							if (isset($_POST['OpzioneChie']))
+							{
+								echo "Identificaticazione Chiamante (Chi &egrave)<input type=\"checkbox\" name=\"OpzioneChie\" value=\"1\"  checked=\"checked\" />";
+							} else 
+								{
+									echo "Identificaticazione Chiamante (Chi &egrave)<input type=\"checkbox\" name=\"OpzioneChie\" value=\"0\" />";
+									}
+							
+						echo "</td>
+						<td colspan = \"4\">
+						";
+							if (isset($_POST['OpzioneClinascosto']))
+							{
+								echo "Blocco Identificazitvo Chiamante (CLI Nascosto)<input type=\"checkbox\" name=\"OpzioneClinascosto\" value=\"1\"  checked=\"checked\" />";
+							} else 
+								{
+									echo "Blocco Identificazitvo Chiamante (CLI Nascosto)<input type=\"checkbox\" name=\"OpzioneClinascosto\" value=\"0\" />";
+									}
+							
+						echo "</td>
+					</tr>
+					<tr>
+						<td colspan = \"4\">";
+							if (isset($_POST['OpzioneTrasferimento']))
+							{
+								echo "Trasferimento di chiamata<input type=\"checkbox\" name=\"OpzioneTrasferimento\" value=\"1\"  checked=\"checked\" />";
+							} else 
+								{
+									echo "Trasferimento di chiamata<input type=\"checkbox\" name=\"OpzioneTrasferimento\" value=\"0\" />";
+									}
+							
+						echo "</td>
+						<td colspan = \"4\">";
+							if (isset($_POST['OpzionePubblicita']))
+							{
+								echo "Vuole ricevere la pubblicit&agrave?<input type=\"checkbox\" name=\"OpzionePubblicita\" value=\"1\"  checked=\"checked\" />";
+							} else 
+								{
+									echo "Vuole ricevere la pubblicit&agrave?<input type=\"checkbox\" name=\"OpzionePubblicita\" value=\"0\" />";
+									}
+							
+						echo "</td>
+					</tr>
+					<tr>
+						<td colspan = \"4\">";
+							if (isset($_POST['OpzioneAttesa']))
+							{
+								echo "Chiamata in attesa<input type=\"checkbox\" name=\"OpzioneAttesa\" value=\"1\"  checked=\"checked\" />";
+							} else 
+								{
+									echo "Chiamata in attesa<input type=\"checkbox\" name=\"OpzioneAttesa\" value=\"0\" />";
+									}
+							
+						echo "</td>
+						<td colspan = \"4\">";
+							if (isset($_POST['OpzioneSwitch']))
+							{
+								echo "Acquisto Switch 8 Porte<input type=\"checkbox\" name=\"OpzioneSwitch\" value=\"1\"  checked=\"checked\" />";
+							} else 
+								{
+									echo "Acquisto Switch 8 Porte<input type=\"checkbox\" name=\"OpzioneSwitch\" value=\"0\" />";
+									}
+							
+						echo "</td>
+					</tr>
+					<tr>
+						<td colspan = \"8\">RID</td>
+					</tr>
+					<tr>
+						<td>Banca</td><td colspan = \"2\"><input id=\"ContrattoBanca\" name=\"ContrattoBanca\" type=\"text\" placeholder=\"Banca\" value=\"".$_POST['ContrattoBanca']." \" readonly></td>
+						<td>Agenzia</td><td colspan = \"2\"><input id=\"ContrattoAgenzia\" name=\"ContrattoAgenzia\" type=\"text\" placeholder=\"Agenzia\" value=\"".$_POST['ContrattoAgenzia']." \" readonly></td>
+						<td>Localit&agrave</td><td><input id=\"ContrattoLocalita\" name=\"ContrattoLocalita\" type=\"text\" placeholder=\"Localita\" value=\"".$_POST['ContrattoLocalita']." \" readonly></td>
+					</tr>
+					<tr>
+						<td>Intestazione</td>
+						<td colspan =\"7\"><input id=\"ContrattoIntestazione\" name=\"ContrattoIntestazione\" type=\"text\" placeholder=\"Intestazione\" value=\"".$_POST['ContrattoIntestazione']." \" readonly></td>
+					</tr>
+					<tr>
+						<td>IBAN</td><td colspan = \"5\"><input id=\"ContrattoIban\" name=\"ContrattoIban\" type=\"text\" placeholder=\"IBAN\" value=\"".$_POST['ContrattoIban']." \" readonly></td>
+					</tr>
+					<tr>
+						<td  colspan =\"8\">NOTE</td>
+					</tr>
+					<tr>
+						<td colspan = \"8\">
+						<textarea id=\"ContrattoNote\" name=\"ContrattoNote\" type=\"text\" placeholder=\"Note\" readonly>".$_POST['ContrattoNote']."</textarea></td>
+					</tr>
+				</table>
+				<input id=\"OffertaId\" name=\"OffertaId\" type=\"hidden\" value=\"".$rsOfferta['OffertaId']."\" >
+				<input id=\"OffertaCanone\" name=\"OffertaCanone\" type=\"hidden\" value=\"".$rsOfferta['OffertaCanone']."\" >
+				<input id=\"idCliente\" name=\"idCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
+				<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"".$rsCliente['ClienteTipologia']."\" >
+				<input id=\"step\" name=\"step\" type=\"hidden\" value=\"5\" >
+						<input  type=\"submit\" id=\"submit\" value=\"Inserisci\">
+			</form>";
 			break;
+		case 5:
+			$sql = "INSERT INTO Contratti ( ContrattoNome , 
+						ContrattoData,
+						ContrattoTipo, 
+						ContrattoStato, 
+						ContrattoFatturato, 
+						ContrattoPagato, 
+						ContrattoPagamento, 
+						ContrattoAttivazione,
+						ContrattoFattura,
+						ContrattoIndirizzo1,
+						ContrattoNumero1,
+						ContrattoCap1,
+						ContrattoCitta1,
+						ContrattoIndirizzo2,
+						ContrattoNumero2,
+						ContrattoCap2,
+						ContrattoCitta2,
+						ContrattoBanca,
+						ContrattoAgenzia,
+						ContrattoLocalita,
+						ContrattoIntestazione,
+						ContrattoIban,
+						ContrattoNote,
+						ContrattoProvvigioni,
+						Clienti_idCliente ) 
+						VALUES
+							(
+							'WEB13/01',
+							CURDATE(),
+							'".$_POST['ClienteTipologia']."',
+							'Inserito',
+							'0',
+							'0',
+							'".$_POST['ContrattoPagamento']."',
+							'".$_POST['ContrattoAttivazione']."',
+							'".$_POST['ContrattoFattura']."',
+							'".$_POST['ClienteIndirizzo1']."',
+							'".$_POST['ClienteNumero1']."',
+							'".$_POST['ClienteCap1']."',
+							'".$_POST['ClienteCitta1']."',
+							'".$_POST['ClienteIndirizzo2']."',
+							'".$_POST['ClienteNumero2']."',
+							'".$_POST['ClienteCap2']."',
+							'".$_POST['ClienteCitta2']."',
+							'".$_POST['ContrattoBanca']."',
+							'".$_POST['ContrattoAgenzia']."',
+							'".$_POST['ContrattoLocalita']."',
+							'".$_POST['ContrattoIntestazione']."',
+							'".$_POST['ContrattoIban']."',
+							'".$_POST['ContrattoNote']."',
+							'".$_POST['OffertaCanone']."',
+							'".$_POST['idCliente']."'
+							);";
+				if (!mysql_query($sql))
+					  {
+					 $msg = 'Error Inserimento Contratto: ' . mysql_error();
+					 echo '<script language=javascript>document.location.href="clienti.php?id=kocontratto&msg='.$msg.'"</script>';
+					  }
+			$ContrattoId = mysql_insert_id();
+			$sql2 = "INSERT INTO Linea 
+						( LineaDatiAttivazione,
+							LineaPilota,
+								LineaDatiMigrazione,
+									LineaNumero,
+										LineaCodice )
+							VALUES
+							( '".$_POST['LineaDatiAttivazione']."',
+								'".$_POST['LineaPilota']."',
+									'".$_POST['LineaDatiMigrazione']."',
+										'".$_POST['LineaNumero']."',
+											'".$_POST['LineaCodice']."');";
+			if (!mysql_query($sql2))
+					  {
+					 $msg = 'Errore Inserimento Dati Linea: ' . mysql_error();
+					 echo '<script language=javascript>document.location.href="clienti.php?id=kocontratto&msg='.$msg.'"</script>';
+					  }
+			$LineaId = mysql_insert_id();
+			
+			// Imposto i corretti valori delle opzioni
+			if(isset($_POST['OpzioneAP'])) {
+				$OpzioneAP = $_POST['OpzioneAP'];
+				} else {
+					$OpzioneAP = '0';
+					}
+			if(isset($_POST['OpzioneElenco'])) {
+				$OpzioneElenco = $_POST['OpzioneElenco'];
+				} else {
+					$OpzioneElenco = '0';
+					}
+			if(isset($_POST['OpzioneChie'])) {
+				$OpzioneChie = $_POST['OpzioneChie'];
+				} else {
+					$OpzioneChie = '0';
+					}
+					
+			if(isset($_POST['OpzioneClinascosto'])) {
+				$OpzioneClinascosto = $_POST['OpzioneClinascosto'];
+				} else {
+					$OpzioneClinascosto = '0';
+					}
+			if(isset($_POST['OpzioneTrasferimento'])) {
+				$OpzioneTrasferimento = $_POST['OpzioneTrasferimento'];
+				} else {
+					$OpzioneTrasferimento = '0';
+					}
+			if(isset($_POST['OpzionePubblicita'])) {
+				$OpzionePubblicita = $_POST['OpzionePubblicita'];
+				} else {
+					$OpzionePubblicita = '0';
+					}
+					
+			if(isset($_POST['OpzioneSwitch'])) {
+				$OpzioneSwitch = $_POST['OpzioneSwitch'];
+				} else {
+					$OpzioneSwitch = '0';
+					}
+			// FINE CHECK		
+			$sql3 = "INSERT INTO  Opzioni (
+							`OpzioneAP` ,
+								`OpzioneElenco` ,
+									`OpzioneChie` ,
+										`OpzioneClinascosto` ,
+											`OpzioneTrasferimento` ,
+												`OpzionePubblicita` ,
+													`OpzioneSwitch`)
+								VALUES (
+								'".$OpzioneAP."',  
+									'".$OpzioneElenco."',  
+										'".$OpzioneChie."',  
+											'".$OpzioneClinascosto."',  
+												'".$OpzioneTrasferimento."',  
+													'".$OpzionePubblicita."',  
+														'".$OpzioneSwitch."'
+								);";
+			if (!mysql_query($sql3))
+					  {
+					 $msg = 'Errore Inserimento Opzioni Linea: ' . mysql_error();
+					 echo '<script language=javascript>document.location.href="clienti.php?id=kocontratto&msg='.$msg.'"</script>';
+					  }
+			$OpzioneId = mysql_insert_id();
+			
+			// Associazione Contratto - Linea
+			$sql4 = "INSERT INTO  Contratti_Linea (
+							`ContrattoId` ,
+								`LineaId`)
+								VALUES (
+								'".$ContrattoId."',  
+									'".$LineaId."');";
+			if (!mysql_query($sql4))
+					  {
+					 $msg = 'Errore Associazione Contratto - Linea: ' . mysql_error();
+					 echo '<script language=javascript>document.location.href="clienti.php?id=kocontratto&msg='.$msg.'"</script>';
+					  }
+			// Associazione Contratto - Opzioni
+			$sql5 = "INSERT INTO  Contratti_Opzioni (
+							`ContrattoId` ,
+								`OpzioneId`)
+								VALUES (
+								'".$ContrattoId."',  
+									'".$OpzioneId."');";
+			if (!mysql_query($sql5))
+					  {
+					 $msg = 'Errore Associazione Contratto - Opzioni: ' . mysql_error();
+					 echo '<script language=javascript>document.location.href="clienti.php?id=kocontratto&msg='.$msg.'"</script>';
+					  }
+			// Associazione Contratto - Agente
+			$sql6 = "INSERT INTO  Agenti_Clienti_Contratti (
+							`AgenteId` ,
+								`ContrattoId`)
+								VALUES (
+								'".$cod."',  
+									'".$ContrattoId."');";
+			if (!mysql_query($sql6))
+					  {
+					 $msg = 'Errore Associazione Contratto - Agente: ' . mysql_error();
+					 echo '<script language=javascript>document.location.href="clienti.php?id=kocontratto&msg='.$msg.'"</script>';
+					  }
+			// Associazione Contratto - Offerta
+			$sql7 = "INSERT INTO  Contratti_Offerte (
+							`OffertaId` ,
+								`ContrattoId`)
+								VALUES (
+								'".$_POST['OffertaId']."',  
+									'".$ContrattoId."');";
+			if (!mysql_query($sql7))
+					  {
+					 $msg = 'Errore Associazione Contratto - Offerta: ' . mysql_error();
+					 echo '<script language=javascript>document.location.href="clienti.php?id=kocontratto&msg='.$msg.'"</script>';
+					  }
+			echo "Contratto Inserito Correttamente <br />";
+			mail("supporto@linkspace.it", "Inserito Contratto ".$ContrattoId."");
+			break;
+		
 	}
 }	else {
 		// se viene chiamata direttamente la pagina

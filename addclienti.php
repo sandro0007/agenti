@@ -27,7 +27,7 @@ switch ($_POST['stato']) {
 							`ClienteRagione`, `ClienteCF`, `ClientePI`, `ClienteMail`, 
 								`ClienteTelefono`, `ClienteFax`, `ClienteCellulare`,
 								 `ClienteDataNascita`, `ClienteLuogoNascita`, `ClienteProvinciaNascita`,
-								 `ClienteTipoDocumento`, `ClienteNumeroDocumento`, `ClienteEnteDocumento`, `ClienteRilascioDocumento`,
+								 `ClienteTipoDocumento`, `ClienteNumeroDocumento`, `ClienteEnteDocumento`, `ClienteEnteDiDocumento`, `ClienteRilascioDocumento`,
 								`ClienteIndirizzo`, `ClienteNumero`, `ClienteCap`, `ClienteCitta`, 
 									`ClienteTipologia` ,
 										`Agenti_idAgenti`) 
@@ -35,7 +35,7 @@ switch ($_POST['stato']) {
 											'', '".$_POST['ClienteCF']."', '', '".$_POST['ClienteMail']."',
 												'".$_POST['ClienteTelefono']."', '".$_POST['ClienteFax']."', '".$_POST['ClienteCellulare']."',
 												'".$_POST['ClienteDataNascita']."', '".$_POST['ClienteLuogoNascita']."', '".$_POST['ClienteProvinciaNascita']."',
-												'".$_POST['ClienteTipoDocumento']."', '".$_POST['ClienteNumeroDocumento']."', '".$_POST['ClienteEnteDocumento']."', '".$_POST['ClienteRilascioDocumento']."',
+												'".$_POST['ClienteTipoDocumento']."', '".$_POST['ClienteNumeroDocumento']."', '".$_POST['ClienteEnteDocumento']."', '".$_POST['ClienteEnteDiDocumento']."', '".$_POST['ClienteRilascioDocumento']."',
 												'".$_POST['ClienteIndirizzo']."', '".$_POST['ClienteNumero']."', '".$_POST['ClienteCap']."', '".$_POST['ClienteCitta']."', 
 													'".$_POST['ClienteTipologia']."',
 															'".$_POST['Agenti_idAgenti']."');";
@@ -52,7 +52,7 @@ switch ($_POST['stato']) {
 							`ClienteRagione`, `ClienteCF`, `ClientePI`, `ClienteMail`, 
 								`ClienteTelefono`, `ClienteFax`, `ClienteCellulare`,
 								 `ClienteDataNascita`, `ClienteLuogoNascita`, `ClienteProvinciaNascita`,
-								 `ClienteTipoDocumento`, `ClienteNumeroDocumento`, `ClienteEnteDocumento`, `ClienteRilascioDocumento`,
+								 `ClienteTipoDocumento`, `ClienteNumeroDocumento`, `ClienteEnteDocumento`, `ClienteEnteDiDocumento`, `ClienteRilascioDocumento`,
 								`ClienteIndirizzo`, `ClienteNumero`, `ClienteCap`, `ClienteCitta`, 
 									`ClienteTipologia` ,
 										`Agenti_idAgenti`) 
@@ -60,7 +60,7 @@ switch ($_POST['stato']) {
 											'".$_POST['ClienteRagione']."', '".$_POST['ClienteCF']."' , '".$_POST['ClientePI']."', '".$_POST['ClienteMail']."', 
 											'".$_POST['ClienteTelefono']."', '".$_POST['ClienteFax']."', '".$_POST['ClienteCellulare']."',
 												'".$_POST['ClienteDataNascita']."', '".$_POST['ClienteLuogoNascita']."', '".$_POST['ClienteProvinciaNascita']."',
-												'".$_POST['ClienteTipoDocumento']."', '".$_POST['ClienteNumeroDocumento']."', '".$_POST['ClienteEnteDocumento']."', '".$_POST['ClienteRilascioDocumento']."',
+												'".$_POST['ClienteTipoDocumento']."', '".$_POST['ClienteNumeroDocumento']."', '".$_POST['ClienteEnteDocumento']."', '".$_POST['ClienteEnteDiDocumento']."', '".$_POST['ClienteRilascioDocumento']."',
 												'".$_POST['ClienteIndirizzo']."', '".$_POST['ClienteNumero']."', '".$_POST['ClienteCap']."', '".$_POST['ClienteCitta']."', 
 													'".$_POST['ClienteTipologia']."',
 														'".$_POST['Agenti_idAgenti']."');";
@@ -96,12 +96,13 @@ switch ($_POST['stato']) {
             <h2>Documenti</h2>
             <label>Documento: </label>
             <select id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" required>
-				<option>Carta Identit&agrave</option>
-				<option>Patente</option>
-				<option>Passaporto</option>
+				<option value = \"CartaIdentita\" >Carta Identit&agrave</option>
+				<option value = \"Patente\">Patente</option>
+				<option value = \"Passaporto\">Passaporto</option>
             </select>
             <input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" required>
             <input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" required>
+            <input id=\"ClienteEnteDiDocumento\" name=\"ClienteEnteDiDocumento\" type=\"text\" placeholder=\"Ente di Documento\" required>
             <input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" required>
             <h2>Recapiti</h2>
             <input id=\"ClienteTelefono\" name=\"ClienteTelefono\" type=\"text\" placeholder=\"Telefono\" >
@@ -150,6 +151,7 @@ switch ($_POST['stato']) {
             </select>
             <input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" required>
             <input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" required>
+            <input id=\"ClienteEnteDiDocumento\" name=\"ClienteEnteDiDocumento\" type=\"text\" placeholder=\"Ente di Documento\" required>
             <input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" required>
             <h2>Recapiti</h2>
             <input id=\"ClienteTelefono\" name=\"ClienteTelefono\" type=\"text\" placeholder=\"Telefono\" >
