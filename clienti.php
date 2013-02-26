@@ -187,10 +187,11 @@ if(isset($_POST['stato'])){
 else {
 	switch($_GET['id']){
 		case 1:
-			echo "<h2>Aggiornamento Effettuato Correttamente</h2>";
+			echo "<div class=\"success\">Il cliente &egrave stato aggiornato : ".$_GET['msg']."</div>";
 			break;
 		case kocontratto:
-			echo "<h2>Errore Inserimento Contratto : ".$_POST['msg']."</h2>"
+			echo "<div class=\"error\">Il Contratto non &egrave stato inserito : ".$_GET['msg']."</div>";
+			break;
 		
 		}
 	echo "<h2>Lista Clienti</h2>";

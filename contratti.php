@@ -36,6 +36,29 @@ echo "
            </form>
          </div>";
 
+switch($_GET['id']) {
+		case okcontratto:
+				echo "<div class=\"success\">Il Contratto &egrave stato inserito : ".$_GET['msg']."</div>";
+			break;
+	
+		case okdel:
+				echo "<div class=\"success\">Il Contratto &egrave stato cancellato : ".$_GET['msg']."</div>";
+			break;
+			
+		case kodel:
+				echo "<div class=\"error\">Il Contratto  non &egrave stato cancellato : ".$_GET['msg']."</div>";
+			break;
+			
+		case koedit:
+				echo "<div class=\"error\">Il Contratto non &egrave editabile : ".$_GET['msg']."</div>";
+			break;
+			
+		case okedit:
+				echo "<div class=\"success\">Il Contratto &egrave stato editato : ".$_GET['msg']."</div>";
+			break;
+		
+	}
+
 if(isset($_POST['stato'])){
 		if(isset($_POST['ContrattoId']) && $_POST['ContrattoId'] != ''){
 			$sql = "SELECT * FROM Contratti AS C JOIN Agenti_Clienti_Contratti AS A on C.ContrattoId = A.ContrattoId WHERE A.AgenteId = '".$cod."' and

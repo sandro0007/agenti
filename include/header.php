@@ -8,7 +8,7 @@ echo"
  
     <!--Pannello di gestione -->
     <link href=\"css/admin.css\" rel=\"stylesheet\" type=\"text/css\" />
-    <link rel=\"stylesheet\" href=\"css/jquery.ui.all.css\">
+    <!-- <link rel=\"stylesheet\" href=\"css/jquery.ui.all.css\"> -->
 	<script src=\"include/jquery-1.9.0.js\"></script>
 	<script src=\"include/ui/jquery.ui.core.js\"></script>
 	<script src=\"include/ui/jquery.ui.widget.js\"></script>

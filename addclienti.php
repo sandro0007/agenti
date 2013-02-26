@@ -23,7 +23,7 @@ switch ($_POST['stato']) {
         if ($_POST['ClienteTipologia'] == 'Privato') {
 			
 			$sqlprivato = "INSERT INTO `Clienti` 
-						(`idCliente`, `ClienteNome`, `ClienteCognome`, 
+						(`idCliente`, `ClienteNome`, `ClienteCognome`, `ClienteSesso`,
 							`ClienteRagione`, `ClienteCF`, `ClientePI`, `ClienteMail`, 
 								`ClienteTelefono`, `ClienteFax`, `ClienteCellulare`,
 								 `ClienteDataNascita`, `ClienteLuogoNascita`, `ClienteProvinciaNascita`,
@@ -31,7 +31,7 @@ switch ($_POST['stato']) {
 								`ClienteIndirizzo`, `ClienteNumero`, `ClienteCap`, `ClienteCitta`, 
 									`ClienteTipologia` ,
 										`Agenti_idAgenti`) 
-										VALUES (NULL, '".$_POST['ClienteNome']."', '".$_POST['ClienteCognome']."', 
+										VALUES (NULL, '".$_POST['ClienteNome']."', '".$_POST['ClienteCognome']."', '".$_POST['ClienteSesso']."',
 											'', '".$_POST['ClienteCF']."', '', '".$_POST['ClienteMail']."',
 												'".$_POST['ClienteTelefono']."', '".$_POST['ClienteFax']."', '".$_POST['ClienteCellulare']."',
 												'".$_POST['ClienteDataNascita']."', '".$_POST['ClienteLuogoNascita']."', '".$_POST['ClienteProvinciaNascita']."',
@@ -48,7 +48,7 @@ switch ($_POST['stato']) {
 			}
 		if ($_POST['ClienteTipologia'] == 'Azienda') {
 				$sqlazienda = "INSERT INTO `Clienti` 
-						(`idCliente`, `ClienteNome`, `ClienteCognome`, 
+						(`idCliente`, `ClienteNome`, `ClienteCognome`, `ClienteSesso`,
 							`ClienteRagione`, `ClienteCF`, `ClientePI`, `ClienteMail`, 
 								`ClienteTelefono`, `ClienteFax`, `ClienteCellulare`,
 								 `ClienteDataNascita`, `ClienteLuogoNascita`, `ClienteProvinciaNascita`,
@@ -56,7 +56,7 @@ switch ($_POST['stato']) {
 								`ClienteIndirizzo`, `ClienteNumero`, `ClienteCap`, `ClienteCitta`, 
 									`ClienteTipologia` ,
 										`Agenti_idAgenti`) 
-										VALUES (NULL, '".$_POST['ClienteNome']."', '".$_POST['ClienteCognome']."', 
+										VALUES (NULL, '".$_POST['ClienteNome']."', '".$_POST['ClienteCognome']."', '".$_POST['ClienteSesso']."',
 											'".$_POST['ClienteRagione']."', '".$_POST['ClienteCF']."' , '".$_POST['ClientePI']."', '".$_POST['ClienteMail']."', 
 											'".$_POST['ClienteTelefono']."', '".$_POST['ClienteFax']."', '".$_POST['ClienteCellulare']."',
 												'".$_POST['ClienteDataNascita']."', '".$_POST['ClienteLuogoNascita']."', '".$_POST['ClienteProvinciaNascita']."',
@@ -87,10 +87,10 @@ switch ($_POST['stato']) {
             <!-- <input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" required> -->
             <label>Sesso: </label>
             <select name=\"ClienteSesso\" id=\"ClienteSesso\" placeholder=\"Sesso\" required>
-            <option>M</option>
-            <option>F</option>
+            <option value = \"M\">M</option>
+            <option value = \"F\">F</option>
             </select>
-            <input id=\"datepicker\" name=\"ClienteDataNascita\" type=\"text\" required>
+            <input id=\"ClienteDataNascita\" name=\"ClienteDataNascita\" type=\"text\" placeholder=\"Data di Nascita (YYYY-MM-DD)\"required>
             <input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" required>
             <input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provincia di Nascita\" required><br />
             <h2>Documenti</h2>
@@ -101,9 +101,9 @@ switch ($_POST['stato']) {
 				<option value = \"Passaporto\">Passaporto</option>
             </select>
             <input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" required>
-            <input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" required>
-            <input id=\"ClienteEnteDiDocumento\" name=\"ClienteEnteDiDocumento\" type=\"text\" placeholder=\"Ente di Documento\" required>
-            <input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" required>
+            <input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Rilascio Documento\" required>
+            <input id=\"ClienteEnteDiDocumento\" name=\"ClienteEnteDiDocumento\" type=\"text\" placeholder=\"di \" required>
+            <input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento (YYYY-MM-DD)\" required>
             <h2>Recapiti</h2>
             <input id=\"ClienteTelefono\" name=\"ClienteTelefono\" type=\"text\" placeholder=\"Telefono\" >
             <input id=\"ClienteFax\" name=\"ClienteFax\" type=\"text\" placeholder=\"Fax\" >
@@ -137,22 +137,22 @@ switch ($_POST['stato']) {
             <input id=\"ClienteCF\" name=\"ClienteCF\" type=\"text\" placeholder=\"Codice Fiscale\" required><br />
             <label>Sesso: </label>
             <select name=\"ClienteSesso\" id=\"ClienteSesso\" placeholder=\"Sesso\" required>
-				<option>M</option>
-				<option>F</option>
-            </select><input id=\"ClienteDataNascita\" name=\"ClienteDataNascita\" type=\"text\" placeholder=\"Data di Nascita\" required>
+				<option value = \"M\">M</option>
+				<option value = \"F\">F</option>
+            </select><input id=\"ClienteDataNascita\" name=\"ClienteDataNascita\" type=\"text\" placeholder=\"Data di Nascita (YYYY-MM-DD)\" required>
             <input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" required>
             <input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provincia di Nascita\" required><br />
             <h2>Documenti</h2>
             <label>Documento: </label>
             <select id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" required>
-				<option>Carta Identit&agrave</option>
-				<option>Patente</option>
-				<option>Passaporto</option>
+				<option  value = \"CartaIdentita\" >Carta Identit&agrave</option>
+				<option value = \"Patente\" >Patente</option>
+				<option value = \"Passaporto\" >Passaporto</option>
             </select>
             <input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" required>
-            <input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" required>
-            <input id=\"ClienteEnteDiDocumento\" name=\"ClienteEnteDiDocumento\" type=\"text\" placeholder=\"Ente di Documento\" required>
-            <input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento\" required>
+            <input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Rilascio Documento\" required>
+            <input id=\"ClienteEnteDiDocumento\" name=\"ClienteEnteDiDocumento\" type=\"text\" placeholder=\"di\" required>
+            <input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Data Rilascio Documento (YYYY-MM-DD)\" required>
             <h2>Recapiti</h2>
             <input id=\"ClienteTelefono\" name=\"ClienteTelefono\" type=\"text\" placeholder=\"Telefono\" >
             <input id=\"ClienteFax\" name=\"ClienteFax\" type=\"text\" placeholder=\"Fax\" >

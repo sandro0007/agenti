@@ -217,163 +217,56 @@ if(isset($_POST['stato'])){
 						 * $rsCliente['ClienteTipologia']
 					 * 
 					 * */
-				if ($rsCliente['ClienteTipologia'] == 'Privato'){
-					echo "
-					<table border=\"1\">
-						<tr>
-							<td>Cognome</td>
-							<td>".$rsCliente['ClienteCognome']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Nome</td>
-							<td>".$rsCliente['ClienteNome']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Codice Fiscale</td>
-							<td>".$rsCliente['ClienteCF']."</td>
-							<td>Sesso</td>
-							<td>".$rsCliente['ClienteSesso']."</td>
-						</tr>
-						<tr>
-							<td>Data di Nascita</td>
-							<td>".$rsCliente['ClienteDataNascita']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Luogo di Nascita</td>
-							<td>".$rsCliente['ClienteLuogoNascita']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Provincia di Nascita</td>
-							<td>".$rsCliente['ClienteProvinciaNascita']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-									<td colspan=\"4\">Documenti</td>
-								</tr>
-								<tr>
-									<td>Documento</td>
-									<td>Numero</td>
-									<td>Ente</td>
-									<td>DataRilascio</td>
-								</tr>
-								<tr>
-									<td>".$rsCliente['ClienteTipoDocumento']."</td>
-									<td>".$rsCliente['ClienteNumeroDocumento']."</td>
-									<td>".$rsCliente['ClienteEnteTipoDocumento']."</td>
-									<td>".$rsCliente['ClienteRilascioTipoDocumento']."</td>
-								</tr>
-								<tr>
-									<td colspan=\"4\">Dati Fatturazione</td>
-								</tr>
-								<tr>
-									<td>Indirizzo</td>
-									<td>Numero</td>
-									<td>CAP</td>
-									<td>Citta</td>
-								</tr>
-								<tr>
-									<td>".$rsCliente['ClienteIndirizzo']."</td>
-									<td>".$rsCliente['ClienteNumero']."</td>
-									<td>".$rsCliente['ClienteCap']."</td>
-									<td>".$rsCliente['ClienteCitta']."</td>
-								</tr></table>
-					
-				";		 
-					}
-				if ($rsCliente['ClienteTipologia'] == 'Azienda'){
-					echo "
-					<table border=\"1\">
-						<tr>
-							<td>Ragione Sociale</td>
-							<td>".$rsCliente['ClienteRagione']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Partita Iva</td>
-							<td>".$rsCliente['ClientePI']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td colspan=\"4\">Legale Rappresentante</td>
-						</tr>
-						<tr>
-							<td>Cognome</td>
-							<td>".$rsCliente['ClienteCognome']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Nome</td>
-							<td>".$rsCliente['ClienteNome']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Codice Fiscale</td>
-							<td>".$rsCliente['ClienteCF']."</td>
-							<td>Sesso</td>
-							<td>".$rsCliente['ClienteSesso']."</td>
-						</tr>
-						<tr>
-							<td>Data di Nascita</td>
-							<td>".$rsCliente['ClienteDataNascita']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Luogo di Nascita</td>
-							<td>".$rsCliente['ClienteLuogoNascita']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Provincia di Nascita</td>
-							<td>".$rsCliente['ClienteProvinciaNascita']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-									<td colspan=\"4\">Documenti</td>
-								</tr>
-								<tr>
-									<td>Documento</td>
-									<td>Numero</td>
-									<td>Ente</td>
-									<td>DataRilascio</td>
-								</tr>
-								<tr>
-									<td>".$rsCliente['ClienteTipoDocumento']."</td>
-									<td>".$rsCliente['ClienteNumeroDocumento']."</td>
-									<td>".$rsCliente['ClienteEnteTipoDocumento']."</td>
-									<td>".$rsCliente['ClienteRilascioTipoDocumento']."</td>
-								</tr><tr>
-									<td colspan=\"4\">Dati Fatturazione</td>
-								</tr>
-								<tr>
-									<td>Indirizzo</td>
-									<td>Numero</td>
-									<td>CAP</td>
-									<td>Citta</td>
-								</tr>
-								<tr>
-									<td>".$rsCliente['ClienteIndirizzo']."</td>
-									<td>".$rsCliente['ClienteNumero']."</td>
-									<td>".$rsCliente['ClienteCap']."</td>
-									<td>".$rsCliente['ClienteCitta']."</td>
-								</tr>
-							</table>";
-				}
+			
+			// START
+			echo "
+				<table>
+					<tr>
+						<td bgcolor = \"#1E90FF\" colspan = \"8\"><center><b>Dati Cliente</b></center></td>
+					</tr>
+					<tr>
+						<td><b>Cognome</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteCognome']."</i></td>
+						<td><b>Nome</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteNome']."</i></td>
+						<td><b>Codice Fiscale</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteCF']."</i></td>
+						<td><b>Sesso</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteSesso']."</i></td>
+					</tr>
+					<tr>
+						<td><b>Ragione Sociale</b></td><td colspan = \"4\" bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteRagione']."</i></td>
+						<td><b>Partita Iva</b></td><td colspan = \"2\" bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClientePI']."</i></td>
+					</tr>
+					<tr>
+						<td><b>Data Nascita</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteDataNascita']."</i></td>
+						<td><b>Luogo di Nascita</b></td><td colspan = \"3\" bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteLuogoNascita']."</i></td>
+						<td><b>Provincia</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteProvinciaNascita']."</i></td>
+					</tr>
+					<tr>
+						<td><b>Indirizzo</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteIndirizzo']."</i></td>
+						<td><b>Numero</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteNumero']."</i></td>
+						<td><b>C.A.P.</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteCap']."</i></td>
+						<td><b>Citt&agrave</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteCitta']."</i></td>
+					</tr>
+					<tr>
+						<td><b>Documento Identit&agrave</b></td>
+							<td colspan = \"3\" bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteTipoDocumento']."</i></td>
+						<td><b>Numero Documento</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteNumeroDocumento']."</i></td>
+						<td><b>Rilasciato il </b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteRilascioDocumento']."</i></td>
+					</tr>
+					<tr>
+						<td><b>Rilasciato da</b></td>
+						<td colspan=\"4\" bgcolor = \"#E5E5E5\"><i>
+							".$rsCliente['ClienteEnteDocumento']."</i>
+						</td>
+						<td><b>di</b></td>
+						<td colspan = \"2\" bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteEnteDiDocumento']."</i></td>
+					</tr>
+					<tr>
+						<td><b>Telefono</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteTelefono']."</i></td>
+						<td><b>Fax</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteFax']."</i></td>
+						<td><b>Cellulare</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteCelllulare']."</i></td>
+						<td><b>E-Mail</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteMail']."</i></td>
+					</tr>
+				</table>";
 						 
 				// VISUALIZZO TUTTI I CONTRATTI ATTIVI PER IL CLIENTE
 				

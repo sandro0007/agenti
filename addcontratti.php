@@ -275,23 +275,23 @@ if(isset($_POST['step'])){
 			
 			echo "
 			<form action=\"addcontratti.php\" method=\"POST\" name=\"form\">
-				<table border=\"1\" >
+				<table>
 					<tr>
-						<td colspan = \"8\"> Dati Intestatario Contratto</td>
+						<td colspan = \"8\" bgcolor = \"#1E90FF\" ><center><b>Dati Intestatario Contratto</b></center></td>
 					</tr>
 					<tr>
-						<td> Cognome</td><td><input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" value=\"".$rsCliente['ClienteCognome']." \" readonly></td>
-						<td> Nome</td><td><input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\" value=\"".$rsCliente['ClienteNome']." \" readonly></td>
-						<td> Codice Fiscale</td><td><input id=\"ClienteCF\" name=\"ClienteCF\" type=\"text\" placeholder=\"Codice Fiscale\" value=\"".$rsCliente['ClienteCF']." \" readonly></td>
-						<td> Sesso</td>
+						<td><b>Cognome</b></td><td ><input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" value=\"".$rsCliente['ClienteCognome']."\" readonly></td>
+						<td><b>Nome</b></td><td><input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\" value=\"".$rsCliente['ClienteNome']."\" readonly></td>
+						<td><b>Codice Fiscale</b></td><td><input id=\"ClienteCF\" name=\"ClienteCF\" type=\"text\" placeholder=\"Codice Fiscale\" value=\"".$rsCliente['ClienteCF']."\" readonly></td>
+						<td><b>Sesso</b></td>
 							<td>";
 							 if ($rsCliente['ClienteSesso'] == 'M' ) 
 									{ 
-										echo "<input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" value=\"".$rsCliente['ClienteSesso']." \" readonly>";
+										echo "<input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" value=\"".$rsCliente['ClienteSesso']."\" readonly>";
 									} 
 							if ($rsCliente['ClienteSesso'] == 'F' ) 
 								{
-										echo "<input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" value=\"".$rsCliente['ClienteSesso']." \" readonly>";
+										echo "<input id=\"ClienteSesso\" name=\"ClienteSesso\" type=\"text\" placeholder=\"Sesso\" value=\"".$rsCliente['ClienteSesso']."\" readonly>";
 										}
 									//~ else 
 									//~ {
@@ -301,156 +301,157 @@ if(isset($_POST['step'])){
 						echo " </td>
 					</tr>
 					<tr>
-						<td>Ragione Sociale</td><td colspan = \"4\"><input id=\"ClienteRagione\" name=\"ClienteRagione\" type=\"text\" placeholder=\"Ragione Sociale\" value=\"".$rsCliente['ClienteRagione']." \" readonly></td>
-						<td>Partita Iva</td><td colspan = \"2\"><input id=\"ClientePI\" name=\"ClientePI\" type=\"text\" placeholder=\"Partita Iva\" value=\"".$rsCliente['ClientePI']." \" readonly></td>
+						<td><b>Ragione Sociale</b></td><td colspan = \"4\"><input id=\"ClienteRagione\" name=\"ClienteRagione\" type=\"text\" placeholder=\"Ragione Sociale\" value=\"".$rsCliente['ClienteRagione']."\" readonly></td>
+						<td><b>Partita Iva</b></td><td colspan = \"2\"><input id=\"ClientePI\" name=\"ClientePI\" type=\"text\" placeholder=\"Partita Iva\" value=\"".$rsCliente['ClientePI']."\" readonly></td>
 					</tr>
 					<tr>
-						<td>Data Nascita</td><td><input id=\"ClienteDataNascita\" name=\"ClienteDataNascita\" type=\"text\" placeholder=\"Data di Nascita\" value=\"".$rsCliente['ClienteDataNascita']." \" readonly></td>
-						<td>Luogo di Nascita</td><td colspan = \"3\"><input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" value=\"".$rsCliente['ClienteLuogoNascita']." \" readonly></td>
-						<td>Provincia</td><td><input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provioncia di Nascita\" value=\"".$rsCliente['ClienteProvinciaNascita']." \" readonly></td>
+						<td><b>Data Nascita</b></td><td><input id=\"ClienteDataNascita\" name=\"ClienteDataNascita\" type=\"text\" placeholder=\"Data di Nascita\" value=\"".$rsCliente['ClienteDataNascita']."\" readonly></td>
+						<td><b>Luogo di Nascita</b></td><td colspan = \"3\"><input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" value=\"".$rsCliente['ClienteLuogoNascita']."\" readonly></td>
+						<td><b>Provincia</b></td><td><input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provioncia di Nascita\" value=\"".$rsCliente['ClienteProvinciaNascita']."\" readonly></td>
 					</tr>
 					<tr>
-						<td>Indirizzo</td><td><input id=\"ClienteIndirizzo\" name=\"ClienteIndirizzo\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo']." \" readonly></td>
-						<td>Numero</td><td><input id=\"ClienteNumero\" name=\"ClienteNumero\" type=\"text\" placeholder=\"Civico\" value=\"".$rsCliente['ClienteNumero']." \" readonly></td>
-						<td>C.A.P.</td><td><input id=\"ClienteCap\" name=\"ClienteCap\" type=\"text\" placeholder=\"CAP\" value=\"".$rsCliente['ClienteCap']." \" readonly></td>
-						<td>Citt&agrave</td><td><input id=\"ClienteCitta\" name=\"ClienteCitta\" type=\"text\" placeholder=\"Citta\" value=\"".$rsCliente['ClienteCitta']." \" readonly></td>
+						<td><b>Indirizzo</b></td><td><input id=\"ClienteIndirizzo\" name=\"ClienteIndirizzo\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$rsCliente['ClienteIndirizzo']."\" readonly></td>
+						<td><b>Numero</b></td><td><input id=\"ClienteNumero\" name=\"ClienteNumero\" type=\"text\" placeholder=\"Civico\" value=\"".$rsCliente['ClienteNumero']."\" readonly></td>
+						<td><b>C.A.P.</b></td><td><input id=\"ClienteCap\" name=\"ClienteCap\" type=\"text\" placeholder=\"CAP\" value=\"".$rsCliente['ClienteCap']." \"readonly></td>
+						<td><b>Citt&agrave</b></td><td><input id=\"ClienteCitta\" name=\"ClienteCitta\" type=\"text\" placeholder=\"Citta\" value=\"".$rsCliente['ClienteCitta']."\" readonly></td>
 					</tr>
 					<tr>
-						<td>Indirizzo Installazione</td><td><input id=\"ClienteIndirizzo1\" name=\"ClienteIndirizzo1\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$_POST['ClienteIndirizzo1']." \" readonly></td>
-						<td>Numero</td><td><input id=\"ClienteNumero1\" name=\"ClienteNumero1\" type=\"text\" placeholder=\"Civico\" value=\"".$_POST['ClienteNumero1']." \" readonly></td>
-						<td>C.A.P.</td><td><input id=\"ClienteCap1\" name=\"ClienteCap1\" type=\"text\" placeholder=\"CAP\" value=\"".$_POST['ClienteCap1']." \" readonly></td>
-						<td>Citt&agrave</td><td><input id=\"ClienteCitta1\" name=\"ClienteCitta1\" type=\"text\" placeholder=\"Citta\" value=\"".$_POST['ClienteCitta1']." \" readonly></td>
+						<td><b>Indirizzo Installazione</b></td><td><input id=\"ClienteIndirizzo1\" name=\"ClienteIndirizzo1\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$_POST['ClienteIndirizzo1']."\" readonly></td>
+						<td><b>Numero</b></td><td><input id=\"ClienteNumero1\" name=\"ClienteNumero1\" type=\"text\" placeholder=\"Civico\" value=\"".$_POST['ClienteNumero1']."\" readonly></td>
+						<td><b>C.A.P.</b></td><td><input id=\"ClienteCap1\" name=\"ClienteCap1\" type=\"text\" placeholder=\"CAP\" value=\"".$_POST['ClienteCap1']."\" readonly></td>
+						<td><b>Citt&agrave</b></td><td><input id=\"ClienteCitta1\" name=\"ClienteCitta1\" type=\"text\" placeholder=\"Citta\" value=\"".$_POST['ClienteCitta1']."\" readonly></td>
 					</tr>
 					<tr>
-						<td>Indirizzo Corrisponenza</td><td><input id=\"ClienteIndirizzo\" name=\"ClienteIndirizzo2\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$_POST['ClienteIndirizzo2']." \" readonly></td>
-						<td>Numero</td><td><input id=\"ClienteNumero2\" name=\"ClienteNumero2\" type=\"text\" placeholder=\"Civico\" value=\"".$_POST['ClienteNumero2']." \" readonly></td>
-						<td>C.A.P.</td><td><input id=\"ClienteCap2\" name=\"ClienteCap2\" type=\"text\" placeholder=\"CAP\" value=\"".$_POST['ClienteCap2']." \" readonly></td>
-						<td>Citt&agrave</td><td><input id=\"ClienteCitta2\" name=\"ClienteCitta2\" type=\"text\" placeholder=\"Citta\" value=\"".$_POST['ClienteCitta2']." \" readonly></td>
+						<td><b>Indirizzo Corrisponenza</b></td><td><input id=\"ClienteIndirizzo\" name=\"ClienteIndirizzo2\" type=\"text\" placeholder=\"Indirizzo\" value=\"".$_POST['ClienteIndirizzo2']."\" readonly></td>
+						<td><b>Numero</b></td><td><input id=\"ClienteNumero2\" name=\"ClienteNumero2\" type=\"text\" placeholder=\"Civico\" value=\"".$_POST['ClienteNumero2']."\" readonly></td>
+						<td><b>C.A.P.</b></td><td><input id=\"ClienteCap2\" name=\"ClienteCap2\" type=\"text\" placeholder=\"CAP\" value=\"".$_POST['ClienteCap2']."\" readonly></td>
+						<td><b>Citt&agrave</b></td><td><input id=\"ClienteCitta2\" name=\"ClienteCitta2\" type=\"text\" placeholder=\"Citta\" value=\"".$_POST['ClienteCitta2']."\" readonly></td>
 					</tr>
 					<tr>
-						<td>Documento Identit&agrave</td>
+						<td><b>Documento Identit&agrave</b></td>
 							<td colspan = \"3\">";
 							if ($rsCliente['ClienteTipoDocumento'] == 'CartaIdentita' ) 
 									{ 
-										echo "<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']." \" readonly>";	  
+										echo "<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']."\" readonly>";	  
 									}
 							if ($rsCliente['ClienteTipoDocumento'] == 'Patente' ) 
 									{ 
-										echo "<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']." \" readonly>";	  
+										echo "<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']."\" readonly>";	  
 									}
 							if ($rsCliente['ClienteTipoDocumento'] == 'Passaporto' ) 
 									{ 
-										echo "<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']." \" readonly>";	  
+										echo "<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']."\" readonly>";	  
 									}
 							
 				echo "</td>
-						<td>Numero Documento</td><td><input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documento\" value=\"".$rsCliente['ClienteNumeroDocumento']." \" readonly></td>
-						<td>Rilasciato il </td><td><input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Rilascio Documento\" value=\"".$rsCliente['ClienteRilascioDocumento']." \" readonly></td>
+						<td><b>Numero Documento</b></td><td><input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documento\" value=\"".$rsCliente['ClienteNumeroDocumento']."\" readonly></td>
+						<td><b>Rilasciato il</b></td><td><input id=\"ClienteRilascioDocumento\" name=\"ClienteRilascioDocumento\" type=\"text\" placeholder=\"Rilascio Documento\" value=\"".$rsCliente['ClienteRilascioDocumento']."\" readonly></td>
 					</tr>
 					<tr>
-						<td>Rilasciato da</td>
+						<td><b>Rilasciato da</b></td>
 						<td colspan=\"4\">
-							<input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente di Documento\" value=\"".$rsCliente['ClienteEnteDocumento']." \" readonly>
+							<input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente di Documento\" value=\"".$rsCliente['ClienteEnteDocumento']."\" readonly>
 						</td>
-						<td> di</td>
-						<td colspan = \"2\"><input id=\"ClienteEnteDiDocumento\" name=\"ClienteEnteDiDocumento\" type=\"text\" placeholder=\"Ente di Documento\" value=\"".$rsCliente['ClienteEnteDiDocumento']." \" readonly></td>
+						<td><b>di</b></td>
+						<td colspan = \"2\"><input id=\"ClienteEnteDiDocumento\" name=\"ClienteEnteDiDocumento\" type=\"text\" placeholder=\"Ente di Documento\" value=\"".$rsCliente['ClienteEnteDiDocumento']."\" readonly></td>
 					</tr>
 					<tr>
-						<td>Telefono</td><td><input id=\"ClienteTelefono\" name=\"ClienteTelefono\" type=\"text\" placeholder=\"Telefono\" value=\"".$rsCliente['ClienteTelefono']." \" readonly></td>
-						<td>Fax</td><td><input id=\"ClienteFax\" name=\"ClienteFax\" type=\"text\" placeholder=\"Fax\" value=\"".$rsCliente['ClienteFax']." \" readonly></td>
-						<td>Cellulare</td><td><input id=\"ClienteCelllulare\" name=\"ClienteCelllulare\" type=\"text\" placeholder=\"Cellulare\" value=\"".$rsCliente['ClienteCelllulare']." \" readonly></td>
-						<td>E-Mail</td><td><input id=\"ClienteMail\" name=\"ClienteMail\" type=\"text\" placeholder=\"E-Mail\" value=\"".$rsCliente['ClienteMail']." \" readonly></td>
+						<td><b>Telefono</b></td><td><input id=\"ClienteTelefono\" name=\"ClienteTelefono\" type=\"text\" placeholder=\"Telefono\" value=\"".$rsCliente['ClienteTelefono']."\" readonly></td>
+						<td><b>Fax</b></td><td><input id=\"ClienteFax\" name=\"ClienteFax\" type=\"text\" placeholder=\"Fax\" value=\"".$rsCliente['ClienteFax']."\" readonly></td>
+						<td><b>Cellulare</b></td><td><input id=\"ClienteCelllulare\" name=\"ClienteCelllulare\" type=\"text\" placeholder=\"Cellulare\" value=\"".$rsCliente['ClienteCelllulare']."\" readonly></td>
+						<td><b>E-Mail</b></td><td><input id=\"ClienteMail\" name=\"ClienteMail\" type=\"text\" placeholder=\"E-Mail\" value=\"".$rsCliente['ClienteMail']."\" readonly></td>
 					</tr>
 					<tr>
-						<td colspan = \"8\"> Dati Servizio</td>
+						<td colspan = \"8\"bgcolor = \"#1E90FF\" ><center><b>Dati Servizio</b></center></td>
 					</tr>
 					<tr>
-						<td>Codice Contratto</td><td><input id=\"OffertaNome\" name=\"OffertaNome\" type=\"text\" placeholder=\"Nome Offerta\" value=\"".$rsOfferta['OffertaNome']." \" readonly></td>
-						<td>Descrizione</td><td colspan =\"3\"><input id=\"OffertaDescrizione\" name=\"OffertaDescrizione\" type=\"text\" placeholder=\"Descrizione\" value=\"".$rsOfferta['OffertaDescrizione']." \" readonly></td>
-						<td>Importo Mensile</td><td><input id=\"OffertaCanone\" name=\"OffertaCanone\" type=\"text\" placeholder=\"Canone\" value=\"".$rsOfferta['OffertaCanone']." \" readonly></td>
+						<td><b>Codice Contratto</b></td><td><input id=\"OffertaNome\" name=\"OffertaNome\" type=\"text\" placeholder=\"Nome Offerta\" value=\"".$rsOfferta['OffertaNome']."\" readonly></td>
+						<td><b>Descrizione</b></td><td colspan =\"3\"><input id=\"OffertaDescrizione\" name=\"OffertaDescrizione\" type=\"text\" placeholder=\"Descrizione\" value=\"".$rsOfferta['OffertaDescrizione']."\" readonly></td>
+						<td><b>Importo Mensile</b></td><td><input id=\"OffertaCanone\" name=\"OffertaCanone\" type=\"text\" placeholder=\"Canone\" value=\"".$rsOfferta['OffertaCanone']."\" readonly></td>
 					</tr>
 					<tr>
-						<td>Linea Telefonica:</td>
-						<td>ESISTENTE -> </td><td><input id=\"LineaDatiMigrazione\" name=\"LineaDatiMigrazione\" type=\"text\" placeholder=\"Linea Migrazione\" value=\"".$_POST['LineaDatiMigrazione']." \" readonly></td>
-						<td> Numero Da Migrare</td>
-						<td colspan = \"2\"><input id=\"LineaNumero\" name=\"LineaNumero\" type=\"text\" placeholder=\"Linea Numero Migrazione\" value=\"".$_POST['LineaNumero']." \" readonly></td>
-						<td>Codice Migrazione</td>
-						<td><input id=\"LineaCodice\" name=\"LineaCodice\" type=\"text\" placeholder=\"Codice Migrazione\" value=\"".$_POST['LineaCodice']." \" readonly></td>
+						<td><b>Linea Telefonica:</b></td>
+						<td><b>ESISTENTE</b></td><td><input id=\"LineaDatiMigrazione\" name=\"LineaDatiMigrazione\" type=\"text\" placeholder=\"Linea Migrazione\" value=\"".$_POST['LineaDatiMigrazione']."\" readonly></td>
+						<td><b>Numero Da Migrare</b></td>
+						<td colspan = \"2\"><input id=\"LineaNumero\" name=\"LineaNumero\" type=\"text\" placeholder=\"Linea Numero Migrazione\" value=\"".$_POST['LineaNumero']."\" readonly></td>
+						<td><b>Codice Migrazione</b></td>
+						<td><input id=\"LineaCodice\" name=\"LineaCodice\" type=\"text\" placeholder=\"Codice Migrazione\" value=\"".$_POST['LineaCodice']."\" readonly></td>
 					</tr>
 					<tr>
 						<td></td>
-						<td>Nuova Attivazione -></td>
-						<td colspan = \"3\"><input id=\"LineaDatiAttivazione\" name=\"LineaDatiAttivazione\" type=\"text\" placeholder=\"Linea Attivazione\" value=\"".$_POST['LineaDatiAttivazione']." \" readonly></td>
-						<td>Numero Pilota</td>
-						<td colspan = \"2\"><input id=\"LineaPilota\" name=\"LineaPilota\" type=\"text\" placeholder=\"Linea Pilota\" value=\"".$_POST['LineaPilota']." \" readonly></td>
+						<td><b>Nuova Attivazione</b></td>
+						<td colspan = \"3\"><input id=\"LineaDatiAttivazione\" name=\"LineaDatiAttivazione\" type=\"text\" placeholder=\"Linea Attivazione\" value=\"".$_POST['LineaDatiAttivazione']."\" readonly></td>
+						<td><b>Numero Pilota</b></td>
+						<td colspan = \"2\"><input id=\"LineaPilota\" name=\"LineaPilota\" type=\"text\" placeholder=\"Linea Pilota\" value=\"".$_POST['LineaPilota']."\" readonly></td>
 					</tr>
 					<tr>
-						<td>Pagamento Canone</td>
+						<td><b>Pagamento Canone</b></td>
 						<td><input id=\"ContrattoPagamento\" name=\"ContrattoPagamento\" type=\"text\" placeholder=\"Pagamento Canone\" value=\"".$_POST['ContrattoPagamento']." \" readonly></td>
-						<td>U.T. Attivazione</td>
+						<td><b>U.T. Attivazione</b></td>
 						<td><input id=\"ContrattoAttivazione\" name=\"ContrattoAttivazione\" type=\"text\" placeholder=\"Attivazione\" value=\"".$_POST['ContrattoAttivazione']." \" readonly></td>
-						<td>Ricezione fattura</td>
+						<td><b>Ricezione fattura</b></td>
 						<td><input id=\"ContrattoFattura\" name=\"ContrattoFattura\" type=\"text\" placeholder=\"Ricezione Fattura\" value=\"".$_POST['ContrattoFattura']." \" readonly></td>
 					</tr>
 					<tr>
-						<td colspan = \"8\"> Servizi Opzionali</td>
+						<td colspan = \"8\"bgcolor = \"#1E90FF\" ><center><b>Servizi Opzionali</b></center></td>
 					</tr>
 					<tr>
-						<td>Ip Statito</td>
-						<td colspan = \"7\">";
+						<td><b>Ip Statito</b></td>
+						<td colspan = \"7\">
+						<fieldset>";
 							if ($_POST['OpzioneIp'] == '0')
 							{
-								echo "Nessuno<input type=\"checkbox\" name=\"OpzioneIp\" value=\"0\"  checked=\"checked\" />";
-								echo "1 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"1\" />";
-								echo "4 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"4\" />";
-								echo "8 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"8\" />";	  
-								echo "16 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"16\" />";	  
-								echo "32 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"32\" />";	  
+								echo "Nessuno<input type=\"radio\" name=\"OpzioneIp\" value=\"0\"  checked=\"checked\" /> - ";
+								echo "1 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"1\" /> - ";
+								echo "4 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"4\" /> - ";
+								echo "8 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"8\" /> - ";	  
+								echo "16 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"16\" /> - ";	  
+								echo "32 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"32\" />";	  
 								}
 							if ($_POST['OpzioneIp'] == '1')
 							{
-								echo "Nessuno<input type=\"checkbox\" name=\"OpzioneIp\" value=\"0\"  />";
-								echo "1 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"1\" checked=\"checked\" />";
-								echo "4 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"4\" />";
-								echo "8 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"8\" />";	  
-								echo "16 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"16\" />";	  
-								echo "32 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"32\" />";	  
+								echo "Nessuno<input type=\"radio\" name=\"OpzioneIp\" value=\"0\"  /> - ";
+								echo "1 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"1\" checked=\"checked\" /> - ";
+								echo "4 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"4\" /> - ";
+								echo "8 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"8\" /> - ";	  
+								echo "16 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"16\" /> - ";	  
+								echo "32 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"32\" />";	  
 								}
 							if ($_POST['OpzioneIp'] == '4')
 							{
-								echo "Nessuno<input type=\"checkbox\" name=\"OpzioneIp\" value=\"0\"   />";
-								echo "1 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"1\" />";
-								echo "4 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"4\" checked=\"checked\" />";
-								echo "8 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"8\" />";	  
-								echo "16 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"16\" />";	  
-								echo "32 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"32\" />";	  
+								echo "Nessuno<input type=\"radio\" name=\"OpzioneIp\" value=\"0\"   /> - ";
+								echo "1 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"1\" /> - ";
+								echo "4 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"4\" checked=\"checked\" /> - ";
+								echo "8 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"8\" /> - ";	  
+								echo "16 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"16\" /> - ";	  
+								echo "32 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"32\" />";	  
 								}
 							if ($_POST['OpzioneIp'] == '8')
 							{
-								echo "Nessuno<input type=\"checkbox\" name=\"OpzioneIp\" value=\"0\"   />";
-								echo "1 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"1\" />";
-								echo "4 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"4\" />";
-								echo "8 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"8\" checked=\"checked\" />";	  
-								echo "16 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"16\" />";	  
-								echo "32 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"32\" />";	  
+								echo "Nessuno<input type=\"radio\" name=\"OpzioneIp\" value=\"0\"   /> - ";
+								echo "1 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"1\" /> - ";
+								echo "4 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"4\" /> - ";
+								echo "8 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"8\" checked=\"checked\" /> - ";	  
+								echo "16 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"16\" /> - ";	  
+								echo "32 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"32\" />";	  
 								}
 							if ($_POST['OpzioneIp'] == '16')
 							{
-								echo "Nessuno<input type=\"checkbox\" name=\"OpzioneIp\" value=\"0\"   />";
-								echo "1 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"1\" />";
-								echo "4 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"4\" />";
-								echo "8 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"8\" />";	  
-								echo "16 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"16\" checked=\"checked\" />";	  
-								echo "32 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"32\" />";	  
+								echo "Nessuno<input type=\"radio\" name=\"OpzioneIp\" value=\"0\"   /> - ";
+								echo "1 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"1\" /> - ";
+								echo "4 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"4\" /> - ";
+								echo "8 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"8\" /> - ";	  
+								echo "16 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"16\" checked=\"checked\" /> - ";	  
+								echo "32 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"32\" />";	  
 								}
 							if ($_POST['OpzioneIp'] == '32')
 							{
-								echo "Nessuno<input type=\"checkbox\" name=\"OpzioneIp\" value=\"0\"   />";
-								echo "1 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"1\" />";
-								echo "4 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"4\" />";
-								echo "8 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"8\" />";	  
-								echo "16 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"16\" />";	  
-								echo "32 IP<input type=\"checkbox\" name=\"OpzioneIp\" value=\"32\" checked=\"checked\" />";	  
+								echo "Nessuno<input type=\"radio\" name=\"OpzioneIp\" value=\"0\"   /> - ";
+								echo "1 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"1\" /> - ";
+								echo "4 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"4\" /> - ";
+								echo "8 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"8\" /> - ";	  
+								echo "16 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"16\" /> - ";	  
+								echo "32 IP<input type=\"radio\" name=\"OpzioneIp\" value=\"32\" checked=\"checked\" />";	  
 								}
 								
 				echo "	</td>
@@ -462,7 +463,7 @@ if(isset($_POST['step'])){
 								echo "Acquisto e installazione Access Point<input type=\"checkbox\" name=\"OpzioneAp\" value=\"1\"  checked=\"checked\" />";
 							} else 
 								{
-									echo "Acquisto e installazione Access Point<input type=\"checkbox\" name=\"OpzioneAp\" value=\"0\"  />";
+									echo "Acquisto e installazione Access Point<input type=\"checkbox\" name=\"OpzioneAp\" value=\"1\"  />";
 									}
 							
 						echo "</td>
@@ -472,7 +473,7 @@ if(isset($_POST['step'])){
 								echo "Pubblicazione Numero in Elenco Telefonico<input type=\"checkbox\" name=\"OpzioneElenco\" value=\"1\"  checked=\"checked\" />";
 							} else 
 								{
-									echo "Pubblicazione Numero in Elenco Telefonico<input type=\"checkbox\" name=\"OpzioneElenco\" value=\"0\" />";
+									echo "Pubblicazione Numero in Elenco Telefonico<input type=\"checkbox\" name=\"OpzioneElenco\" value=\"1\" />";
 									}
 							
 						echo "</td>
@@ -484,7 +485,7 @@ if(isset($_POST['step'])){
 								echo "Identificaticazione Chiamante (Chi &egrave)<input type=\"checkbox\" name=\"OpzioneChie\" value=\"1\"  checked=\"checked\" />";
 							} else 
 								{
-									echo "Identificaticazione Chiamante (Chi &egrave)<input type=\"checkbox\" name=\"OpzioneChie\" value=\"0\" />";
+									echo "Identificaticazione Chiamante (Chi &egrave)<input type=\"checkbox\" name=\"OpzioneChie\" value=\"1\" />";
 									}
 							
 						echo "</td>
@@ -495,7 +496,7 @@ if(isset($_POST['step'])){
 								echo "Blocco Identificazitvo Chiamante (CLI Nascosto)<input type=\"checkbox\" name=\"OpzioneClinascosto\" value=\"1\"  checked=\"checked\" />";
 							} else 
 								{
-									echo "Blocco Identificazitvo Chiamante (CLI Nascosto)<input type=\"checkbox\" name=\"OpzioneClinascosto\" value=\"0\" />";
+									echo "Blocco Identificazitvo Chiamante (CLI Nascosto)<input type=\"checkbox\" name=\"OpzioneClinascosto\" value=\"1\" />";
 									}
 							
 						echo "</td>
@@ -507,7 +508,7 @@ if(isset($_POST['step'])){
 								echo "Trasferimento di chiamata<input type=\"checkbox\" name=\"OpzioneTrasferimento\" value=\"1\"  checked=\"checked\" />";
 							} else 
 								{
-									echo "Trasferimento di chiamata<input type=\"checkbox\" name=\"OpzioneTrasferimento\" value=\"0\" />";
+									echo "Trasferimento di chiamata<input type=\"checkbox\" name=\"OpzioneTrasferimento\" value=\"1\" />";
 									}
 							
 						echo "</td>
@@ -517,7 +518,7 @@ if(isset($_POST['step'])){
 								echo "Vuole ricevere la pubblicit&agrave?<input type=\"checkbox\" name=\"OpzionePubblicita\" value=\"1\"  checked=\"checked\" />";
 							} else 
 								{
-									echo "Vuole ricevere la pubblicit&agrave?<input type=\"checkbox\" name=\"OpzionePubblicita\" value=\"0\" />";
+									echo "Vuole ricevere la pubblicit&agrave?<input type=\"checkbox\" name=\"OpzionePubblicita\" value=\"1\" />";
 									}
 							
 						echo "</td>
@@ -529,7 +530,7 @@ if(isset($_POST['step'])){
 								echo "Chiamata in attesa<input type=\"checkbox\" name=\"OpzioneAttesa\" value=\"1\"  checked=\"checked\" />";
 							} else 
 								{
-									echo "Chiamata in attesa<input type=\"checkbox\" name=\"OpzioneAttesa\" value=\"0\" />";
+									echo "Chiamata in attesa<input type=\"checkbox\" name=\"OpzioneAttesa\" value=\"1\" />";
 									}
 							
 						echo "</td>
@@ -539,28 +540,28 @@ if(isset($_POST['step'])){
 								echo "Acquisto Switch 8 Porte<input type=\"checkbox\" name=\"OpzioneSwitch\" value=\"1\"  checked=\"checked\" />";
 							} else 
 								{
-									echo "Acquisto Switch 8 Porte<input type=\"checkbox\" name=\"OpzioneSwitch\" value=\"0\" />";
+									echo "Acquisto Switch 8 Porte<input type=\"checkbox\" name=\"OpzioneSwitch\" value=\"1\" />";
 									}
 							
 						echo "</td>
 					</tr>
 					<tr>
-						<td colspan = \"8\">RID</td>
+						<td colspan = \"8\" bgcolor = \"#1E90FF\" ><center><b>RID</b></center></td>
 					</tr>
 					<tr>
-						<td>Banca</td><td colspan = \"2\"><input id=\"ContrattoBanca\" name=\"ContrattoBanca\" type=\"text\" placeholder=\"Banca\" value=\"".$_POST['ContrattoBanca']." \" readonly></td>
-						<td>Agenzia</td><td colspan = \"2\"><input id=\"ContrattoAgenzia\" name=\"ContrattoAgenzia\" type=\"text\" placeholder=\"Agenzia\" value=\"".$_POST['ContrattoAgenzia']." \" readonly></td>
-						<td>Localit&agrave</td><td><input id=\"ContrattoLocalita\" name=\"ContrattoLocalita\" type=\"text\" placeholder=\"Localita\" value=\"".$_POST['ContrattoLocalita']." \" readonly></td>
+						<td><b>Banca</b></td><td colspan = \"2\"><input id=\"ContrattoBanca\" name=\"ContrattoBanca\" type=\"text\" placeholder=\"Banca\" value=\"".$_POST['ContrattoBanca']."\" readonly></td>
+						<td><b>Agenzia</b></td><td colspan = \"2\"><input id=\"ContrattoAgenzia\" name=\"ContrattoAgenzia\" type=\"text\" placeholder=\"Agenzia\" value=\"".$_POST['ContrattoAgenzia']."\" readonly></td>
+						<td><b>Localit&agrave</b></td><td><input id=\"ContrattoLocalita\" name=\"ContrattoLocalita\" type=\"text\" placeholder=\"Localita\" value=\"".$_POST['ContrattoLocalita']."\" readonly></td>
 					</tr>
 					<tr>
-						<td>Intestazione</td>
-						<td colspan =\"7\"><input id=\"ContrattoIntestazione\" name=\"ContrattoIntestazione\" type=\"text\" placeholder=\"Intestazione\" value=\"".$_POST['ContrattoIntestazione']." \" readonly></td>
+						<td><b>Intestazione</b></td>
+						<td colspan =\"7\"><input id=\"ContrattoIntestazione\" name=\"ContrattoIntestazione\" type=\"text\" placeholder=\"Intestazione\" value=\"".$_POST['ContrattoIntestazione']."\" readonly></td>
 					</tr>
 					<tr>
-						<td>IBAN</td><td colspan = \"5\"><input id=\"ContrattoIban\" name=\"ContrattoIban\" type=\"text\" placeholder=\"IBAN\" value=\"".$_POST['ContrattoIban']." \" readonly></td>
+						<td><b>IBAN</b></td><td colspan = \"5\"><input id=\"ContrattoIban\" name=\"ContrattoIban\" type=\"text\" placeholder=\"IBAN\" value=\"".$_POST['ContrattoIban']."\" readonly></td>
 					</tr>
 					<tr>
-						<td  colspan =\"8\">NOTE</td>
+						<td  colspan =\"8\" bgcolor = \"#1E90FF\" ><center><b>NOTE</b></center></td>
 					</tr>
 					<tr>
 						<td colspan = \"8\">
@@ -767,6 +768,8 @@ if(isset($_POST['step'])){
 					  }
 			echo "Contratto Inserito Correttamente <br />";
 			mail("supporto@linkspace.it", "Inserito Contratto ".$ContrattoId."");
+			$msg = 'Contratto inserito correttamente';
+			echo '<script language=javascript>document.location.href="contratti.php?id=okcontratto&msg='.$msg.'"</script>';
 			break;
 		
 	}

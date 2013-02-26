@@ -149,7 +149,7 @@ if(isset($_POST['stato'])){
 			$numrows=mysql_num_rows($res);
 			
 			if ($numrows == 0) {
-					echo "<h2>Spiacente Nessuna Risultato Ricerca</h2>";
+					echo "<div class=\"warning\">Nessun Contratto ancora attivo : ".$_GET['msg']."</div>";
 				}
 				else {
 					$sqlFatturato = "SELECT SUM(ContrattoProvvigioni) As Fatturato FROM Contratti AS C JOIN Agenti_Clienti_Contratti AS A on C.ContrattoId = A.ContrattoId WHERE A.AgenteId = '".$cod."' and
@@ -268,11 +268,11 @@ if(isset($_POST['stato'])){
 
 switch($_GET['id']){
 		case ok:
-			echo "<h2>Aggiornamento Effettuato Correttamente</h2>";
+			echo "<div class=\"success\">Il Contratto &egrave stato fatturato : ".$_GET['msg']."</div>";
 			break;
 		
 		case ko:
-			echo "<h2>Aggiornamento Non Effettuato - Pagamento fattura effettuato</h2>";
+			echo "<div class=\"error\">Il Contratto non &egrave stato fatturato : ".$_GET['msg']."</div>";
 			break;
 		
 		}
@@ -289,7 +289,7 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 	$numrows=mysql_num_rows($res);
 	
 	if ($numrows == 0) {
-			echo "<h2>Spiacente Nessuna Contratto Ancora Attivato</h2>";
+			echo "<div class=\"warning\">Nessun contratto ancora attivo : ".$_GET['msg']."</div>";
 		}
 		else {
 			$sqlFatturato = "SELECT SUM(ContrattoProvvigioni) As Fatturato FROM Contratti AS C JOIN Agenti_Clienti_Contratti AS A on C.ContrattoId = A.ContrattoId WHERE A.AgenteId = '".$cod."' and
