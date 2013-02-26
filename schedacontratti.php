@@ -822,6 +822,71 @@ if(isset($stato)){
 				<input  type=\"submit\" id=\"submit\" value=\"STAMPA\">
 			</form><br /><br />";
 			break;
+			
+				// MORE ALL
+		case moreall:
+			// VISUALIZZO TUTTI I CONTRATTI ATTIVI PER IL CLIENTE
+				
+				$contratti = "SELECT * FROM Contratti where Clienti_idCliente = ".$_POST['IdCliente']."";
+				$res = mysql_query($contratti);
+				$numrows=mysql_num_rows($res);
+					
+				if ($numrows == 0) {
+						//NESSUN CONTRATTO ATTIVO
+				echo "<div class=\"warning\">Impossibile Visualizzare CONTRATTI: Nessun Contratto Inserito</div>";
+				} else {
+						// VI SONO CONTRATTI ATTIVI
+						echo "<h2>Tutti i Contratti del Cliente</h2>";
+						echo "	<div class=\"tabella\" >
+								<table>
+									<tr>
+									<td>Contratto Numero</td>
+									<td>Nome Contratto</td>
+									<td>Tipologia</td>
+									<td>Stato</td>
+									<td></td>
+									</tr>";
+				while ($rsContratti = mysql_fetch_assoc($res)){
+						/**
+						 *  
+						 * $rsContratti['ContrattoId']
+						 * $rsContratti['ContrattoNome']
+						 * $rsContratti['ContrattoTipo']
+						 * $rsContratti['ContrattoStato']
+						 * 
+						 * */
+						echo "<tr>
+								<td>".$rsContratti['ContrattoId']."</td>
+								<td>".$rsContratti['ContrattoNome']."</td>
+								<td>".$rsContratti['ContrattoTipo']."</td>
+								<td>".$rsContratti['ContrattoStato']."</td>
+								<td style=\"float:right\" >
+								<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+										<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"edit\" >
+										<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
+										<input name=\"Edita Contratto\" type=\"image\" src=\"image\edit.gif\" alt=\"Edita Contratto\" title=\"Edita Contratto\"> 
+									</fieldset>
+								</form>
+								<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+										<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"del\" >
+										<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
+										<input name=\"Cancella Contratto\" type=\"image\" src=\"image\delete.gif\" alt=\"Cancella Contratto\" title=\"Cancella Contratto\"> 
+									</fieldset>
+								</form>
+								<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+										<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"more\" >
+										<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
+										<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 
+									</fieldset>
+								</form>
+								</td>
+							</tr>";
+					}
+						echo "</table>
+				</div>";
+			}
+			break;
+		// FINE MORE ALL
 		}
 	}	
 	else

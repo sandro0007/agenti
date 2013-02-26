@@ -268,11 +268,11 @@ if(isset($_POST['stato'])){
 
 switch($_GET['id']){
 		case ok:
-			echo "<div class=\"success\">Il Contratto &egrave stato fatturato : ".$_GET['msg']."</div>";
+			echo "<div class=\"success\">Il Contratto &egrave stato modificato : ".$_GET['msg']."</div>";
 			break;
 		
 		case ko:
-			echo "<div class=\"error\">Il Contratto non &egrave stato fatturato : ".$_GET['msg']."</div>";
+			echo "<div class=\"error\">Il Contratto non &egrave stato modificato : ".$_GET['msg']."</div>";
 			break;
 		
 		}

@@ -179,7 +179,7 @@ if(isset($_POST['stato'])){
 						 
 				} else {
 						// CONTRATTI PRESENTI - NON E POSSIBILE EDITARE IL CLIENTE 
-					echo "Non posso editare";
+					echo "<div class=\"warning\">Non è possibile editare il cliente: CONTRATTI in Lavorazione o Attivati</div>";
 				}
 			break;
 			// FINE EDIT CLIENTE
@@ -276,7 +276,7 @@ if(isset($_POST['stato'])){
 					
 				if ($numrows == 0) {
 						//NESSUN CONTRATTO ATTIVO
-				echo "<h2>Nessun Contratto ATTIVO</h2>";
+				echo "<div class=\"warning\">Impossibile Visualizzare CONTRATTI: Nessun Contratto Inserito</div>";
 				} else {
 						// VI SONO CONTRATTI ATTIVI
 						echo "<h2>Tutti i Contratti del Cliente</h2>";
@@ -330,6 +330,8 @@ if(isset($_POST['stato'])){
 			}
 			break;
 			// FINE DETTAGLIO CLIENTE
+			
+
 		}
 	}
 	// FINE CONTROLLO VARIABILE SESSIONE
