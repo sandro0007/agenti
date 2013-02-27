@@ -82,7 +82,7 @@ if(isset($_POST['stato'])){
 	$numrows=mysql_num_rows($res);
 	
 	if ($numrows == 0) {
-			echo "Spiacente Nessuna Corrispondenza Trovata";
+			echo "<div class=\"error\">Nessuna Corrispondenza Trovata</div>";
 			echo "<h2>Lista Contratti Agente</h2>";
 	$contratti = "SELECT * FROM Contratti AS C JOIN Agenti_Clienti_Contratti AS A on C.ContrattoId = A.ContrattoId WHERE A.AgenteId = '".$cod."'";
 	$res = mysql_query($contratti);

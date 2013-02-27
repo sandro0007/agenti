@@ -54,7 +54,7 @@ if(isset($_POST['stato'])){
 	$numrows=mysql_num_rows($res);
 	
 	if ($numrows == 0) {
-	echo "Spiacente Nessuna Corrispondenza Trovata";
+	echo "<div class=\"warning\">Nessuna Corrispondenza Trovata</div>";
 	echo "<h2>Lista Clienti</h2>";
 	$cliente = "SELECT * FROM Clienti where Agenti_idAgenti=".$cod." order by ClienteCognome ASC";
 	$res = mysql_query($cliente);

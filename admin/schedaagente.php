@@ -23,24 +23,25 @@ if(isset($_POST['stato'])){
 			//INIZIO DELLLA CANCELLAZIONE AGENTE
 		case del:
 			echo "Richiesta Cancellazione Agente ID: ".$_POST['idAgenti']."<br />";
-			$contratti = "SELECT * FROM Agenti_Clienti_Contratti where AgenteId = ".$_POST['idAgenti']."";
+			$contratti = "SELECT * FROM Clienti where Agenti_idAgenti = ".$_POST['idAgenti']."";
 				$res = mysql_query($contratti);
 				$numrows=mysql_num_rows($res);
 					
 				if ($numrows == 0) {
-						//NESSUN CONTRATTO ATTIVO - POSSIBILE EDITARE IL Agente
+						//NESSUN Cliente associato - POSSIBILE cancellare l' Agente
 						$sql="DELETE FROM Agenti WHERE idAgenti = ".$_POST['idAgenti']."";
 						if (!mysql_query($sql))
 						  {
-							  echo $sql."<br />";
-						  die('Error Cancellazione Agente: ' . mysql_error());
+							  $msg = 'Error Cancellazione Agente: ' . mysql_error();
+							  echo '<script language=javascript>document.location.href="adminagenti.php?id=kodel&msg='.$msg.'"</script>';
 						  }
-						echo '<script language=javascript>document.location.href="adminagenti.php?id=okdel"</script>';
+						 $msg = 'Elimininazione Completa';
+						echo '<script language=javascript>document.location.href="adminagenti.php?id=okdel&msg='.$msg.'"</script>';
 					} 
-					else //SONO PRESENTI CONTRATTI 
+					else //SONO PRESENTI CLIENTI 
 					{
-						// Ritorno il messaggio
-						echo '<script language=javascript>document.location.href="adminagenti.php?id=nodel"</script>';
+						$msg = 'Sono presenti dei Clienti';
+						echo '<script language=javascript>document.location.href="adminagenti.php?id=kodel&msg='.$msg.'"</script>';
 						}
 			break;
 			// FINE CANCELLAZIONE AGENTE
@@ -118,7 +119,19 @@ if(isset($_POST['stato'])){
 								<h2>Dettagli Accesso WEB</h2>
 								<input id=\"AgenteUser\" name=\"AgenteUser\" type=\"text\" placeholder=\"Username\" value=\"".$rsAgente['AgenteUser']."\"required>
 								<input id=\"AgentePass\" name=\"AgentePass\" type=\"text\" placeholder=\"Password\" value=\"".$rsAgente['AgentePass']."\"required>
-								<input id=\"AgenteAbilitato\" name=\"AgenteAbilitato\" type=\"text\" placeholder=\"Accesso Web\" value=\"".$rsAgente['AgenteAbilitato']."\"required>
+								<h2>Accesso Web</h2>
+								<select id=\"AgenteAbilitato\" name=\"AgenteAbilitato\">";
+									if ( $rsAgente['AgenteAbilitato'] == '1')
+											{
+												echo "<option value=\"1\">Agente Abilitato</option>";
+												echo "<option value=\"0\">Agente Non Abilitato</option>";
+											}
+									else 
+									{
+											echo "<option value=\"0\">Agente Non Abilitato</option>";
+											echo "<option value=\"1\">Agente Abilitato</option>";
+										}
+								echo"	</select>
 								<input id=\"idAgente\" name=\"idAgente\" type=\"hidden\" value=\"".$rsAgente['idAgenti']."\" >
 								<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
 							</fieldset>
@@ -131,7 +144,6 @@ if(isset($_POST['stato'])){
 			
 			// INIZIO DETTAGLIO AGENTE
 		case more:
-				echo "<h2>Richiesta Dettaglio Agente</h2>";
 				$agente = "SELECT * FROM Agenti where idAgenti =".$_POST['idAgenti']."";
 				$res = mysql_query($agente);
 				$rsAgente = mysql_fetch_assoc($res);
@@ -154,62 +166,65 @@ if(isset($_POST['stato'])){
 					 * 
 					 * */
 				echo "
-					<table border=\"1\">
+					<table >
 						<tr>
-							<td>Cognome</td>
-							<td>".$rsAgente['AgenteCognome']."</td>
+							<td colspan = \"2\" bgcolor = \"#1E90FF\" ><center><b>Dettagli Agente</b></center></td>
 						</tr>
 						<tr>
-							<td>Nome</td>
-							<td>".$rsAgente['AgenteNome']."</td>
+							<td><b>Cognome</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsAgente['AgenteCognome']."</i></td>
 						</tr>
 						<tr>
-							<td>Telefono</td>
-							<td>".$rsAgente['AgenteTelefono']."</td>
+							<td><b>Nome</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsAgente['AgenteNome']."</i></td>
 						</tr>
 						<tr>
-							<td>Fax</td>
-							<td>".$rsAgente['AgenteFax']."</td>
+							<td><b>Telefono</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsAgente['AgenteTelefono']."</i></td>
 						</tr>
 						<tr>
-							<td>Cellulare</td>
-							<td>".$rsAgente['AgenteCellulare']."</td>
+							<td><b>Fax</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsAgente['AgenteFax']."</i></td>
 						</tr>
 						<tr>
-							<td>E-Mail</td>
-							<td>".$rsAgente['AgenteMail']."</td>
+							<td><b>Cellulare</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsAgente['AgenteCellulare']."</i></td>
 						</tr>
 						<tr>
-							<td>Indirizzo</td>
-							<td>".$rsAgente['AgenteIndirizzo']."</td>
+							<td><b>E-Mail</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsAgente['AgenteMail']."</i></td>
 						</tr>
 						<tr>
-							<td>Civico</td>
-							<td>".$rsAgente['AgenteNumero']."</td>
+							<td><b>Indirizzo</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsAgente['AgenteIndirizzo']."</i></td>
 						</tr>
 						<tr>
-							<td>C.A.P.</td>
-							<td>".$rsAgente['AgenteCap']."</td>
+							<td><b>Civico</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsAgente['AgenteNumero']."</i></td>
 						</tr>
 						<tr>
-							<td>Citt&agrave</td>
-							<td>".$rsAgente['AgenteCitta']."</td>
+							<td><b>C.A.P.</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsAgente['AgenteCap']."</i></td>
 						</tr>
 						<tr>
-							<td>Username</td>
-							<td>".$rsAgente['AgenteUser']."</td>
+							<td><b>Citt&agrave</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsAgente['AgenteCitta']."</i></td>
 						</tr>
 						<tr>
-							<td>Password</td>
-							<td>".$rsAgente['AgentePass']."</td>
+							<td><b>Username</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsAgente['AgenteUser']."</i></td>
 						</tr>
 						<tr>
-							<td>Accesso Web</td>";
+							<td><b>Password</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsAgente['AgentePass']."</i></td>
+						</tr>
+						<tr>
+							<td><b>Accesso Web</b></td>";
 							if ($rsAgente['AgenteAbilitato'] == '1') {
-								echo "<td>Utente Abilitato</td>";
+								echo "<td bgcolor = \"#90EE90\"><i>Utente Abilitato</i></td>";
 								}
 								else {
-									echo "<td>Utente Non Abilitato</td>";
+									echo "<td bgcolor = \"#FF0000\"><i>Utente Non Abilitato</i></td>";
 									}
 					echo"	</tr>
 					</table>";		 
@@ -226,7 +241,7 @@ if(isset($_POST['stato'])){
 					
 				if ($numrows == 0) {
 						//NESSUN CONTRATTO ATTIVO
-				echo "<h2>Nessun Contratto ATTIVO</h2>";
+					echo "<div class=\"warning\">Non risultano contratti emessi per l'agente</div>";
 				} else {
 						// VI SONO CONTRATTI ATTIVI
 						echo "<h2>Tutti i Contratti dell'agente</h2>";
@@ -254,19 +269,19 @@ if(isset($_POST['stato'])){
 								<td>".$rsContratti['ContrattoTipo']."</td>
 								<td>".$rsContratti['ContrattoStato']."</td>
 								<td style=\"float:right\" >
-								<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+								<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 										<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"edit\" >
 										<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
 										<input name=\"Edita Contratto\" type=\"image\" src=\"image\edit.gif\" alt=\"Edita Contratto\" title=\"Edita Contratto\"> 
 									</fieldset>
 								</form>
-								<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+								<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 										<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"del\" >
 										<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
 										<input name=\"Cancella Contratto\" type=\"image\" src=\"image\delete.gif\" alt=\"Cancella Contratto\" title=\"Cancella Contratto\"> 
 									</fieldset>
 								</form>
-								<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+								<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 										<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"more\" >
 										<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
 										<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 

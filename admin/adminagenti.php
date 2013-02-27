@@ -135,7 +135,7 @@ switch($_POST['stato']){
 								<input name=\"Cancella Agente\" type=\"image\" src=\"image\delete.gif\" alt=\"Cancella Agente\" title=\"Cancella Agente\"> 
 							</fieldset>
 						</form>
-						<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+						<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 								<input id=\"idAgenti\" name=\"idAgenti\" type=\"hidden\" value=\"".$rsAgente['idAgenti']."\" >
 								<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"moreall\" >
 								<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 
@@ -189,7 +189,7 @@ switch($_POST['stato']){
 								<input name=\"Cancella Agente\" type=\"image\" src=\"image\delete.gif\" alt=\"Cancella Agente\" title=\"Cancella Agente\"> 
 							</fieldset>
 						</form>
-						<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+						<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 								<input id=\"idAgenti\" name=\"idAgenti\" type=\"hidden\" value=\"".$rsAgente['idAgenti']."\" >
 								<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"moreall\" >
 								<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 
@@ -211,22 +211,22 @@ switch($_POST['stato']){
 else {
 	switch($_GET['id']){
 		case 1:
-			echo "<h2>Aggiornamento Effettuato Correttamente</h2>";
+			echo "<div class=\"success\"L'Agente &egrave stato aggiornato : ".$_GET['msg']."</div>";
 			break;
 		case ok:
-			echo "<h2>Modifica Agente Effettuata </h2>";
+			echo "<div class=\"success\">L'Agente &egrave stato modificato : ".$_GET['msg']."</div>";
 			break;
 		
 		case ko:
-			echo "<h2>Impossibile Modificare Agente</h2>";
+			echo "<div class=\"error\">L'Agente non &egrave stato modificato : ".$_GET['msg']."</div>";
 			break;
 			
-		case nodel:
-			echo "<h2>Impossibile Cancellare l'Agente, ha dei contratti attivi!</h2>";
+		case kodel:
+			echo "<div class=\"error\">L'Agente non pu&ograve essere cancellato : ".$_GET['msg']."</div>";
 			break;
 			
 		case okdel:
-			echo "<h2>Agente Cancellato Correttamente.</h2>";
+			echo "<div class=\"success\">L'Agente &egrave stato cancellato : ".$_GET['msg']."</div>";
 			break;
 		
 		}
@@ -282,7 +282,7 @@ else {
 						<input name=\"Cancella Agente\" type=\"image\" src=\"image\delete.gif\" alt=\"Cancella Agente\" title=\"Cancella Agente\"> 
 					</fieldset>
 				</form>
-				<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+				<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 						<input id=\"idAgenti\" name=\"idAgenti\" type=\"hidden\" value=\"".$rsAgente['idAgenti']."\" >
 						<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"moreall\" >
 						<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 

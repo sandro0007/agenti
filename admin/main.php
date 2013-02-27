@@ -18,12 +18,27 @@ $codadmin = $_SESSION['admin']; //id cod recuperato nel file di verifica
 
 echo $menu;
                         
-echo "INFORMAZIONE Amministratore <br />";
+echo "<h2>INFORMAZIONE Amministratore</h2>";
 
-$agente = "SELECT * FROM Admin where AdminId=".$codadmin."";
-$res = mysql_query($agente);
-$rsAgente = mysql_fetch_assoc($res);
- echo "User: ".$rsAgente['AdminUser']."<br/ >";
- echo "Pass: ".$rsAgente['AdminPass']."<br/ >";
- echo "e-mail: ".$rsAgente['AdminMail']."<br/ >"; 
+$admin = "SELECT * FROM Admin WHERE AdminId = ".$codadmin."";
+$res = mysql_query($admin);
+$rsAdmin = mysql_fetch_assoc($res);
+echo "
+		<table >
+			<tr>
+				<td colspan = \"2\" bgcolor = \"#1E90FF\" ><center><b>Dettagli Amministratore</b></center></td>
+			</tr>
+			<tr>
+				<td><b>Cognome</b></td>
+				<td bgcolor = \"#E5E5E5\"><i>".$rsAdmin['AdminCognome']."</i></td>
+			</tr>
+			<tr>
+				<td><b>Nome</b></td>
+				<td bgcolor = \"#E5E5E5\"><i>".$rsAdmin['AdminNome']."</i></td>
+			</tr>
+			<tr>
+				<td><b>E-Mail</b></td>
+				<td bgcolor = \"#E5E5E5\"><i>".$rsAdmin['AdminMail']."</i></td>
+			</tr>
+		</table>";	
 ?>

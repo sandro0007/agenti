@@ -44,20 +44,29 @@ echo "
 
 // Controllo Resultato
 switch($_GET['id']){
+	
+		case okdel:
+			echo "<div class=\"success\">Cancellazione Cliente Effettuata: ".$_GET['msg']."</div>";
+			break;
+		
+		case kodel:
+			echo "<div class=\"error\">Cancellazione Cliente NON Effettuata: ".$_GET['msg']."</div>";
+			break;
+			
 		case okupdate:
-				echo "<h2>Aggiornamento Effettuato Correttamente</h2>";
+				echo "<div class=\"success\">Aggiornamento Cliente Effettuato: ".$_GET['msg']."</div>";
 			break;
 		
 		case koupdate:
-				echo "<h2>Aggiornamento Non Effettuato</h2><br />".$_POST['msg'];
+				echo "<div class=\"error\">Aggiornamento Cliente NON Effettuato: ".$_GET['msg']."</div>";
 			break;
 			
 		case okserch:
-				echo "<h2>Ricerca Effettuata Correttamente</h2>";
+				echo "<div class=\"success\">Ricerca Cliente Effettuata: ".$_GET['msg']."</div>";
 			break;
 		
 		case kosearch:
-				echo "<h2>Ricerca Non Effettuata</h2><br />".$_POST['msg'];
+				echo "<div class=\"error\">Ricerca Cliente NON Effettuato: ".$_GET['msg']."</div>";
 			break;
 		
 		}
@@ -65,11 +74,44 @@ switch($_GET['id']){
 
 if(isset($_POST['stato'])){ // INIZIO CONTROLLO VARIABILE
 	switch($_POST['stato']) {
-			//INIZIO DEL CLIENTE
-		case del:
-			echo "Richiesta Cancellazione Cliente ".$_POST['IdCliente']."";
+		
+			case confirmdelete: // INIZIO CONFERMA CANCELLAZIONE CLIENTE
+			
+			$sqlDelClienti = "DELETE FROM Clienti WHERE idCliente = '".$_POST['IdCliente']."'";
+		
+			if (!mysql_query($sqlDelClienti))
+			  {
+				
+				$msg = 'Error Cancellazione Cliente: ' . mysql_error();
+				echo '<script language=javascript>document.location.href="adminclienti.php?id=kodel&msg='.$msg.'"</script>';
+			  }
+			  
+			$msg = "ESITO POSITOVO";
+			echo '<script language=javascript>document.location.href="adminclienti.php?id=okdel&msg'.$msg.'"</script>';
 			break;
-			// FINE DEL CLIENTE
+		
+		case del: //RICHIESTA CANCELLAZIONE CLIENTE
+			echo "<h3>Richiesta Cancellazione  Cliente numero ".$_POST['IdCliente']."</h3>";
+			$sqlContratto = "SELECT * FROM Contratti WHERE Clienti_idCliente = '".$_POST['IdCliente']."'";
+				$resContratto = mysql_query($sqlContratto);
+				$numrows=mysql_num_rows($resContratto);
+					
+				if ($numrows == 0) {
+						//NESSUN CONTRATTO ATTIVO - PROCEDO CON LA CANCELLAZIONE
+				echo "<h3>Vuoi Veramente Cancellare il Cliente?</h3>
+							<form action=\"adminclienti.php\" method=\"POST\" name=\"form\">
+							<input id=\"stato\" name=\"stato\"  type=\"hidden\" value=\"confirmdelete\">
+						<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$_POST['IdCliente']."\">
+						<input  type=\"submit\" id=\"submit\" value=\"DELETE\">
+					</form><br /><br />";
+				} 
+					
+					else 
+					{
+					$msg = "Sono Presenti Contratti";
+					echo '<script language=javascript>document.location.href="adminclienti.php?id=kodel&msg='.$msg.'"</script>';
+				}
+			break; // FINE CANCELLAZIONE CLIENTE
 			
 			//INIZIO UPDATE CLIENTE
 		case update:
@@ -249,163 +291,54 @@ if(isset($_POST['stato'])){ // INIZIO CONTROLLO VARIABILE
 						 * $rsCliente['ClienteTipologia']
 					 * 
 					 * */
-				if ($rsCliente['ClienteTipologia'] == 'Privato'){
-					echo "
-					<table border=\"1\">
-						<tr>
-							<td>Cognome</td>
-							<td>".$rsCliente['ClienteCognome']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Nome</td>
-							<td>".$rsCliente['ClienteNome']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Codice Fiscale</td>
-							<td>".$rsCliente['ClienteCF']."</td>
-							<td>Sesso</td>
-							<td>".$rsCliente['ClienteSesso']."</td>
-						</tr>
-						<tr>
-							<td>Data di Nascita</td>
-							<td>".$rsCliente['ClienteDataNascita']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Luogo di Nascita</td>
-							<td>".$rsCliente['ClienteLuogoNascita']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Provincia di Nascita</td>
-							<td>".$rsCliente['ClienteProvinciaNascita']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-									<td colspan=\"4\">Documenti</td>
-								</tr>
-								<tr>
-									<td>Documento</td>
-									<td>Numero</td>
-									<td>Ente</td>
-									<td>DataRilascio</td>
-								</tr>
-								<tr>
-									<td>".$rsCliente['ClienteTipoDocumento']."</td>
-									<td>".$rsCliente['ClienteNumeroDocumento']."</td>
-									<td>".$rsCliente['ClienteEnteTipoDocumento']."</td>
-									<td>".$rsCliente['ClienteRilascioTipoDocumento']."</td>
-								</tr>
-								<tr>
-									<td colspan=\"4\">Dati Fatturazione</td>
-								</tr>
-								<tr>
-									<td>Indirizzo</td>
-									<td>Numero</td>
-									<td>CAP</td>
-									<td>Citta</td>
-								</tr>
-								<tr>
-									<td>".$rsCliente['ClienteIndirizzo']."</td>
-									<td>".$rsCliente['ClienteNumero']."</td>
-									<td>".$rsCliente['ClienteCap']."</td>
-									<td>".$rsCliente['ClienteCitta']."</td>
-								</tr></table>
-					
-				";		 
-					}
-				if ($rsCliente['ClienteTipologia'] == 'Azienda'){
-					echo "
-					<table border=\"1\">
-						<tr>
-							<td>Ragione Sociale</td>
-							<td>".$rsCliente['ClienteRagione']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Partita Iva</td>
-							<td>".$rsCliente['ClientePI']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td colspan=\"4\">Legale Rappresentante</td>
-						</tr>
-						<tr>
-							<td>Cognome</td>
-							<td>".$rsCliente['ClienteCognome']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Nome</td>
-							<td>".$rsCliente['ClienteNome']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Codice Fiscale</td>
-							<td>".$rsCliente['ClienteCF']."</td>
-							<td>Sesso</td>
-							<td>".$rsCliente['ClienteSesso']."</td>
-						</tr>
-						<tr>
-							<td>Data di Nascita</td>
-							<td>".$rsCliente['ClienteDataNascita']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Luogo di Nascita</td>
-							<td>".$rsCliente['ClienteLuogoNascita']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Provincia di Nascita</td>
-							<td>".$rsCliente['ClienteProvinciaNascita']."</td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-									<td colspan=\"4\">Documenti</td>
-								</tr>
-								<tr>
-									<td>Documento</td>
-									<td>Numero</td>
-									<td>Ente</td>
-									<td>DataRilascio</td>
-								</tr>
-								<tr>
-									<td>".$rsCliente['ClienteTipoDocumento']."</td>
-									<td>".$rsCliente['ClienteNumeroDocumento']."</td>
-									<td>".$rsCliente['ClienteEnteTipoDocumento']."</td>
-									<td>".$rsCliente['ClienteRilascioTipoDocumento']."</td>
-								</tr><tr>
-									<td colspan=\"4\">Dati Fatturazione</td>
-								</tr>
-								<tr>
-									<td>Indirizzo</td>
-									<td>Numero</td>
-									<td>CAP</td>
-									<td>Citta</td>
-								</tr>
-								<tr>
-									<td>".$rsCliente['ClienteIndirizzo']."</td>
-									<td>".$rsCliente['ClienteNumero']."</td>
-									<td>".$rsCliente['ClienteCap']."</td>
-									<td>".$rsCliente['ClienteCitta']."</td>
-								</tr>
-							</table>";
-				}
+echo "
+				<table>
+					<tr>
+						<td bgcolor = \"#1E90FF\" colspan = \"8\"><center><b>Dati Cliente</b></center></td>
+					</tr>
+					<tr>
+						<td><b>Cognome</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteCognome']."</i></td>
+						<td><b>Nome</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteNome']."</i></td>
+						<td><b>Codice Fiscale</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteCF']."</i></td>
+						<td><b>Sesso</b></td>
+							<td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteSesso']."</i></td>
+					</tr>
+					<tr>
+						<td><b>Ragione Sociale</b></td><td colspan = \"4\" bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteRagione']."</i></td>
+						<td><b>Partita Iva</b></td><td colspan = \"2\" bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClientePI']."</i></td>
+					</tr>
+					<tr>
+						<td><b>Data Nascita</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteDataNascita']."</i></td>
+						<td><b>Luogo di Nascita</b></td><td colspan = \"3\" bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteLuogoNascita']."</i></td>
+						<td><b>Provincia</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteProvinciaNascita']."</i></td>
+					</tr>
+					<tr>
+						<td><b>Indirizzo</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteIndirizzo']."</i></td>
+						<td><b>Numero</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteNumero']."</i></td>
+						<td><b>C.A.P.</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteCap']."</i></td>
+						<td><b>Citt&agrave</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteCitta']."</i></td>
+					</tr>
+					<tr>
+						<td><b>Documento Identit&agrave</b></td>
+							<td colspan = \"3\" bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteTipoDocumento']."</i></td>
+						<td><b>Numero Documento</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteNumeroDocumento']."</i></td>
+						<td><b>Rilasciato il </b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteRilascioDocumento']."</i></td>
+					</tr>
+					<tr>
+						<td><b>Rilasciato da</b></td>
+						<td colspan=\"4\" bgcolor = \"#E5E5E5\"><i>
+							".$rsCliente['ClienteEnteDocumento']."</i>
+						</td>
+						<td><b>di</b></td>
+						<td colspan = \"2\" bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteEnteDiDocumento']."</i></td>
+					</tr>
+					<tr>
+						<td><b>Telefono</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteTelefono']."</i></td>
+						<td><b>Fax</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteFax']."</i></td>
+						<td><b>Cellulare</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteCelllulare']."</i></td>
+						<td><b>E-Mail</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteMail']."</i></td>
+					</tr>
+				</table>";
 						 
 				// VISUALIZZO TUTTI I CONTRATTI ATTIVI PER IL CLIENTE
 				
@@ -415,7 +348,7 @@ if(isset($_POST['stato'])){ // INIZIO CONTROLLO VARIABILE
 					
 				if ($numrows == 0) {
 						//NESSUN CONTRATTO ATTIVO
-				echo "<h2>Nessun Contratto ATTIVO</h2>";
+				echo "<div class=\"warning\">Impossibile Visualizzare CONTRATTI: Nessun Contratto Attivo</div>";
 				} else {
 						// VI SONO CONTRATTI ATTIVI
 						echo "<h2>Tutti i Contratti del Cliente</h2>";
@@ -562,6 +495,70 @@ if(isset($_POST['stato'])){ // INIZIO CONTROLLO VARIABILE
 							} // Fine Risultato
 				break; // FINE SEARCH
 				
+				case moreall:
+			// VISUALIZZO TUTTI I CONTRATTI ATTIVI PER L'AGENTE
+				
+				$Contratti = "SELECT * FROM Contratti where Clienti_idCliente = ".$_POST['IdCliente']."";
+				$res = mysql_query($Contratti);
+				$numrows=mysql_num_rows($res);
+					
+				if ($numrows == 0) {
+						//NESSUN CONTRATTO ATTIVO
+				echo "<div class=\"warning\">Impossibile Visualizzare CONTRATTI: Nessun Contratto Inserito</div>";
+				} else {
+						// VI SONO CONTRATTI ATTIVI
+						echo "<h2>Tutti i Contratti del Cliente</h2>";
+						echo "	<div class=\"tabella\" >
+								<table>
+									<tr>
+									<td>Contratto Numero</td>
+									<td>Nome Contratto</td>
+									<td>Tipologia</td>
+									<td>Stato</td>
+									<td></td>
+									</tr>";
+				while ($rsContratti = mysql_fetch_assoc($res)){
+						/**
+						 *  
+						 * $rsContratti['ContrattoId']
+						 * $rsContratti['ContrattoNome']
+						 * $rsContratti['ContrattoTipo']
+						 * $rsContratti['ContrattoStato']
+						 * 
+						 * */
+						echo "<tr>
+								<td>".$rsContratti['ContrattoId']."</td>
+								<td>".$rsContratti['ContrattoNome']."</td>
+								<td>".$rsContratti['ContrattoTipo']."</td>
+								<td>".$rsContratti['ContrattoStato']."</td>
+								<td style=\"float:right\" >
+								<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
+										<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"edit\" >
+										<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
+										<input name=\"Edita Contratto\" type=\"image\" src=\"image\edit.gif\" alt=\"Edita Contratto\" title=\"Edita Contratto\"> 
+									</fieldset>
+								</form>
+								<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
+										<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"del\" >
+										<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
+										<input name=\"Cancella Contratto\" type=\"image\" src=\"image\delete.gif\" alt=\"Cancella Contratto\" title=\"Cancella Contratto\"> 
+									</fieldset>
+								</form>
+								<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
+										<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"more\" >
+										<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
+										<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 
+									</fieldset>
+								</form>
+								</td>
+							</tr>";
+					}
+						echo "</table>
+				</div>";
+			}
+			break;
+		// FINE MORE ALL
+				
 		
 		} // FINE SWITCH
 } // Fine Controllo Variabili
@@ -615,9 +612,9 @@ else // Visualizzazione di default
 							<input name=\"Cancella Cliente\" type=\"image\" src=\"image\delete.gif\" alt=\"Cancella Cliente\" title=\"Cancella Cliente\"> 
 						</fieldset>
 					</form>
-					<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
+					<form action=\"adminclienti.php\" method=\"post\" style=\"float: right;\">
 							<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
-							<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"more\" >
+							<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"moreall\" >
 							<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 
 						</fieldset>
 					</form>

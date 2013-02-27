@@ -35,7 +35,8 @@ if(isset($_POST['stato'])){ // CONTROLLO VARIABILE STATO
 					 $msg = 'Error Aggiornamento Contabilit&agrave: ' . mysql_error();
 					  echo '<script language=javascript>document.location.href="admincontabilita.php?id=koupdate&msg='.$msg.'"</script>';
 					  }
-				echo '<script language=javascript>document.location.href="admincontabilita.php?id=okupdate"</script>';
+				$msg = 'Pagamento Emesso';
+				echo '<script language=javascript>document.location.href="admincontabilita.php?id=okupdate&msg='.$msg.'"</script>';
 				}
 				
 				if ($_POST['ContrattoFatturato'] == '1' and $_POST['ContrattoPagato'] == '1') {
@@ -48,10 +49,12 @@ if(isset($_POST['stato'])){ // CONTROLLO VARIABILE STATO
 							  $msg = 'Error Aggiornamento Contabilit&agrave: ' . mysql_error();
 							  echo '<script language=javascript>document.location.href="admincontabilita.php?id=koupdate&msg='.$msg.'"</script>';
 							  }
-						echo '<script language=javascript>document.location.href="admincontabilita.php?id=okupdate"</script>';
+						$msg = 'Pagamento Emesso';
+						echo '<script language=javascript>document.location.href="admincontabilita.php?id=okupdate&msg='.$msg.'"</script>';
 						}
 				else {
-					echo '<script language=javascript>document.location.href="admincontabilita.php?id=koupdate"</script>';
+					$msg = 'Contratto gi&agrave pagato';
+					echo '<script language=javascript>document.location.href="admincontabilita.php?id=koupdate&msg='.$msg.'"</script>';
 				}
 				break;
 	}	// FINE SWITCH
@@ -59,11 +62,11 @@ if(isset($_POST['stato'])){ // CONTROLLO VARIABILE STATO
 
 switch($_GET['id']){
 		case okupdate:
-			echo "<h2>Aggiornamento Effettuato Correttamente</h2>";
+			echo "<div class=\"success\">Aggiornamento Contabilit&agrave Effettuato : ".$_GET['msg']."</div>";
 			break;
 		
 		case koupdate:
-			echo "<h2>Aggiornamento Non Effettuato</h2><br />".$_POST['msg'];
+			echo "<div class=\"error\">Impossibile Aggiornare la Contabilit&agrave : ".$_GET['msg']."</div>";
 			break;
 		
 		}
@@ -81,7 +84,7 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 	$numrows=mysql_num_rows($res);
 	
 	if ($numrows == 0) {
-			echo "<h2>Spiacente Nessuna Contratto Ancora Attivato</h2>";
+			echo "<div class=\"warning\">Nessun Contratto ancora attivo : ".$_GET['msg']."</div>";
 		}
 		else {
 			echo "<h3>Lista Contratti Attivati </h3>";
@@ -95,6 +98,7 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 					<td>Stato</td>
 					<td>Fatturato</td>
 					<td>Fattura Saldata</td>
+					<td>Provvigione</td>
 					<td></td>
 					</tr>";
 	while ($rsContratti = mysql_fetch_assoc($res)){
@@ -125,6 +129,7 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 					else {
 						echo "<td style=\" background-color:#FF0000\" >Fattura Da Saldare</td>";
 						}
+				echo "<td>€".$rsContratti['ContrattoProvvigioni']."</td>";
 		echo "	<td style=\"float:right\" >
 				<form action=\"admincontabilita.php\" method=\"post\" style=\"float: right;\">
 						<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
@@ -134,7 +139,7 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 						<input name=\"Edita Contratto\" type=\"image\" src=\"image\edit.gif\" alt=\"Edita Contratto\" title=\"Edita Contratto\"> 
 					</fieldset>
 				</form>
-				<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+				<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 						<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"more\" >
 						<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
 						<input name=\"Dettaglio Contratti\" type=\"image\" src=\"image\contract.gif\" alt=\"Dettaglio Contratti\" title=\"Dettaglio Contratti\"> 

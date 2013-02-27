@@ -577,6 +577,21 @@ if(isset($_POST['step'])){
 			</form>";
 			break;
 		case 5:
+			// Prelevo l'id dell'ultimo contratto per generare parte del nome contratto
+			$result = mysql_query('SELECT MAX( ContrattoId ) FROM Contratti');
+			$row = mysql_fetch_assoc($result);
+			$id = $row['id']+1;
+			$lunId = strlen($id);
+			for ($i=0;$i<$lunId;$i++) {
+				 $tmp = $tmp.'0';
+				 }
+				$value = $tmp."".$id;
+			// prelevo parte del codice agente per generare la parte del nome contratto
+			$lunCod = strlen($cod);
+			for ($i=0;$i<$lunCod;$i++) {
+				 $tmpCod = $tmpCod.'0';
+				 }
+				$agente = $tmpCod."".$cod;
 			$sql = "INSERT INTO Contratti ( ContrattoNome , 
 						ContrattoData,
 						ContrattoTipo, 
@@ -604,7 +619,7 @@ if(isset($_POST['step'])){
 						Clienti_idCliente ) 
 						VALUES
 							(
-							'WEB13/01',
+							'AG".$agente."-".$value."',
 							CURDATE(),
 							'".$_POST['ClienteTipologia']."',
 							'Inserito',

@@ -166,7 +166,7 @@ if(isset($stato)){
 			//~ echo $sqlContratto."<br />".$sqlDelOfferta."<br />".$sqlOpzioni."<br />".$sqlDelOpzioni."<br />".$sqlLinea."<br />".$sqlDelLinea."<br />".$sqlDelContratto;
 			break;
 		
-		case del:
+		case del: //RICHIESTA CANCELLAZIONE CONTRATTO
 			echo "<h3>Richiesta Cancellazione  Contratti numero ".$_POST['ContrattoId']."</h3>";
 			$sqlContratto = "SELECT * FROM Contratti WHERE ContrattoId = '".$_POST['ContrattoId']."'";
 				$resContratto = mysql_query($sqlContratto);
@@ -188,7 +188,7 @@ if(isset($stato)){
 			break; // FINE CANCELLAZIONE CONTRATTO
 		
 		case edit:
-			echo "Richiesta Modifica  Contratti numero ".$_POST['ContrattoId']."";
+			echo "<h3>Richiesta Modifica  Contratti numero ".$_POST['ContrattoId']."</h3>";
 			$sqlContratto = "SELECT * FROM Contratti WHERE ContrattoId = '".$_POST['ContrattoId']."'";
 				$resContratto = mysql_query($sqlContratto);
 				$rsContratto = mysql_fetch_assoc($resContratto);
