@@ -708,6 +708,11 @@ if(isset($_POST['step'])){
 				} else {
 					$OpzioneSwitch = '0';
 					}
+			if(isset($_POST['OpzioneAttesa'])) {
+				$OpzioneAttesa = $_POST['OpzioneAttesa'];
+				} else {
+					$OpzioneAttesa = '0';
+					}
 			// FINE CHECK		
 			$sql3 = "INSERT INTO  Opzioni (
 							`OpzioneAP` ,
@@ -716,7 +721,8 @@ if(isset($_POST['step'])){
 										`OpzioneClinascosto` ,
 											`OpzioneTrasferimento` ,
 												`OpzionePubblicita` ,
-													`OpzioneSwitch`)
+													`OpzioneSwitch`,
+														OpzioneAttesa)
 								VALUES (
 								'".$OpzioneAP."',  
 									'".$OpzioneElenco."',  
@@ -724,7 +730,8 @@ if(isset($_POST['step'])){
 											'".$OpzioneClinascosto."',  
 												'".$OpzioneTrasferimento."',  
 													'".$OpzionePubblicita."',  
-														'".$OpzioneSwitch."'
+														'".$OpzioneSwitch."',
+															'".$OpzioneAttesa."'
 								);";
 			if (!mysql_query($sql3))
 					  {

@@ -37,27 +37,27 @@ $stato = $_POST['stato'];
 
 switch($_GET['id']){
 		case okadd:
-			echo "<h2>Inserimento Nuova Tipologia Effettuato </h2>";
+			echo "<div class=\"success\">Inserimento Nuova Tipologia Effettuato </div>";
 			break;
 		
 		case koadd:
-			echo "<h2>Impossibile Inserire Tipologia - ERROR : ".$_GET['msg']."</h2>";
+			echo "<div class=\"error\">Impossibile Inserire Tipologia - ERROR : ".$_GET['msg']."</div>";
 			break;
 			
 		case okupdate:
-			echo "<h2>Aggiornamento Tipologia Effettuata </h2>";
+			echo "<div class=\"success\">Aggiornamento Tipologia Effettuata </div>";
 			break;
 		
 		case koupdate:
-			echo "<h2>Impossibile aggiornare Tipologia - ERROR : ".$_GET['msg']."</h2>";
+			echo "<div class=\"error\">Impossibile aggiornare Tipologia - ERROR : ".$_GET['msg']."</div>";
 			break;
 			
 		case nodel:
-			echo "<h2>Impossibile Cancellare Tipologia associato a ".$_GET['num']." offerte!</h2>";
+			echo "<div class=\"error\">Impossibile Cancellare Tipologia associato a ".$_GET['num']." offerte!</div>";
 			break;
 			
 		case okdel:
-			echo "<h2>Tipologia Cancellata Correttamente.</h2>";
+			echo "<div class=\"success\">Tipologia Cancellata Correttamente.</div>";
 			break;
 		
 		}

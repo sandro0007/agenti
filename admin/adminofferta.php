@@ -58,27 +58,27 @@ $stato = $_POST['stato'];
 switch($_GET['id']){
 	
 		case okadd:
-			echo "<h2>Inserimento Nuova Offerta Effettuato </h2>";
+			echo "<div class=\"success\">Inserimento Nuova Offerta Effettuato </div>";
 			break;
 		
 		case koadd:
-			echo "<h2>Impossibile Inserire Offerta - ERROR : ".$_GET['msg']."</h2>";
+			echo "<div class=\"error\">Impossibile Inserire Offerta - ERROR : ".$_GET['msg']."</div>";
 			break;
 			
 		case okupdate:
-			echo "<h2>Aggiornamento Offerta Effettuato </h2>";
+			echo "<div class=\"success\">Aggiornamento Offerta Effettuato </div>";
 			break;
 		
 		case koupdate:
-			echo "<h2>Impossibile aggiornare Offerta - ERROR : ".$_GET['msg']."</h2>";
+			echo "<div class=\"error\">Impossibile aggiornare Offerta - ERROR : ".$_GET['msg']."</div>";
 			break;
 			
 		case nodel:
-			echo "<h2>Impossibile Cancellare Offerta associato a ".$_GET['num']." Contratti!</h2>";
+			echo "<div class=\"error\">Impossibile Cancellare Offerta associato a ".$_GET['num']." Contratti!</div>";
 			break;
 			
 		case okdel:
-			echo "<h2>Offerta Cancellata Correttamente.</h2>";
+			echo "<div class=\"success\">Offerta Cancellata Correttamente.</h2>";
 			break;
 		
 		}
@@ -120,23 +120,23 @@ if(isset($stato)){
 			
 		case del:
 			echo "Richiesta Cancellazione  Offerta ".$_POST['OffertaId']."";
-			//~ $query = "SELECT * FROM Contratti WHERE TipologiaId = ".$_POST['TipologiaId']."";
-//~ 
-			//~ $res = mysql_query($query);
-			//~ $numrows=mysql_num_rows($res);
-			//~ if ($numrows == 0) // NESSUNA Offerta ASSOCIATA - PROCEDO AL DEL
-				//~ {
-					//~ $query2 = "DELETE FROM Tipologie WHERE TipologiaId = ".$_POST['TipologiaId']."";
-					 //~ if (!mysql_query($query2))
-						  //~ {
-						//~ $msg = 'Error Cancellazione Offerta: ' . mysql_error());
-						 //~ echo '<script language=javascript>document.location.href="adminofferta.php?id=okdel"</script>';
-					//~ }
-				//~ }
-				//~ else // Offerta ASSOCIATA 
-				//~ {
-						//~ echo '<script language=javascript>document.location.href="adminofferta.php?id=nodel&num='.$numrows.'"</script>';
-					//~ }
+			$query = "SELECT * FROM Contratti_Offerte WHERE OffertaId = ".$_POST['OffertaId']."";
+
+			$res = mysql_query($query);
+			$numrows=mysql_num_rows($res);
+			if ($numrows == 0) // NESSUNA Offerta ASSOCIATA - PROCEDO AL DEL
+				{
+					$query2 = "DELETE FROM Offerte WHERE OffertaId = ".$_POST['OffertaId']."";
+					 if (!mysql_query($query2))
+						  {
+						$msg = 'Error Cancellazione Offerta: ' . mysql_error();
+						 echo '<script language=javascript>document.location.href="adminofferta.php?id=okdel"</script>';
+					}
+				}
+				else // Offerta ASSOCIATA 
+				{
+						echo '<script language=javascript>document.location.href="adminofferta.php?id=nodel&num='.$numrows.'"</script>';
+					}
 			break;
 			
 		case edit:

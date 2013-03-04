@@ -13,6 +13,7 @@ include ('include/header.php');
 require ('include/config.php');
 $conn=mysql_connect($dbHost,$dbUser,$dbPassword);
 mysql_select_db($dbName);
+
 $cod = $_SESSION['cod']; //id cod recuperato nel file di verifica
 echo $menu;
 
@@ -40,7 +41,8 @@ if(isset($stato)){
 											`OpzioneClinascosto` =  '".$_POST['OpzioneClinascosto']."',
 												`OpzioneTrasferimento` =  '".$_POST['OpzioneTrasferimento']."',
 													`OpzionePubblicita` =  '".$_POST['OpzionePubblicita']."',
-														`OpzioneSwitch` =  '".$_POST['OpzioneSwitch']."'
+														`OpzioneSwitch` =  '".$_POST['OpzioneSwitch']."',
+															`OpzioneAttesa` =  '".$_POST['OpzioneAttesa']."'
 									WHERE  `OpzioneId` = '".$_POST['OpzioneId']."'";
 			
 			if (!mysql_query($sqlOpzioni))

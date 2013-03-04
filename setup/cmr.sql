@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: Feb 21, 2013 alle 19:02
+-- Generato il: Mar 04, 2013 alle 19:44
 -- Versione del server: 5.5.29
 -- Versione PHP: 5.3.10-1ubuntu3.5
 
@@ -28,6 +28,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `Admin` (
   `AdminId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `AdminCognome` varchar(100) NOT NULL,
+  `AdminNome` varchar(100) NOT NULL,
   `AdminUser` varchar(50) NOT NULL,
   `AdminPass` varchar(50) NOT NULL,
   `AdminMail` varchar(50) NOT NULL,
@@ -56,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `Agenti` (
   `AgentePass` varchar(45) DEFAULT NULL,
   `AgenteAbilitato` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`idAgenti`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Agenti' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Agenti' AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -71,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `Agenti_Clienti_Contratti` (
   PRIMARY KEY (`Id`),
   KEY `fk_Agenti_idx` (`AgenteId`),
   KEY `fk_Contratti_idx` (`ContrattoId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 -- --------------------------------------------------------
 
@@ -107,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `Clienti` (
   `Agenti_idAgenti` int(11) NOT NULL,
   PRIMARY KEY (`idCliente`),
   KEY `fk_Clienti_Agenti_idx` (`Agenti_idAgenti`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 -- --------------------------------------------------------
 
@@ -119,6 +121,7 @@ CREATE TABLE IF NOT EXISTS `Contratti` (
   `ContrattoId` int(11) NOT NULL AUTO_INCREMENT,
   `ContrattoNome` varchar(50) NOT NULL,
   `ContrattoData` date NOT NULL COMMENT 'Data Creazione Contratto',
+  `ContrattoDataAttivazione` date NOT NULL COMMENT 'Imposta la data di attivazione',
   `ContrattoTipo` varchar(50) NOT NULL COMMENT 'Valori "Privato" - "Azienda"',
   `ContrattoStato` varchar(25) NOT NULL COMMENT 'Stato Contratto "Inserito - Lavorazione - Attivato - Rifiutato"',
   `ContrattoFatturato` int(1) NOT NULL COMMENT 'Valorizzato a 0 se ancora non emessa fattura altrimenti valorizzato a 1',
@@ -144,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `Contratti` (
   `Clienti_idCliente` int(11) NOT NULL,
   PRIMARY KEY (`ContrattoId`),
   KEY `fk_Contratti_Clienti1_idx` (`Clienti_idCliente`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
 
 -- --------------------------------------------------------
 
@@ -157,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `Contratti_Linea` (
   `ContrattoId` int(11) NOT NULL,
   `LineaId` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Associazione CONTRATTI - LINEA' AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Associazione CONTRATTI - LINEA' AUTO_INCREMENT=12 ;
 
 -- --------------------------------------------------------
 
@@ -170,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `Contratti_Offerte` (
   `ContrattoId` int(5) NOT NULL,
   `OffertaId` int(5) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione associazione CONTRATTO - OFFERTA' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione associazione CONTRATTO - OFFERTA' AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -183,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `Contratti_Opzioni` (
   `ContrattoId` int(11) NOT NULL,
   `OpzioneId` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione associazione CONTRATTI - OPZIONI' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione associazione CONTRATTI - OPZIONI' AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
@@ -199,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `Linea` (
   `LineaNumero` varchar(100) NOT NULL COMMENT 'Numero da Migrare',
   `LineaCodice` varchar(100) NOT NULL COMMENT 'Codice Di Migrazione',
   PRIMARY KEY (`LineaId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione Linea' AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione Linea' AUTO_INCREMENT=11 ;
 
 -- --------------------------------------------------------
 
@@ -226,6 +229,7 @@ CREATE TABLE IF NOT EXISTS `Offerte` (
 
 CREATE TABLE IF NOT EXISTS `Opzioni` (
   `OpzioneId` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `OpzioneIp` int(1) NOT NULL COMMENT 'Indica quanti ip statici sono associati al cliente',
   `OpzioneAP` int(1) NOT NULL DEFAULT '0',
   `OpzioneElenco` int(1) NOT NULL DEFAULT '0',
   `OpzioneChie` int(1) NOT NULL DEFAULT '0',
@@ -233,8 +237,9 @@ CREATE TABLE IF NOT EXISTS `Opzioni` (
   `OpzioneTrasferimento` int(1) NOT NULL DEFAULT '0',
   `OpzionePubblicita` int(1) NOT NULL DEFAULT '0',
   `OpzioneSwitch` int(1) NOT NULL DEFAULT '0',
+  `OpzioneAttesa` int(1) NOT NULL DEFAULT '0' COMMENT 'Opzione Chiamata in Attesa',
   PRIMARY KEY (`OpzioneId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Opzioni Associate A Contratto' AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Opzioni Associate A Contratto' AUTO_INCREMENT=14 ;
 
 -- --------------------------------------------------------
 

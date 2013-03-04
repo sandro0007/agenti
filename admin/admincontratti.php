@@ -23,9 +23,20 @@ echo "
          <form action=\"admincontratti.php\" method=\"post\">
         <fieldset id=\"inputs\">
             <input id=\"ContrattoId\" name=\"ContrattoId\" type=\"text\" placeholder=\"Id Contratto\" autofocus>
-            <input id=\"ContrattoTipo\" name=\"ContrattoTipo\" type=\"text\" placeholder=\"Tipologia\">
             <input id=\"ContrattoNome\" name=\"ContrattoNome\" type=\"text\" placeholder=\"Contratto\">
-            <input id=\"ContrattoStato\" name=\"ContrattoStato\" type=\"text\" placeholder=\"Stato Contratto \">
+            <label>Tipo</label>
+            <select id=\"ContrattoTipo\" name=\"ContrattoTipo\">
+				<option value=\"Privato\">Privato</option>
+				<option value=\"Azienda\">Azienda</option>
+			</select>
+            
+            <label>Stato</label>
+			<select id=\"ContrattoStato\" name=\"ContrattoStato\">
+				<option value=\"Inserito\">Inserito</option>
+				<option value=\"InLavorazione\">InLavorazione</option>
+				<option value=\"Scartato\">Scartato</option>
+				<option value=\"Attivato\">Attivato</option>
+			</select>
             <input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"search\" >
 			</fieldset> 
             <fieldset id=\"actions\">
@@ -528,7 +539,25 @@ if(isset($stato)) // se la variabile stato è settata
 								<td>".$rsContratti['ContrattoId']."</td>
 								<td>".$rsContratti['ContrattoNome']."</td>
 								<td>".$rsContratti['ContrattoTipo']."</td>
-								<td>".$rsContratti['ContrattoStato']."</td>
+								<td>
+								<form action=\"admincontratti.php\" method=\"post\">
+					<select id=\"ContrattoStato\" name=\"ContrattoStato\">";
+							
+							echo "<option value=\"".$rsContratti['ContrattoStato']."\">".$rsContratti['ContrattoStato']."</option>";
+							$statoContratto = array("Inserito", "InLavorazione", "Scartato", "Attivato");
+							reset($statoContratto);
+							foreach ($statoContratto as $key10 => $value10) {
+								if ( $value10 != $rsContratti['ContrattoStato'])
+									{
+										echo "<option value=\"".$value10."\">".$value10."</option>";
+									}
+								
+							}
+						echo"	</select>
+					<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"editStato\" >
+					<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
+					<input name=\"AggiornaStato\" type=\"image\" src=\"image\\refresh.jpg\" alt=\"Aggiorna Stato\" title=\"Aggiorna Stato\"> 
+								</td>
 								<td style=\"float:right\" >
 								<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 										<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"edit\" >
@@ -907,7 +936,25 @@ if(isset($stato)) // se la variabile stato è settata
 							<td>".$rsContratti['ContrattoId']."</td>
 							<td>".$rsContratti['ContrattoNome']."</td>
 							<td>".$rsContratti['ContrattoTipo']."</td>
-							<td>".$rsContratti['ContrattoStato']."</td>
+							<td>
+							<form action=\"admincontratti.php\" method=\"post\">
+					<select id=\"ContrattoStato\" name=\"ContrattoStato\">";
+							
+							echo "<option value=\"".$rsContratti['ContrattoStato']."\">".$rsContratti['ContrattoStato']."</option>";
+							$statoContratto = array("Inserito", "InLavorazione", "Scartato", "Attivato");
+							reset($statoContratto);
+							foreach ($statoContratto as $key10 => $value10) {
+								if ( $value10 != $rsContratti['ContrattoStato'])
+									{
+										echo "<option value=\"".$value10."\">".$value10."</option>";
+									}
+								
+							}
+						echo"	</select>
+					<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"editStato\" >
+					<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
+					<input name=\"AggiornaStato\" type=\"image\" src=\"image\\refresh.jpg\" alt=\"Aggiorna Stato\" title=\"Aggiorna Stato\"> 
+							</td>
 							<td style=\"float:right\" >
 							<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 									<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"edit\" >
@@ -963,7 +1010,8 @@ if(isset($stato)) // se la variabile stato è settata
 											`OpzioneClinascosto` =  '".$_POST['OpzioneClinascosto']."',
 												`OpzioneTrasferimento` =  '".$_POST['OpzioneTrasferimento']."',
 													`OpzionePubblicita` =  '".$_POST['OpzionePubblicita']."',
-														`OpzioneSwitch` =  '".$_POST['OpzioneSwitch']."'
+														`OpzioneSwitch` =  '".$_POST['OpzioneSwitch']."',
+															`OpzioneAttesa` =  '".$_POST['OpzioneAttesa']."'
 									WHERE  `OpzioneId` = '".$_POST['OpzioneId']."'";
 			
 			if (!mysql_query($sqlOpzioni))
@@ -1014,6 +1062,23 @@ if(isset($stato)) // se la variabile stato è settata
 			//~ echo $sqlOfferta."<br />".$sqlOpzioni."<br />".$sqlLinea."<br />".$sqlContratto;
 			break; // FINE AGGIORNAMENTO CLIENTE
 			
+			case editStato: // INIZIO AGGIORNAMENTO Stato Contratto
+			echo "<h3>Aggiornamento Contratto</h3>";
+
+			$sqlStato = "UPDATE  `Contratti` SET  `ContrattoStato` =  '".$_POST['ContrattoStato']."' WHERE  `ContrattoId` = ".$_POST['ContrattoId']."";
+			
+				if (!mysql_query($sqlStato))
+			  {
+				
+				$msg = 'Error Aggiornamento Stato: ' . mysql_error();
+				echo '<script language=javascript>document.location.href="admincontratti.php?id=koedit&msg='.$msg.'"</script>';
+			  }
+			
+			$msg = "ESITO POSITOVO";
+			echo '<script language=javascript>document.location.href="admincontratti.php?id=okedit&msg'.$msg.'"</script>';
+			
+			//~ echo $sqlOfferta."<br />".$sqlOpzioni."<br />".$sqlLinea."<br />".$sqlContratto;
+			break; // FINE AGGIORNAMENTO STATO
 			
 			} // FINE SWITCH(stato)
 			
@@ -1065,7 +1130,27 @@ if(isset($stato)) // se la variabile stato è settata
 					<td>".$rsContratti['ContrattoId']."</td>
 					<td>".$rsContratti['ContrattoNome']."</td>
 					<td>".$rsContratti['ContrattoTipo']."</td>
-					<td>".$rsContratti['ContrattoStato']."</td>
+					<td>
+					<form action=\"admincontratti.php\" method=\"post\">
+					<select id=\"ContrattoStato\" name=\"ContrattoStato\">";
+							
+							echo "<option value=\"".$rsContratti['ContrattoStato']."\">".$rsContratti['ContrattoStato']."</option>";
+							$statoContratto = array("Inserito", "InLavorazione", "Scartato", "Attivato");
+							reset($statoContratto);
+							foreach ($statoContratto as $key10 => $value10) {
+								if ( $value10 != $rsContratti['ContrattoStato'])
+									{
+										echo "<option value=\"".$value10."\">".$value10."</option>";
+									}
+								
+							}
+						echo"	</select>
+					<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"editStato\" >
+					<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
+					<input name=\"AggiornaStato\" type=\"image\" src=\"image\\refresh.png\" alt=\"Aggiorna Stato\" title=\"Aggiorna Stato\"> 
+					</form>
+					
+					</td>
 					<td style=\"float:right\" >
 					<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 							<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"edit\" >
