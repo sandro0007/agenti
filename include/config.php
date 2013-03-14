@@ -16,4 +16,11 @@
                             </ul>
                         </nav>";
     
+    // Cartella Upload, per i Documenti Clienti
+   $path = "upload/Clienti/";
+   // Cartella Upload per i Documenti Contratto
+   $pathContratto = "upload/Contratti/";
+   // Variabile IVA
+   $iva = "1.21";
+   
 ?>

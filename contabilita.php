@@ -305,12 +305,12 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 			echo "<table width = \"100%\">
 					<tr >
 						<td width = \"80%\"><h3>Lista Contratti Agente </h3></td>
-						<td bgcolor = \"#90EE90\">Tot. Fatture Emesse</td>
+						<td bgcolor = \"#90EE90\">Tot. Fatture Emesse - Imponibile</td>
 						<td bgcolor = \"#90EE90\">".$rsFatturato['Fatturato']."</td>
 					</tr>
 					<tr>
 						<td></td>
-						<td bgcolor = \"red\">Tot. Fatture da Emettere</td>
+						<td bgcolor = \"red\">Tot. Fatture da Emettere - Imponibile</td>
 						<td bgcolor = \"red\">".$rsFatturare['Fatturare']."</td>
 					</tr>
 				</table>";

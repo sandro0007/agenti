@@ -20,6 +20,33 @@ echo $menu;
 
 if(isset($_POST['stato'])){
 	switch($_POST['stato']){
+		case confirmdeleteFile: // INIZIO CANCELLAZIONE FILE
+			
+			break; // FINE CANCELLAZIONE FILE
+		
+			//Inizio Conferma Cancellazione File
+		case delFile:
+			$contratti = "SELECT * FROM Contratti where Clienti_idCliente = ".$_POST['idCliente']."";
+				$res = mysql_query($contratti);
+				$numrows=mysql_num_rows($res);
+					
+				if ($numrows == 0) { // Nessun Contratto Attivo
+					echo "<h3>Vuoi Veramente Cancellare il File ".$_POST['FileName']."?</h3>
+							<form action=\"schedaclienti.php\" method=\"POST\" name=\"form\">
+							<input id=\"stato\" name=\"stato\"  type=\"hidden\" value=\"confirmdeleteFile\">
+						<input id=\"FileName\" name=\"FileName\" type=\"hidden\" value=\"".$_POST['FileName']."\">
+						<input id=\"FileId\" name=\"FileId\" type=\"hidden\" value=\"".$_POST['FileId']."\">
+						<input id=\"idCliente\" name=\"idCliente\" type=\"hidden\" value=\"".$_POST['idCliente']."\">
+						<input  type=\"submit\" id=\"submit\" value=\"DELETE\">
+					</form><br /><br />";
+				}
+				else {
+					$msg = "Possiede Contratti Attivi - Impossibile Rimuovere File";
+					echo '<script language=javascript>document.location.href="schedaclienti.php?id=kodelFile&msg='.$msg.'"</script>';
+					}
+					
+			break; // FINE CONFERMA CANCELLAZIONE FILE
+		
 			//INIZIO DEL CLIENTE
 		case del:
 			echo "Richiesta Cancellazione Cliente ".$_POST['IdCliente']."";
@@ -54,9 +81,61 @@ if(isset($_POST['stato'])){
 						WHERE  `idCliente` = '".$_POST['idCliente']."'";
 			if (!mysql_query($sql))
 			  {
-				  echo $sql."<br />";
-			  die('Error Aggiornamento Cliente: ' . mysql_error());
+				 $msg = 'Error Aggiornamento Cliente: ' . mysql_error();
+				 echo '<script language=javascript>document.location.href="clienti.php?id=ko&msg="'.$msg.'"</script>';
 			  }
+			
+			if(isset($_FILES['files'])){
+				$errors= array();
+				foreach($_FILES['files']['tmp_name'] as $key => $tmp_name ){
+					$file_name = $_FILES['files']['name'][$key];
+					$file_size = $_FILES['files']['size'][$key];
+					$file_tmp = $_FILES['files']['tmp_name'][$key];
+					$file_type= $_FILES['files']['type'][$key];	
+					if($file_size > 2097152){
+						$errors[]='Il File deve essere minore di 2 MB';
+					}		
+					$query="INSERT into File (`FileName`,`FileSize`,`FileType`) VALUES('".$file_name."','".$file_size."','".$file_type."'); ";
+					$desired_dir=$path."/".$_POST['idCliente'];
+					if(empty($errors)==true){
+						if(is_dir($desired_dir)==false){
+							mkdir("$desired_dir", 0700);		// Create directory if it does not exist
+							$var=fopen($desired_dir."/index.php","a+");
+							fwrite($var, "<? echo \"<b>Error 404 - File Not Found</b>\"; ?>");
+							fclose($var);
+						}
+						if(is_dir($desired_dir."/".$file_name)==false){
+							move_uploaded_file($file_tmp,$desired_dir."/".$file_name);
+						}else{									//rename the file if another one exist
+							$new_dir=$desired_dir."/".$file_name.time();
+							 rename($file_tmp,$new_dir) ;				
+						}
+						if (!mysql_query($query))
+							{
+									$msg = 'Error Aggiornamento File Cliente: ' . mysql_error();
+									echo '<script language=javascript>document.location.href="clienti.php?id=ko&msg="'.$msg.'"</script>';
+							  }		
+						$fileid = mysql_insert_id();
+						$query2 = "INSERT into Clienti_File ( idCliente, FileId ) VALUES ('".$_POST['idCliente']."', '".$fileid."');";
+						
+						if (!mysql_query($query2))
+							{
+									$msg = 'Error Aggiornamento Associazione File Cliente: ' . mysql_error();
+									echo '<script language=javascript>document.location.href="clienti.php?id=ko&msg="'.$msg.'"</script>';
+							  }
+							 	
+					} // Se sono presenti errori nell'array
+					
+					 else {
+							echo '<script language=javascript>document.location.href="clienti.php?id=ko&msg="'.$error.'"</script>';;
+					}
+				} // fine scorrimento array
+				
+				if(empty($error)) // se non ci sono errori 
+				{
+					echo '<script language=javascript>document.location.href="clienti.php?id=ok&msg="'.$error.'"</script>';
+				}
+			} // FINE INSERIMENTO FILE
 			echo '<script language=javascript>document.location.href="clienti.php?id=1"</script>';
 			break;
 			// FINE UPDATE CLIENTE
@@ -103,7 +182,7 @@ if(isset($_POST['stato'])){
 						 
 						echo "<h2>Modifica Cliente</h2>";
 						if ($rsCliente['ClienteTipologia'] == 'Privato') {
-						echo "<form action=\"schedaclienti.php\" method=\"post\">
+						echo "<form action=\"schedaclienti.php\" method=\"post\" enctype=\"multipart/form-data\">
 							<fieldset id=\"inputs\">
 								<input id=\"ClienteCognome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Cognome\" value=\"".$rsCliente['ClienteCognome']."\" autofocus required>
 								<input id=\"ClienteNome\" name=\"ClienteNome\" type=\"text\" placeholder=\"Nome\"  value=\"".$rsCliente['ClienteNome']."\" required>
@@ -113,7 +192,18 @@ if(isset($_POST['stato'])){
 								<input id=\"ClienteLuogoNascita\" name=\"ClienteLuogoNascita\" type=\"text\" placeholder=\"Luogo di Nascita\" value=\"".$rsCliente['ClienteLuogoNascita']."\" required>
 								<input id=\"ClienteProvinciaNascita\" name=\"ClienteProvinciaNascita\" type=\"text\" placeholder=\"Provincia di Nascita\" value=\"".$rsCliente['ClienteProvinciaNascita']."\" required><br />
 								<h2>Documenti</h2>
-								<input id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" type=\"text\" placeholder=\"Tipo Documento\" value=\"".$rsCliente['ClienteTipoDocumento']."\" >
+								<select id=\"ClienteTipoDocumento\" name=\"ClienteTipoDocumento\" required>";
+								echo "<option value=\"".$rsCliente['ClienteTipoDocumento']."\">".$rsCliente['ClienteTipoDocumento']."</option>";
+							$documento = array("CartaIdentita", "Patente", "Passaporto");
+							reset($documento);
+							foreach ($documento as $key1 => $value1) {
+								if ( $value1 != $rsCliente['ClienteTipoDocumento'])
+									{
+										echo "<option value=\"".$value1."\">".$value1."</option>";
+									}
+							}
+							echo"
+								</select>
 								<input id=\"ClienteNumeroDocumento\" name=\"ClienteNumeroDocumento\" type=\"text\" placeholder=\"Numero Documetno\" value=\"".$rsCliente['ClienteNumeroDocumento']."\" required>
 								<input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" value=\"".$rsCliente['ClienteEnteDocumento']."\" required>
 								<input id=\"ClienteEnteDocumento\" name=\"ClienteEnteDocumento\" type=\"text\" placeholder=\"Ente Documento\" value=\"".$rsCliente['ClienteEnteDocumento']."\" required>
@@ -128,6 +218,8 @@ if(isset($_POST['stato'])){
 								<input id=\"ClienteNumero\" name=\"ClienteNumero\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNumero']."\" required>
 								<input id=\"ClienteCap\" name=\"ClienteCap\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap']."\" required>
 								<input id=\"ClienteCitta\" name=\"ClienteCitta\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta']."\" required>
+								<h2>File Cliente</h2>
+								<input type=\"file\" name=\"files[]\" multiple/>
 								<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
 								<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"Privato\" >
 								<input id=\"idCliente\" name=\"idCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
@@ -139,7 +231,7 @@ if(isset($_POST['stato'])){
 					 }
 					 if ($rsCliente['ClienteTipologia'] == 'Azienda') {
 						 echo "
-							<form action=\"schedaclienti.php\" method=\"post\">
+							<form action=\"schedaclienti.php\" method=\"post\" enctype=\"multipart/form-data\">
 							<fieldset id=\"inputs\">
 								<input id=\"ClienteRagione\" name=\"ClienteRagione\" type=\"text\" placeholder=\"Ragione Sociale\" value=\"".$rsCliente['ClienteRagione']."\" autofocus required>
 								<input id=\"ClientePI\" name=\"ClientePI\" type=\"text\" placeholder=\"Partita Iva\" value=\"".$rsCliente['ClientePI']."\" required><br />
@@ -167,6 +259,8 @@ if(isset($_POST['stato'])){
 								<input id=\"ClienteNumero\" name=\"ClienteNumero\" type=\"text\" placeholder=\"Numero Civico\" value=\"".$rsCliente['ClienteNumero']."\"required>
 								<input id=\"ClienteCap\" name=\"ClienteCap\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap']."\"required>
 								<input id=\"ClienteCitta\" name=\"ClienteCitta\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta']."\"required>
+								<h2>File Amministratore Delegato</h2>
+								<input id=\"File\" name=\"File\" type=\"file\" name=\"files[]\" multiple/>
 								<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
 								<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"Azienda\" >
 								<input id=\"idCliente\" name=\"idCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
@@ -267,6 +361,34 @@ if(isset($_POST['stato'])){
 						<td><b>E-Mail</b></td><td bgcolor = \"#E5E5E5\"><i>".$rsCliente['ClienteMail']."</i></td>
 					</tr>
 				</table>";
+				
+				// Visualizzo I Documento Del Cliente
+		echo "	<table>
+					<tr>
+						<td bgcolor = \"#1E90FF\" colspan = \"2\"><center><b>Documento Cliente</b></center></td>
+					</tr>";
+					$desired_dir = $path.$rsCliente['idCliente'];
+					$query = "SELECT * FROM Clienti_File where idCliente = ".$rsCliente['idCliente']."";
+					$numFile = mysql_num_rows($query);
+					if ($numFile != '0') {
+					$resFile = mysql_query($query);
+					while ($rsFile = mysql_fetch_assoc($resFile))
+					{
+					echo "<tr><td><a href=\"".$desired_dir."/".$rsFile['FileName']."\">".$rsFile['FileName']."</a></td>
+							<td style=\"float:right\" >
+							<form action=\"schedaclienti.php\" method=\"post\" style=\"float: right;\">
+									<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"delFile\" >
+									<input id=\"idCliente\" name=\"idCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
+									<input id=\"FileId\" name=\"FileId\" type=\"hidden\" value=\"".$rsFile['FileId']."\" >
+									<input id=\"FileName\" name=\"FileName\" type=\"hidden\" value=\"".$rsFile['FileName']."\" >
+									<input name=\"Cancella File\" type=\"image\" src=\"image\delete.gif\" alt=\"Cancella File\" title=\"Cancella File\"> 
+								</fieldset>
+							</form>
+							</td>
+							</tr>";
+					}
+					echo "</table>";
+				 } else { echo "<td>Nessun file presente, Edita Cliente</td></tr></table>"; }
 						 
 				// VISUALIZZO TUTTI I CONTRATTI ATTIVI PER IL CLIENTE
 				

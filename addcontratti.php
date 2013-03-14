@@ -592,6 +592,14 @@ if(isset($_POST['step'])){
 				 $tmpCod = $tmpCod.'0';
 				 }
 				$agente = $tmpCod."".$cod;
+			if ($_POST['ClienteTipologia'] == 'Privato') {
+				
+				$Provvigioni = round($_POST['OffertaCanone']/$iva,2);
+			} else 
+				{
+					$Provvigioni = $_POST['OffertaCanone'];
+					}
+			
 			$sql = "INSERT INTO Contratti ( ContrattoNome , 
 						ContrattoData,
 						ContrattoTipo, 
@@ -642,7 +650,7 @@ if(isset($_POST['step'])){
 							'".$_POST['ContrattoIntestazione']."',
 							'".$_POST['ContrattoIban']."',
 							'".$_POST['ContrattoNote']."',
-							'".$_POST['OffertaCanone']."',
+							'".$Provvigioni."',
 							'".$_POST['idCliente']."'
 							);";
 				if (!mysql_query($sql))

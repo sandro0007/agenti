@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: Mar 04, 2013 alle 19:44
+-- Generato il: Mar 14, 2013 alle 10:22
 -- Versione del server: 5.5.29
--- Versione PHP: 5.3.10-1ubuntu3.5
+-- Versione PHP: 5.3.10-1ubuntu3.6
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -114,6 +114,19 @@ CREATE TABLE IF NOT EXISTS `Clienti` (
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `Clienti_File`
+--
+
+CREATE TABLE IF NOT EXISTS `Clienti_File` (
+  `id` int(5) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `idCliente` int(5) NOT NULL COMMENT 'Id Del Cliente',
+  `FileId` int(5) NOT NULL COMMENT 'Id Del File',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tabella Associazione Clienti - File' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `Contratti`
 --
 
@@ -148,6 +161,19 @@ CREATE TABLE IF NOT EXISTS `Contratti` (
   PRIMARY KEY (`ContrattoId`),
   KEY `fk_Contratti_Clienti1_idx` (`Clienti_idCliente`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `Contratti_File`
+--
+
+CREATE TABLE IF NOT EXISTS `Contratti_File` (
+  `id` int(5) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `ContrattoId` int(5) NOT NULL COMMENT 'id del Contratto',
+  `FileId` int(5) NOT NULL COMMENT 'Id del File',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tabella Associazione Contratto - File' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -187,6 +213,20 @@ CREATE TABLE IF NOT EXISTS `Contratti_Opzioni` (
   `OpzioneId` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione associazione CONTRATTI - OPZIONI' AUTO_INCREMENT=10 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `File`
+--
+
+CREATE TABLE IF NOT EXISTS `File` (
+  `FileId` int(5) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `FileName` varchar(200) NOT NULL COMMENT 'Nome del File',
+  `FileSize` varchar(200) NOT NULL COMMENT 'Dimensione del File',
+  `FileType` varchar(200) NOT NULL COMMENT 'Tipo di File',
+  PRIMARY KEY (`FileId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tabella gestione File' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

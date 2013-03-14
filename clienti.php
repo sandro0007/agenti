@@ -192,6 +192,12 @@ else {
 		case kocontratto:
 			echo "<div class=\"error\">Il Contratto non &egrave stato inserito : ".$_GET['msg']."</div>";
 			break;
+		case ok:
+			echo "<div class=\"success\">Il Cliente &egrave stato aggiornato : ".$_GET['msg']."</div>";
+			break;
+		case ko:
+			echo "<div class=\"error\">Il Cliente non &egrave stato aggiornato : ".$_GET['msg']."</div>";
+			break;
 		
 		}
 	echo "<h2>Lista Clienti</h2>";
