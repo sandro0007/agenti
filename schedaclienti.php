@@ -20,7 +20,40 @@ echo $menu;
 
 if(isset($_POST['stato'])){
 	switch($_POST['stato']){
+		
+		case confirmdelete : // INIZIO CANCELLAZIONE CLIENTE
+			$clienti = "DELETE FROM Clienti WHERE idCliente = ".$_POST['idCliente']."";
+			if (!mysql_query($clienti))
+			  {
+				 $msg = 'Error Rimozione Cliente da Db: ' . mysql_error();
+				 echo '<script language=javascript>document.location.href="clienti.php?id=kodel&msg="'.$msg.'"</script>';
+			  }
+			 $msg = "Cliente ".$_POST['idCliente']." Rimosso";
+			echo '<script language=javascript>document.location.href="clienti.php?id=okdel&msg="'.$msg.'"</script>';
+			break;	// FINE CANCELLAZIONE CLIENTE
+			
 		case confirmdeleteFile: // INIZIO CANCELLAZIONE FILE
+			$desired_dir=$path.$_POST['idCliente'];
+			$return = unlink($desired_dir."/".$_POST['FileName']);
+			if ( !$return ) {
+					$msg = "Error Rimozione File da FS";
+					echo '<script language=javascript>document.location.href="clienti.php?id=kodelfile&msg="'.$msg.'"</script>';
+				}
+			$sqlFile = "DELETE FROM File WHERE FileId = ".$_POST['FileId']."";
+			if (!mysql_query($sqlFile))
+			  {
+				 $msg = 'Error Rimozione File da Db: ' . mysql_error();
+				 echo '<script language=javascript>document.location.href="clienti.php?id=kodelfile&msg="'.$msg.'"</script>';
+			  }
+			  
+			 $sqlClientiFile = "DELETE FROM Clienti_File WHERE FileId = ".$_POST['FileId']."";
+			if (!mysql_query($sqlClientiFile))
+			  {
+				 $msg = 'Error Rimozione Associazione File Cliente: ' . mysql_error();
+				 echo '<script language=javascript>document.location.href="clienti.php?id=kodelfile&msg="'.$msg.'"</script>';
+			  } 
+					$msg = $_POST['FileName'].' Rimosso';
+					echo '<script language=javascript>document.location.href="clienti.php?id=okdelfile&msg="'.$msg.'"</script>';
 			
 			break; // FINE CANCELLAZIONE FILE
 		
@@ -42,14 +75,29 @@ if(isset($_POST['stato'])){
 				}
 				else {
 					$msg = "Possiede Contratti Attivi - Impossibile Rimuovere File";
-					echo '<script language=javascript>document.location.href="schedaclienti.php?id=kodelFile&msg='.$msg.'"</script>';
+					echo '<script language=javascript>document.location.href="clienti.php?id=kodelFile&msg='.$msg.'"</script>';
 					}
 					
 			break; // FINE CONFERMA CANCELLAZIONE FILE
 		
 			//INIZIO DEL CLIENTE
 		case del:
-			echo "Richiesta Cancellazione Cliente ".$_POST['IdCliente']."";
+			$contratti = "SELECT * FROM Contratti where Clienti_idCliente = ".$_POST['idCliente']."";
+				$res = mysql_query($contratti);
+				$numrows=mysql_num_rows($res);
+					
+				if ($numrows == 0) { // Nessun Contratto Attivo
+					echo "<h3>Vuoi Veramente Cancellare il Cliente ".$_POST['idCliente']."?</h3>
+							<form action=\"schedaclienti.php\" method=\"POST\" name=\"form\">
+							<input id=\"stato\" name=\"stato\"  type=\"hidden\" value=\"confirmdelete\">
+						<input id=\"idCliente\" name=\"idCliente\" type=\"hidden\" value=\"".$_POST['idCliente']."\">
+						<input  type=\"submit\" id=\"submit\" value=\"DELETE\">
+					</form><br /><br />";
+				}
+				else {
+					$msg = "Possiede Contratti Attivi - Impossibile Rimuovere Il Cliente";
+					echo '<script language=javascript>document.location.href="clienti.php?id=kodel&msg='.$msg.'"</script>';
+					}
 			break;
 			// FINE DEL CLIENTE
 			
@@ -260,7 +308,7 @@ if(isset($_POST['stato'])){
 								<input id=\"ClienteCap\" name=\"ClienteCap\" type=\"text\" placeholder=\"C.A.P.\" value=\"".$rsCliente['ClienteCap']."\"required>
 								<input id=\"ClienteCitta\" name=\"ClienteCitta\" type=\"text\" placeholder=\"Citt&agrave\" value=\"".$rsCliente['ClienteCitta']."\"required>
 								<h2>File Amministratore Delegato</h2>
-								<input id=\"File\" name=\"File\" type=\"file\" name=\"files[]\" multiple/>
+								<input type=\"file\" name=\"files[]\" multiple/>
 								<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
 								<input id=\"ClienteTipologia\" name=\"ClienteTipologia\" type=\"hidden\" value=\"Azienda\" >
 								<input id=\"idCliente\" name=\"idCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
@@ -363,18 +411,24 @@ if(isset($_POST['stato'])){
 				</table>";
 				
 				// Visualizzo I Documento Del Cliente
-		echo "	<table>
+		
+					$desired_dir = $path.$rsCliente['idCliente'];
+					$query = "SELECT * FROM Clienti_File where idCliente = ".$rsCliente['idCliente']."";
+					$resClientiFile = mysql_query($query);
+					$numClientiFile = mysql_num_rows($resClientiFile);
+					if ($numClientiFile == '0') {
+						echo "<div class=\"warning\">Impossibile Visualizzare Documenti: Nessun Documento Inserito</div>";
+					}
+					else {
+						echo "	<br /><table>
 					<tr>
 						<td bgcolor = \"#1E90FF\" colspan = \"2\"><center><b>Documento Cliente</b></center></td>
 					</tr>";
-					$desired_dir = $path.$rsCliente['idCliente'];
-					$query = "SELECT * FROM Clienti_File where idCliente = ".$rsCliente['idCliente']."";
-					$numFile = mysql_num_rows($query);
-					if ($numFile != '0') {
-					$resFile = mysql_query($query);
+					$query2 = "SELECT * FROM `Clienti_File` as C join File as F  on  C.FileId = F.FileId WHERE idCliente = ".$rsCliente['idCliente']."";
+					$resFile = mysql_query($query2);
 					while ($rsFile = mysql_fetch_assoc($resFile))
 					{
-					echo "<tr><td><a href=\"".$desired_dir."/".$rsFile['FileName']."\">".$rsFile['FileName']."</a></td>
+					echo "<tr><td><a href=\"".$desired_dir."/".$rsFile['FileName']."\" TARGET=\"_blank\">".$rsFile['FileName']."</a></td>
 							<td style=\"float:right\" >
 							<form action=\"schedaclienti.php\" method=\"post\" style=\"float: right;\">
 									<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"delFile\" >
@@ -382,13 +436,13 @@ if(isset($_POST['stato'])){
 									<input id=\"FileId\" name=\"FileId\" type=\"hidden\" value=\"".$rsFile['FileId']."\" >
 									<input id=\"FileName\" name=\"FileName\" type=\"hidden\" value=\"".$rsFile['FileName']."\" >
 									<input name=\"Cancella File\" type=\"image\" src=\"image\delete.gif\" alt=\"Cancella File\" title=\"Cancella File\"> 
-								</fieldset>
 							</form>
 							</td>
 							</tr>";
 					}
 					echo "</table>";
-				 } else { echo "<td>Nessun file presente, Edita Cliente</td></tr></table>"; }
+				 } 
+				 
 						 
 				// VISUALIZZO TUTTI I CONTRATTI ATTIVI PER IL CLIENTE
 				

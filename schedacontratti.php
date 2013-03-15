@@ -87,6 +87,57 @@ if(isset($stato)){
 				echo '<script language=javascript>document.location.href="contratti.php?id=koedit&msg='.$msg.'"</script>';
 			  }
 			  
+			 if(isset($_FILES['files'])){ // INIZIO INSERIMENTO FILE
+				$errors= array();
+				foreach($_FILES['files']['tmp_name'] as $key => $tmp_name ){
+					$file_name = $_FILES['files']['name'][$key];
+					$file_size = $_FILES['files']['size'][$key];
+					$file_tmp = $_FILES['files']['tmp_name'][$key];
+					$file_type= $_FILES['files']['type'][$key];	
+					if($file_size > 2097152){
+						$errors[]='Il File deve essere minore di 2 MB';
+					}		
+					$query="INSERT into File (`FileName`,`FileSize`,`FileType`) VALUES('".$file_name."','".$file_size."','".$file_type."'); ";
+					$desired_dir=$pathContratto."/".$_POST['ContrattoId'];
+					if(empty($errors)==true){
+						if(is_dir($desired_dir)==false){
+							mkdir($desired_dir, 0700);		// Create directory if it does not exist
+							$var=fopen($desired_dir."/index.php","a+");
+							fwrite($var, "<? echo \"<b>Error 404 - File Not Found</b>\"; ?>");
+							fclose($var);
+						}
+						if(is_dir($desired_dir."/".$file_name)==false){
+							move_uploaded_file($file_tmp,$desired_dir."/".$file_name);
+						}else{									//rename the file if another one exist
+							$new_dir=$desired_dir."/".$file_name.time();
+							 rename($file_tmp,$new_dir) ;				
+						}
+						if (!mysql_query($query))
+							{
+									$msg = 'Error Aggiornamento File Contratto: ' . mysql_error();
+									echo '<script language=javascript>document.location.href="contratti.php?id=ko&msg="'.$msg.'"</script>';
+							  }		
+						$fileid = mysql_insert_id();
+						$query2 = "INSERT into Contratti_File ( ContrattoId, FileId ) VALUES ('".$_POST['ContrattoId']."', '".$fileid."');";
+						
+						if (!mysql_query($query2))
+							{
+									$msg = 'Error Aggiornamento Associazione File Cliente: ' . mysql_error();
+									echo '<script language=javascript>document.location.href="contratti.php?id=ko&msg="'.$msg.'"</script>';
+							  }
+							 	
+					} // Se sono presenti errori nell'array
+					
+					 else {
+							echo '<script language=javascript>document.location.href="clienti.php?id=ko&msg="'.$error.'"</script>';;
+					}
+				} // fine scorrimento array
+				
+				if(empty($error)) // se non ci sono errori 
+				{
+					echo '<script language=javascript>document.location.href="clienti.php?id=ok&msg="'.$error.'"</script>';
+				}
+			} // FINE INSERIMENTO FILE 
 			$msg = "ESITO POSITOVO";
 			echo '<script language=javascript>document.location.href="contratti.php?id=okedit&msg'.$msg.'"</script>';
 			
@@ -163,7 +214,7 @@ if(isset($stato)){
 			  }
 						  
 			$msg = "ESITO POSITOVO";
-			echo '<script language=javascript>document.location.href="contratti.php?id=okdel&msg'.$msg.'"</script>';
+			echo '<script language=javascript>document.location.href="contratti.php?id=okdel&msg='.$msg.'"</script>';
 			//~ echo $_POST['ContrattoId']."<br />";
 			//~ echo $sqlContratto."<br />".$sqlDelOfferta."<br />".$sqlOpzioni."<br />".$sqlDelOpzioni."<br />".$sqlLinea."<br />".$sqlDelLinea."<br />".$sqlDelContratto;
 			break;
@@ -211,8 +262,8 @@ if(isset($stato)){
 				$rsOpzioni = mysql_fetch_assoc($resOpzioni);
 			// START
 			echo "
-			<form action=\"schedacontratti.php\" method=\"POST\" name=\"form\">
-				<table border=\"1\" >
+			<form action=\"schedacontratti.php\" method=\"POST\" name=\"form\" enctype=\"multipart/form-data\">
+				<table>
 					
 					<tr>
 						<td colspan = \"8\" bgcolor = \"#1E90FF\" ><center><b>Dati Servizio</b></center></td>
@@ -329,7 +380,7 @@ if(isset($stato)){
 						echo"	</select>
 					</tr>
 					<tr>
-						<td colspan = \"8\"> Servizi Opzionali</td>
+						<td colspan = \"8\" bgcolor = \"#1E90FF\"><b><center>Servizi Opzionali</center></b></td>
 					</tr>
 					<tr>
 						<td>Ip Statico</td>
@@ -484,7 +535,7 @@ if(isset($stato)){
 						echo "</td>
 					</tr>
 					<tr>
-						<td colspan = \"8\">RID</td>
+						<td colspan = \"8\" bgcolor = \"#1E90FF\"><b><center>RID</center></b></td>
 					</tr>
 					<tr>
 						<td>Banca</td><td colspan = \"2\"><input id=\"ContrattoBanca\" name=\"ContrattoBanca\" type=\"text\" placeholder=\"Banca\" value=\"".$rsContratto['ContrattoBanca']."\"></td>
@@ -499,13 +550,21 @@ if(isset($stato)){
 						<td>IBAN</td><td colspan = \"5\"><input id=\"ContrattoIban\" name=\"ContrattoIban\" type=\"text\" placeholder=\"IBAN\" value=\"".$rsContratto['ContrattoIban']."\" ></td>
 					</tr>
 					<tr>
-						<td  colspan =\"8\">NOTE</td>
+						<td  colspan =\"8\" bgcolor = \"#1E90FF\"><b><center>NOTE</center></b></td>
 					</tr>
 					<tr>
 						<td colspan = \"8\">
 						<textarea id=\"ContrattoNote\" name=\"ContrattoNote\" type=\"text\" placeholder=\"Note\" >".$rsContratto['ContrattoNote']."</textarea></td>
 					</tr>
+					<tr>
+						<td colspan = \"8\" bgcolor = \"#1E90FF\"><center><b>File Contratto</b></center></td>
+					</tr>
+					<tr>
+						<td><input type=\"file\" name=\"files[]\" multiple/</td>
+					</tr>
+
 				</table>
+				<br />
 				<input id=\"OffertaId\" name=\"OffertaId\" type=\"hidden\" value=\"".$rsOfferta['OffertaId']."\" >
 				<input id=\"OpzioneId\" name=\"OpzioneId\" type=\"hidden\" value=\"".$rsOpzioni['OpzioneId']."\" >
 				<input id=\"LineaId\" name=\"LineaId\" type=\"hidden\" value=\"".$rsLinea['LineaId']."\" >
@@ -818,8 +877,40 @@ if(isset($stato)){
 						<td colspan = \"8\">
 						<textarea id=\"ContrattoNote\" name=\"ContrattoNote\" type=\"text\" placeholder=\"Note\" readonly>".$rsContratto['ContrattoNote']."</textarea></td>
 					</tr>
-				</table>
-				<form action=\"stampa.php\" method=\"POST\" name=\"form\">
+				</table>";
+				// Visualizzo I Documento Del Cliente
+		
+					$desired_dir = $pathContratto.$rsContratto['ContrattoId'];
+					$query = "SELECT * FROM Contratti_File where ContrattoId = ".$rsContratto['ContrattoId']."";
+					$resContrattiFile = mysql_query($query);
+					$numContrattiFile = mysql_num_rows($resContrattiFile);
+					if ($numContrattiFile == '0') {
+						echo "<div class=\"warning\">Impossibile Visualizzare Documenti: Nessun Documento Inserito</div>";
+					}
+					else {
+						echo "	<br /><table>
+					<tr>
+						<td bgcolor = \"#1E90FF\" colspan = \"2\"><center><b>Documenti Contratto</b></center></td>
+					</tr>";
+					$query2 = "SELECT * FROM `Contratti_File` as C join File as F  on  C.FileId = F.FileId WHERE ContrattoId = ".$rsContratto['ContrattoId']."";
+					$resFile = mysql_query($query2);
+					while ($rsFile = mysql_fetch_assoc($resFile))
+					{
+					echo "<tr><td><a href=\"".$desired_dir."/".$rsFile['FileName']."\" TARGET=\"_blank\">".$rsFile['FileName']."</a></td>
+							<td style=\"float:right\" >
+							<form action=\"schedacontratti.php\" method=\"post\" style=\"float: right;\">
+									<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"delFile\" >
+									<input id=\"idCliente\" name=\"idCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
+									<input id=\"FileId\" name=\"FileId\" type=\"hidden\" value=\"".$rsFile['FileId']."\" >
+									<input id=\"FileName\" name=\"FileName\" type=\"hidden\" value=\"".$rsFile['FileName']."\" >
+									<input name=\"Cancella File\" type=\"image\" src=\"image\delete.gif\" alt=\"Cancella File\" title=\"Cancella File\"> 
+							</form>
+							</td>
+							</tr>";
+					}
+					echo "</table>";
+				 } 
+				echo "<form action=\"stampa.php\" method=\"POST\" name=\"form\">
 				<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$_POST['ContrattoId']."\" >
 				<input  type=\"submit\" id=\"submit\" value=\"STAMPA\">
 			</form><br /><br />";

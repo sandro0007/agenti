@@ -580,7 +580,7 @@ if(isset($_POST['step'])){
 			// Prelevo l'id dell'ultimo contratto per generare parte del nome contratto
 			$result = mysql_query('SELECT MAX( ContrattoId ) FROM Contratti');
 			$row = mysql_fetch_assoc($result);
-			$id = $row['id']+1;
+			$id = $row['ContrattoId']+1;
 			$lunId = strlen($id);
 			for ($i=0;$i<$lunId;$i++) {
 				 $tmp = $tmp.'0';

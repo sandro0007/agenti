@@ -198,6 +198,18 @@ else {
 		case ko:
 			echo "<div class=\"error\">Il Cliente non &egrave stato aggiornato : ".$_GET['msg']."</div>";
 			break;
+		case kodel:
+			echo "<div class=\"error\">Il Cliente non &egrave stato cancellato : ".$_GET['msg']."</div>";
+			break;
+		case kodelfile:
+			echo "<div class=\"error\">Il File non &egrave stato cancellato : ".$_GET['msg']."</div>";
+			break;
+		case okdel:
+			echo "<div class=\"success\">Il Cliente &egrave stato cancellato : ".$_GET['msg']."</div>";
+			break;
+		case okdelfile:
+			echo "<div class=\"success\">Il File &egrave stato cancellato : ".$_GET['msg']."</div>";
+			break;
 		
 		}
 	echo "<h2>Lista Clienti</h2>";
