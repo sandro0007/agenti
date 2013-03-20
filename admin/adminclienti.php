@@ -586,14 +586,24 @@ else // Visualizzazione di default
 						<td>Cognome</td>
 						<td>Nome</td>
 						<td>Ragione Sociale</td>
+						<td>Agente</td>
+						<td>Numero Contratti Cliente</td>
 						<td></td>
 						</tr>";
 		while ($rsCliente = mysql_fetch_assoc($res)){
 			echo "<tr>
 					<td>".$rsCliente['ClienteCognome']."</td>
 					<td>".$rsCliente['ClienteNome']."</td>
-					<td>".$rsCliente['ClienteRagione']."</td>
-					<td style=\"float:right\" >
+					<td>".$rsCliente['ClienteRagione']."</td>";
+					$sqlAgente = "SELECT * FROM Agenti WHERE idAgenti = '".$rsCliente['Agenti_idAgenti']."'";
+					$resAgente = mysql_query($sqlAgente);
+					$rsAgente = mysql_fetch_assoc($resAgente);
+					echo "<td>".$rsAgente['AgenteCognome']." ".$rsAgente['AgenteNome']."</td>";
+					$sqlContratti = "SELECT COUNT( * ) AS NumeroContratti FROM Contratti where Clienti_idCliente = '".$rsCliente['idCliente']."'";
+					$resContratti = mysql_query($sqlContratti);
+					$rsContratti = mysql_fetch_assoc($resContratti);
+					echo "<td>".$rsContratti['NumeroContratti']."</td>";
+				echo "<td style=\"float:right\" >
 					<form action=\"adminclienti.php\" method=\"post\" style=\"float: right;\">
 							<input id=\"IdCliente\" name=\"IdCliente\" type=\"hidden\" value=\"".$rsCliente['idCliente']."\" >
 							<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"more\" >

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: Mar 14, 2013 alle 10:22
+-- Generato il: Mar 20, 2013 alle 17:02
 -- Versione del server: 5.5.29
 -- Versione PHP: 5.3.10-1ubuntu3.6
 
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `Agenti_Clienti_Contratti` (
   PRIMARY KEY (`Id`),
   KEY `fk_Agenti_idx` (`AgenteId`),
   KEY `fk_Contratti_idx` (`ContrattoId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 -- --------------------------------------------------------
 
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `Clienti_File` (
   `idCliente` int(5) NOT NULL COMMENT 'Id Del Cliente',
   `FileId` int(5) NOT NULL COMMENT 'Id Del File',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tabella Associazione Clienti - File' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Associazione Clienti - File' AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -157,10 +157,11 @@ CREATE TABLE IF NOT EXISTS `Contratti` (
   `ContrattoIban` varchar(100) NOT NULL COMMENT 'Iban C/C',
   `ContrattoNote` text NOT NULL COMMENT 'Note Aggiuntive Contratto',
   `ContrattoProvvigioni` decimal(10,2) NOT NULL COMMENT 'Provvigioni Agente per Contratto',
+  `ContrattoPunti` int(10) unsigned NOT NULL COMMENT 'Punti Presi per il contatto in base all''offerta',
   `Clienti_idCliente` int(11) NOT NULL,
   PRIMARY KEY (`ContrattoId`),
   KEY `fk_Contratti_Clienti1_idx` (`Clienti_idCliente`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
 
 -- --------------------------------------------------------
 
@@ -173,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `Contratti_File` (
   `ContrattoId` int(5) NOT NULL COMMENT 'id del Contratto',
   `FileId` int(5) NOT NULL COMMENT 'Id del File',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tabella Associazione Contratto - File' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Associazione Contratto - File' AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -186,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `Contratti_Linea` (
   `ContrattoId` int(11) NOT NULL,
   `LineaId` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Associazione CONTRATTI - LINEA' AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Associazione CONTRATTI - LINEA' AUTO_INCREMENT=14 ;
 
 -- --------------------------------------------------------
 
@@ -199,7 +200,7 @@ CREATE TABLE IF NOT EXISTS `Contratti_Offerte` (
   `ContrattoId` int(5) NOT NULL,
   `OffertaId` int(5) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione associazione CONTRATTO - OFFERTA' AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione associazione CONTRATTO - OFFERTA' AUTO_INCREMENT=12 ;
 
 -- --------------------------------------------------------
 
@@ -212,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `Contratti_Opzioni` (
   `ContrattoId` int(11) NOT NULL,
   `OpzioneId` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione associazione CONTRATTI - OPZIONI' AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione associazione CONTRATTI - OPZIONI' AUTO_INCREMENT=12 ;
 
 -- --------------------------------------------------------
 
@@ -226,7 +227,7 @@ CREATE TABLE IF NOT EXISTS `File` (
   `FileSize` varchar(200) NOT NULL COMMENT 'Dimensione del File',
   `FileType` varchar(200) NOT NULL COMMENT 'Tipo di File',
   PRIMARY KEY (`FileId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tabella gestione File' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione File' AUTO_INCREMENT=9 ;
 
 -- --------------------------------------------------------
 
@@ -242,7 +243,7 @@ CREATE TABLE IF NOT EXISTS `Linea` (
   `LineaNumero` varchar(100) NOT NULL COMMENT 'Numero da Migrare',
   `LineaCodice` varchar(100) NOT NULL COMMENT 'Codice Di Migrazione',
   PRIMARY KEY (`LineaId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione Linea' AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione Linea' AUTO_INCREMENT=13 ;
 
 -- --------------------------------------------------------
 
@@ -257,9 +258,11 @@ CREATE TABLE IF NOT EXISTS `Offerte` (
   `OffertaPagamento` varchar(50) NOT NULL COMMENT 'Valori "Mensile" - "Bimestrale"',
   `OffertaDescrizione` text NOT NULL COMMENT 'Descrizione dettagliata offerta',
   `OffertaDestinazione` varchar(50) NOT NULL COMMENT 'Valori "Privato" - "Azienda"',
+  `OffertaPunti` int(10) unsigned NOT NULL COMMENT 'Gestioni Punti Agenti da associare all''Offerta',
+  `OffertaPersonalizzata` tinyint(1) NOT NULL COMMENT 'Se settato a 1 ha un template contratto personalizzato',
   `TipologiaId` int(11) NOT NULL COMMENT 'Indice Tipologia',
   PRIMARY KEY (`OffertaId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Offerte' AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Offerte' AUTO_INCREMENT=15 ;
 
 -- --------------------------------------------------------
 
@@ -279,7 +282,7 @@ CREATE TABLE IF NOT EXISTS `Opzioni` (
   `OpzioneSwitch` int(1) NOT NULL DEFAULT '0',
   `OpzioneAttesa` int(1) NOT NULL DEFAULT '0' COMMENT 'Opzione Chiamata in Attesa',
   PRIMARY KEY (`OpzioneId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Opzioni Associate A Contratto' AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella Opzioni Associate A Contratto' AUTO_INCREMENT=16 ;
 
 -- --------------------------------------------------------
 
@@ -291,7 +294,7 @@ CREATE TABLE IF NOT EXISTS `Tipologie` (
   `TipologiaId` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `TipologiaNome` varchar(50) NOT NULL COMMENT 'Nome Tipologie Offerte Disponibili',
   PRIMARY KEY (`TipologiaId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione Tipologie Offerte' AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabella gestione Tipologie Offerte' AUTO_INCREMENT=10 ;
 
 --
 -- Limiti per le tabelle scaricate

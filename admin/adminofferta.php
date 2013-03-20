@@ -21,8 +21,8 @@ echo "<div class=\"box\" \">
          <div class=\"newboxes2\" id=\"newboxes1\" style=\" display: none;\">
          <form action=\"adminofferta.php\" method=\"post\">
         <fieldset id=\"inputs\">
-            <input id=\"OffertaNome\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Nome\" autofocus required>
-            <input id=\"OffertaCanone\" name=\"ClienteCognome\" type=\"text\" placeholder=\"Canone\" autofocus required><br />
+            <input id=\"OffertaNome\" name=\"OffertaNome\" type=\"text\" placeholder=\"Nome\" autofocus required>
+            <input id=\"OffertaCanone\" name=\"OffertaCanone\" type=\"text\" placeholder=\"Canone\" autofocus required><br />
             <label>Pagamento: </label>
             <select name=\"OffertaPagamento\" id=\"OffertaPagamento\" placeholder=\"Pagamento\" required>
 				<option>Mensile</option>
@@ -32,12 +32,12 @@ echo "<div class=\"box\" \">
 				<option>Annuale</option>
             </select><br />
             <label>Destinazione: </label>
-            <select name=\"OffertaDestinazione\" id=\"OffertaPagamento\" placeholder=\"Pagamento\" required>
+            <select name=\"OffertaDestinazione\" id=\"OffertaDestinazione\" placeholder=\"Destinazione\" required>
 				<option>Privato</option>
 				<option>Azienda</option>
             </select><br />
             <label>Tipologia Offerta</label>
-            <select id=\"TipologiaId\" name=\"ClienteTipoDocumento\" required>";
+            <select id=\"TipologiaId\" name=\"TipologiaId\" required>";
             $query3 = "SELECT * FROM Tipologie ";
 							$res3 = mysql_query($query3);
 							while ($rsTipologie = mysql_fetch_assoc($res3))
@@ -45,6 +45,12 @@ echo "<div class=\"box\" \">
 								echo "<option value=\"".$rsTipologie['TipologiaId']."\">".$rsTipologie['TipologiaNome']."</option>";
 							}
             echo "</select>
+            <br />
+           	<input id=\"OffertaPunti\" name=\"OffertaPunti\" type=\"text\" placeholder=\"Punti\"  required><br />
+           	<textarea id=\"OffertaDescrizione\" name=\"OffertaDescrizione\" type=\"text\" placeholder=\"Descrizione\" required></textarea><br />
+           	<label>Template Personalizzato:</label><br />
+           	<input type=\"radio\" name=\"OffertaPersonalizzata\" value=\"0\">NO
+           	<input type=\"radio\" name=\"OffertaPersonalizzata\" value=\"1\">SI<br />
             <input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"add\" >            
         </fieldset>
         <fieldset id=\"actions\">
@@ -78,7 +84,7 @@ switch($_GET['id']){
 			break;
 			
 		case okdel:
-			echo "<div class=\"success\">Offerta Cancellata Correttamente.</h2>";
+			echo "<div class=\"success\">Offerta Cancellata Correttamente: ".$_POST['msg']."</h2>";
 			break;
 		
 		}
@@ -90,21 +96,23 @@ if(isset($stato)){
 	switch($stato){
 		case add:
 			$query = "INSERT INTO  Offerte (
-						`OffertaId` ,
 						`OffertaNome` ,
 						`OffertaCanone` ,
 						`OffertaPagamento` ,
 						`OffertaDescrizione` ,
 						`OffertaDestinazione` ,
+						`OffertaPunti` ,
+						`OffertaPersonalizzata`,
 						`TipologiaId`
 						)
-						VALUES (
-						'' ,  
+						VALUES (  
 						'".$_POST['OffertaNome']."',  
 						'".$_POST['OffertaCanone']."',  
 						'".$_POST['OffertaPagamento']."',  
 						'".$_POST['OffertaDescrizione']."',  
-						'".$_POST['OffertaDestinazione']."',  
+						'".$_POST['OffertaDestinazione']."',
+						'".$_POST['OffertaPunti']."',
+						'".$_POST['OffertaPersonalizzata']."',
 						'".$_POST['TipologiaId']."'
 						);";
 			if (!mysql_query($query))
@@ -130,8 +138,13 @@ if(isset($stato)){
 					 if (!mysql_query($query2))
 						  {
 						$msg = 'Error Cancellazione Offerta: ' . mysql_error();
-						 echo '<script language=javascript>document.location.href="adminofferta.php?id=okdel"</script>';
+						 echo '<script language=javascript>document.location.href="adminofferta.php?id=nodel&msg='.$msg.'"</script>';
 					}
+					else { // ok cancellazione
+						$msg = 'succefull remove offerta id'.$_POST['OffertaId'];
+						 echo '<script language=javascript>document.location.href="adminofferta.php?id=okdel&msg='.$msg.'"</script>';
+						}
+					
 				}
 				else // Offerta ASSOCIATA 
 				{
@@ -148,11 +161,14 @@ if(isset($stato)){
 						echo "
 							<form action=\"adminofferta.php\" method=\"post\">
 							<fieldset id=\"inputs\">
+							<label>Nome Offerta</label>
 								<input id=\"OffertaNome\" name=\"OffertaNome\" type=\"text\" placeholder=\"Nome\"  value=\"".$rsOfferta['OffertaNome']."\" required><br />
+							<label>Canone</label>
 								<input id=\"OffertaCanone\" name=\"OffertaCanone\" type=\"text\" placeholder=\"Canone\"  value=\"".$rsOfferta['OffertaCanone']."\" required><br />
+							<label>Descrizione</label>
 								<input id=\"OffertaDescrizione\" name=\"OffertaDescrizione\" type=\"text\" placeholder=\"Descrizione\"  value=\"".$rsOfferta['OffertaDescrizione']."\" required><br />
 								
-								<label>Pagamento: </label>
+							<label>Pagamento: </label>
 								<select name=\"OffertaPagamento\" id=\"OffertaPagamento\" placeholder=\"Pagamento\" required>
 									<option>Mensile</option>
 									<option>Bimestrale</option>
@@ -160,7 +176,7 @@ if(isset($stato)){
 									<option>Semestrale</option>
 									<option>Annuale</option>
 								</select><br />
-								<label>Destinazione: </label>
+							<label>Destinazione: </label>
 								<select name=\"OffertaDestinazione\" id=\"OffertaPagamento\" placeholder=\"Pagamento\" required>
 									<option>Privato</option>
 									<option>Azienda</option>
@@ -175,8 +191,21 @@ if(isset($stato)){
 									echo "	<option value=\"".$rsTipologie['TipologiaId']."\">".$rsTipologie['TipologiaNome']."</option>";
 								}
 						echo "
-						</select>
-						<input id=\"OffertaId\" name=\"OffertaId\" type=\"hidden\" value=\"".$rsOfferta['OffertaId']."\" >
+						</select><br />
+						<label>Punti: </label>
+							<input id=\"OffertaPunti\" name=\"OffertaPunti\" type=\"text\" placeholder=\"Punti\"  value=\"".$rsOfferta['OffertaPunti']."\" required><br />
+						<label>Template Offerta Personalizzato: </label><br />";
+						if ($rsOfferta['OffertaPersonalizzata'] == '0') 
+						{
+							echo "<input type=\"radio\" name=\"OffertaPersonalizzata\" value=\"0\" checked=\"enable\">No<br />
+								 <input type=\"radio\" name=\"OffertaPersonalizzata\" value=\"1\">SI<br />";
+							}
+							else 
+							{
+								echo "<input type=\"radio\" name=\"OffertaPersonalizzata\" value=\"1\" checked=\"enable\">SI<br />
+								 <input type=\"radio\" name=\"OffertaPersonalizzata\" value=\"0\">No<br />";
+								}
+						echo "<input id=\"OffertaId\" name=\"OffertaId\" type=\"hidden\" value=\"".$rsOfferta['OffertaId']."\" >
 								<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
 							</fieldset>
 							<fieldset id=\"actions\">
@@ -193,7 +222,9 @@ if(isset($stato)){
 					`OffertaPagamento` =  '".$_POST['OffertaPagamento']."',
 					`OffertaDescrizione` =  '".$_POST['OffertaDescrizione']."',
 					`OffertaDestinazione` =  '".$_POST['OffertaDestinazione']."',
-					`TipologiaId` =  '".$_POST['TipologiaId']."'
+					`OffertaPunti` =  '".$_POST['OffertaPunti']."',
+					`TipologiaId` =  '".$_POST['TipologiaId']."',
+					`OffertaPersonalizzata` =  '".$_POST['OffertaPersonalizzata']."'
 						WHERE  `OffertaId` = '".$_POST['OffertaId']."'";
 				
 			if (!mysql_query($sql))
@@ -226,7 +257,9 @@ if(isset($stato)){
 								<td>Pagamento</td>
 								<td>Descrizione</td>
 								<td>Destinazione</td>
+								<td>Punti</td>
 								<td>Tipologia</td>
+								<td>Template Personalizzato</td>
 								<td></td>
 								</tr>";
 						while($rsOfferta = mysql_fetch_assoc($res))
@@ -238,11 +271,21 @@ if(isset($stato)){
 							<td>".$rsOfferta['OffertaCanone']."</td>
 							<td>".$rsOfferta['OffertaPagamento']."</td>
 							<td>".$rsOfferta['OffertaDescrizione']."</td>
-							<td>".$rsOfferta['OffertaDestinazione']."</td>";
+							<td>".$rsOfferta['OffertaDestinazione']."</td>
+							<td>".$rsOfferta['OffertaPunti']."</td>";
 							$query2 = "SELECT * FROM Tipologie WHERE TipologiaId = ".$rsOfferta['TipologiaId']."";
 							$res2 = mysql_query($query2);
 							$rsTipologie = mysql_fetch_assoc($res2);
 							echo "<td>".$rsTipologie['TipologiaNome']."</td>";
+							
+							if ($rsOfferta['OffertaPersonalizzata'] == '0') // Template standard
+								{
+									echo "<td>NO</td>";
+									}
+									else //template personalizzato
+									{
+										echo "<td>SI</td>";
+										}
 							
 							echo "<td style=\"float:right\" >
 							<form action=\"adminofferta.php\" method=\"post\" style=\"float: right;\">

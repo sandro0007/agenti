@@ -99,6 +99,8 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 					<td>Fatturato</td>
 					<td>Fattura Saldata</td>
 					<td>Provvigione</td>
+					<td>Punti</td>
+					<td>Agente</td>
 					<td></td>
 					</tr>";
 	while ($rsContratti = mysql_fetch_assoc($res)){
@@ -130,6 +132,11 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 						echo "<td style=\" background-color:#FF0000\" >Fattura Da Saldare</td>";
 						}
 				echo "<td>€".$rsContratti['ContrattoProvvigioni']."</td>";
+				echo "<td>".$rsContratti['ContrattoPunti']."</td>";
+				$sqlAgente = "SELECT * from Agenti as A JOIN Agenti_Clienti_Contratti as C on C.AgenteId = A.idAgenti where C.ContrattoId = '".$rsContratti['ContrattoId']."'";
+				$resAgente = mysql_query($sqlAgente);
+				$rsAgente = mysql_fetch_assoc($resAgente);
+				echo "<td>".$rsAgente['AgenteCognome']." ".$rsAgente['AgenteNome']."</td>";
 		echo "	<td style=\"float:right\" >
 				<form action=\"admincontabilita.php\" method=\"post\" style=\"float: right;\">
 						<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >

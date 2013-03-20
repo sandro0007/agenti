@@ -6,7 +6,7 @@ if (!session_is_registered('autorizzato')) {
   echo "Per effettuare il login clicca <a href='index.php'><font color='blue'>qui</font></a>";
   die;
 }
- 
+define('EURO', chr(128));
 //Altrimenti Prelevo il codice identificatico dell'utente loggato
 session_start();
 include ('include/header.php');
@@ -187,12 +187,130 @@ if(isset($stato)) // se la variabile stato è settata
 				}
 				else  // Contratto MODIFICABILE
 				{
+					$sqlOfferta = "SELECT * FROM Contratti_Offerte as C JOIN Offerte as O ON C.OffertaId = O.OffertaId WHERE C.ContrattoId = '".$_POST['ContrattoId']."'";
+					$resOfferta = mysql_query($sqlOfferta);
+					$rsOfferta = mysql_fetch_assoc($resOfferta);
+					if ($rsOfferta['OffertaPersonalizzata'] == '1') // Offerta Personalizzata
+					{
+						echo "
+			<form action=\"admincontratti.php\" method=\"POST\" name=\"form\">
+				<table >
+					
+					<tr>
+						<td colspan = \"8\" bgcolor = \"#1E90FF\" ><center><b>Dati Servizio</b></center></td>
+					</tr>
+					<tr>
+						<td>Codice Contratto</td>
+						<td>
+							<select id=\"OffertaId\" name=\"OffertaId\">";
+							
+						$sqlOffertaTemp = "SELECT * FROM Offerte WHERE OffertaDestinazione = '".$rsOfferta['OffertaDestinazione']."' ";
+							$resOffertaTemp = mysql_query($sqlOffertaTemp);
+								echo "<option value=\"".$rsOfferta['OffertaId']."\">".$rsOfferta['OffertaNome']."</option>";
+								while($rsOffertaTemp = mysql_fetch_assoc($resOffertaTemp))
+								{
+									if ($rsOffertaTemp['OffertaNome'] != $rsOfferta['OffertaNome']) {
+									echo "<option value=\"".$rsOffertaTemp['OffertaId']."\">".$rsOffertaTemp['OffertaNome']."</option>";
+									}
+								}
+						echo"	</select>
+						
+						</td>
+						<td>Descrizione</td><td colspan =\"3\"><input id=\"OffertaDescrizione\" name=\"OffertaDescrizione\" type=\"text\" placeholder=\"Descrizione\" value=\"".$rsOfferta['OffertaDescrizione']."\" readonly></td>
+						<td>Importo Mensile</td><td><input id=\"OffertaCanone\" name=\"OffertaCanone\" type=\"text\" placeholder=\"Canone\" value=\"".$rsOfferta['OffertaCanone']."\" readonly></td>
+					</tr>
+					<tr>
+						<td>Pagamento Canone</td>
+						<td>
+						<select id=\"ContrattoPagamento\" name=\"ContrattoPagamento\">";
+							
+							echo "<option value=\"".$rsContratto['ContrattoPagamento']."\">".$rsContratto['ContrattoPagamento']."</option>";
+							$pagamento = array("Bollettino", "RID", "MAV");
+							reset($pagametno);
+							foreach ($pagamento as $key3 => $value3) {
+								if ( $value3 != $rsContratto['ContrattoPagamento'])
+									{
+										echo "<option value=\"".$value3."\">".$value3."</option>";
+									}
+								
+							}
+						echo"	</select>
+						</td>
+						<td>U.T. Attivazione</td>
+						<td>
+						<select id=\"ContrattoAttivazione\" name=\"ContrattoAttivazione\">";
+							echo "<option value=\"".$rsContratto['ContrattoAttivazione']."\">".$rsContratto['ContrattoAttivazione']."</option>";
+							$attivazione = array("Contanti", "Addebito");
+							reset($attivazione);
+							foreach ($attivazione as $key4 => $value4) {
+								if ( $value4 != $rsContratto['ContrattoAttivazione'])
+									{
+										echo "<option value=\"".$value4."\">".$value4."</option>";
+									}
+								
+							}
+						echo"	</select>
+						</td>
+						<td>Ricezione fattura</td>
+						<td>
+						<select id=\"ContrattoFattura\" name=\"ContrattoFattura\">";
+							echo "<option value=\"".$rsContratto['ContrattoFattura']."\">".$rsContratto['ContrattoFattura']."</option>";
+							$fattura = array("Digitale", "Cartaceo");
+							reset($fattura);
+							foreach ($fattura as $key5 => $value5) {
+								if ( $value5 != $rsContratto['ContrattoFattura'])
+									{
+										echo "<option value=\"".$value5."\">".$value5."</option>";
+									}
+								
+							}
+						echo"	</select>
+					</tr>
+					<tr>
+						<td colspan = \"8\" bgcolor = \"#1E90FF\">RID</td>
+					</tr>
+					<tr>
+						<td>Banca</td><td colspan = \"2\"><input id=\"ContrattoBanca\" name=\"ContrattoBanca\" type=\"text\" placeholder=\"Banca\" value=\"".$rsContratto['ContrattoBanca']."\"></td>
+						<td>Agenzia</td><td colspan = \"2\"><input id=\"ContrattoAgenzia\" name=\"ContrattoAgenzia\" type=\"text\" placeholder=\"Agenzia\" value=\"".$rsContratto['ContrattoAgenzia']."\" ></td>
+						<td>Localit&agrave</td><td><input id=\"ContrattoLocalita\" name=\"ContrattoLocalita\" type=\"text\" placeholder=\"Localita\" value=\"".$rsContratto['ContrattoLocalita']."\" ></td>
+					</tr>
+					<tr>
+						<td>Intestazione</td>
+						<td colspan =\"7\"><input id=\"ContrattoIntestazione\" name=\"ContrattoIntestazione\" type=\"text\" placeholder=\"Intestazione\" value=\"".$rsContratto['ContrattoIntestazione']."\" ></td>
+					</tr>
+					<tr>
+						<td>IBAN</td><td colspan = \"5\"><input id=\"ContrattoIban\" name=\"ContrattoIban\" type=\"text\" placeholder=\"IBAN\" value=\"".$rsContratto['ContrattoIban']."\" ></td>
+					</tr>
+					<tr>
+						<td  colspan =\"8\" bgcolor = \"#1E90FF\">NOTE</td>
+					</tr>
+					<tr>
+						<td colspan = \"8\">
+						<textarea id=\"ContrattoNote\" name=\"ContrattoNote\" type=\"text\" placeholder=\"Note\" >".$rsContratto['ContrattoNote']."</textarea></td>
+					</tr>
+					<tr>
+						<td  colspan =\"4\" bgcolor = \"#1E90FF\"><center>Punteggio</center></td>
+						<td  colspan =\"4\" bgcolor = \"#1E90FF\"><center>Provvigione</center></td>
+					</tr>
+					<tr>
+						<td></td><td colspan = \"2\"><input id=\"ContrattoPunti\" name=\"ContrattoPunti\" type=\"text\" placeholder=\"Punti\" value=\"".$rsContratto['ContrattoPunti']."\" ></td>
+						<td></td>
+						<td></td><td colspan = \"2\">".EURO." i.v.a. esclusa<input id=\"ContrattoProvvigioni\" name=\"ContrattoProvvigioni\" type=\"text\" placeholder=\"CProvvigioni\" value=\"".$rsContratto['ContrattoProvvigioni']."\" ></td>
+						<td></td>
+					</tr>
+				</table>
+				<input id=\"OffertaId\" name=\"OffertaId\" type=\"hidden\" value=\"".$rsOfferta['OffertaId']."\" >
+				<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$_POST['ContrattoId']."\" >
+				<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update2\" >
+						<input  type=\"submit\" id=\"submit\" value=\"Applica\">
+			</form>";
+						
+						}
+						else // offerta non personalizzata
+						{
 			$sqlLinea = "SELECT * FROM Contratti_Linea as C JOIN Linea as L on C.LineaId = L.LineaId WHERE C.ContrattoId = '".$_POST['ContrattoId']."'";
 				$resLinea = mysql_query($sqlLinea);
 				$rsLinea = mysql_fetch_assoc($resLinea);
-			$sqlOfferta = "SELECT * FROM Contratti_Offerte as C JOIN Offerte as O ON C.OffertaId = O.OffertaId WHERE C.ContrattoId = '".$_POST['ContrattoId']."'";
-				$resOfferta = mysql_query($sqlOfferta);
-				$rsOfferta = mysql_fetch_assoc($resOfferta);
 			$sqlOpzioni = "SELECT * FROM Contratti_Opzioni as C JOIN Opzioni as O ON C.OpzioneId = O.OpzioneId WHERE C.ContrattoId = '".$_POST['ContrattoId']."'";
 				$resOpzioni = mysql_query($sqlOpzioni);
 				$rsOpzioni = mysql_fetch_assoc($resOpzioni);
@@ -500,6 +618,7 @@ if(isset($stato)) // se la variabile stato è settata
 				<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
 						<input  type=\"submit\" id=\"submit\" value=\"Applica\">
 			</form>";
+				}
 			}
 			// FINE
 			break;
@@ -1062,11 +1181,53 @@ if(isset($stato)) // se la variabile stato è settata
 			//~ echo $sqlOfferta."<br />".$sqlOpzioni."<br />".$sqlLinea."<br />".$sqlContratto;
 			break; // FINE AGGIORNAMENTO CLIENTE
 			
-			case editStato: // INIZIO AGGIORNAMENTO Stato Contratto
-			echo "<h3>Aggiornamento Contratto</h3>";
+		case update2:
+				echo "<h3>Aggiornamento Contratto</h3>";
 
-			$sqlStato = "UPDATE  `Contratti` SET  `ContrattoStato` =  '".$_POST['ContrattoStato']."' WHERE  `ContrattoId` = ".$_POST['ContrattoId']."";
+				$sqlOfferta = "UPDATE  `Contratti_Offerte` SET  `OffertaId` =  '".$_POST['OffertaId']."' WHERE  `ContrattoId` = ".$_POST['ContrattoId']."";
+				
+					if (!mysql_query($sqlOfferta))
+				  {
+					
+					$msg = 'Error Aggiornamento Offerta: ' . mysql_error();
+					echo '<script language=javascript>document.location.href="admincontratti.php?id=koedit&msg='.$msg.'"</script>';
+				  }
+				
+				$sqlContratto = "UPDATE  `Contratti` SET  
+									`ContrattoBanca` =  '".$_POST['ContrattoBanca']."',
+									  `ContrattoAgenzia` =  '".$_POST['ContrattoAgenzia']."',
+										`ContrattoLocalita` =  '".$_POST['ContrattoLocalita']."',
+											`ContrattoIntestazione` =  '".$_POST['ContrattoIntestazione']."',
+												`ContrattoIban` =  '".$_POST['ContrattoIban']."',
+													`ContrattoNote` =  '".$_POST['ContrattoNote']."',
+														`ContrattoPagamento` =  '".$_POST['ContrattoPagamento']."',
+															`ContrattoAttivazione` =  '".$_POST['ContrattoAttivazione']."',
+																`ContrattoFattura` =  '".$_POST['ContrattoFattura']."',
+																	`ContrattoPunti` = '".$_POST['ContrattoPunti']."',
+																	`ContrattoProvvigioni` = '".$_POST['ContrattoProvvigioni']."'
+										WHERE  `ContrattoId` = ".$_POST['ContrattoId']."";
+				
+				if (!mysql_query($sqlContratto))
+				  {
+					
+					$msg = 'Error Aggiornamento Contratto: ' . mysql_error();
+					echo '<script language=javascript>document.location.href="admincontratti.php?id=koedit&msg='.$msg.'"</script>';
+				  }
+				  
+				$msg = "ESITO POSITOVO";
+				echo '<script language=javascript>document.location.href="admincontratti.php?id=okedit&msg'.$msg.'"</script>';
+			break;
 			
+		case editStato: // INIZIO AGGIORNAMENTO Stato Contratto
+			echo "<h3>Aggiornamento Contratto</h3>";
+			if ($_POST['ContrattoStato'] == "Attivato") 
+			{
+				$sqlStato = "UPDATE  `Contratti` SET  `ContrattoStato` =  '".$_POST['ContrattoStato']."', `ContrattoDataAttivazione` = CURDATE() WHERE  `ContrattoId` = ".$_POST['ContrattoId']."";
+				}
+			else 
+				{
+			$sqlStato = "UPDATE  `Contratti` SET  `ContrattoStato` =  '".$_POST['ContrattoStato']."' WHERE  `ContrattoId` = ".$_POST['ContrattoId']."";
+			}
 				if (!mysql_query($sqlStato))
 			  {
 				
@@ -1078,7 +1239,7 @@ if(isset($stato)) // se la variabile stato è settata
 			echo '<script language=javascript>document.location.href="admincontratti.php?id=okedit&msg'.$msg.'"</script>';
 			
 			//~ echo $sqlOfferta."<br />".$sqlOpzioni."<br />".$sqlLinea."<br />".$sqlContratto;
-			break; // FINE AGGIORNAMENTO STATO
+		break; // FINE AGGIORNAMENTO STATO
 			
 			} // FINE SWITCH(stato)
 			
@@ -1111,6 +1272,9 @@ if(isset($stato)) // se la variabile stato è settata
 						<td>Nome Contratto</td>
 						<td>Tipologia</td>
 						<td>Stato</td>
+						<td>Provvigioni</td>
+						<td>Punti</td>
+						<td>Agente</td>
 						<td></td>
 						</tr>";
 						
@@ -1148,10 +1312,24 @@ if(isset($stato)) // se la variabile stato è settata
 					<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"editStato\" >
 					<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >
 					<input name=\"AggiornaStato\" type=\"image\" src=\"image\\refresh.png\" alt=\"Aggiorna Stato\" title=\"Aggiorna Stato\"> 
-					</form>
+					</form>					
+					</td>
+					<td>".$rsContratti['ContrattoProvvigioni']."</td>
+					<td>".$rsContratti['ContrattoPunti']."</td>";
 					
+					$sqlAgente = "SELECT * FROM Agenti as A JOIN Agenti_Clienti_Contratti as C on A.idAgenti = C.AgenteId WHERE C.ContrattoId = '".$rsContratti['ContrattoId']."' ";
+					$resAgente = mysql_query($sqlAgente);
+					$rsAgente = mysql_fetch_assoc($resAgente);
+				echo "<td>
+						".$rsAgente['AgenteCognome']." ".$rsAgente['AgenteNome']."
 					</td>
 					<td style=\"float:right\" >
+					<form action=\"schedaagente.php\" method=\"post\" style=\"float: right;\">
+								<input id=\"idAgenti\" name=\"idAgenti\" type=\"hidden\" value=\"".$rsAgente['idAgenti']."\" >
+								<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"more\" >
+								<input name=\"Dettaglio Agente\" type=\"image\" src=\"image\search.gif\" alt=\"Dettaglio\" title=\"Dettaglio Agente\"> 
+							</fieldset>
+						</form>
 					<form action=\"admincontratti.php\" method=\"post\" style=\"float: right;\">
 							<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"edit\" >
 							<input id=\"ContrattoId\" name=\"ContrattoId\" type=\"hidden\" value=\"".$rsContratti['ContrattoId']."\" >

@@ -185,6 +185,7 @@ if(isset($_POST['stato'])){
 							<td>Stato</td>
 							<td>Fatturato</td>
 							<td>Provvigione</td>
+							<td>Punti</td>
 							<td></td>
 							</tr>";
 			while ($rsContratti = mysql_fetch_assoc($res)){
@@ -210,6 +211,7 @@ if(isset($_POST['stato'])){
 								echo "<td style=\" background-color:#FF0000\" >Fattura Da Emettere</td>";
 								}
 					echo "<td>€".$rsContratti['ContrattoProvvigioni']."</td>
+					<td>".$rsContratti['ContrattoPunti']."</td>
 						<td style=\"float:right\" >
 						<form action=\"contabilita.php\" method=\"post\" style=\"float: right;\">
 								<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
@@ -325,6 +327,7 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 					<td>Stato</td>
 					<td>Fatturato</td>
 					<td>Provvigione</td>
+					<td>Punti</td>
 					<td></td>
 					</tr>";
 	while ($rsContratti = mysql_fetch_assoc($res)){
@@ -350,6 +353,7 @@ echo "<h2>Pagina Contabilit&agrave</h2>";
 						echo "<td style=\" background-color:#FF0000\" >Fattura Da Emettere</td>";
 						}
 			echo "<td>€".$rsContratti['ContrattoProvvigioni']."</td>
+			<td>".$rsContratti['ContrattoPunti']."</td>
 				<td style=\"float:right\" >
 				<form action=\"contabilita.php\" method=\"post\" style=\"float: right;\">
 						<input id=\"stato\" name=\"stato\" type=\"hidden\" value=\"update\" >
