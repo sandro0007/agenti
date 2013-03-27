@@ -163,37 +163,55 @@ if(isset($stato)){
 							<fieldset id=\"inputs\">
 							<label>Nome Offerta</label>
 								<input id=\"OffertaNome\" name=\"OffertaNome\" type=\"text\" placeholder=\"Nome\"  value=\"".$rsOfferta['OffertaNome']."\" required><br />
-							<label>Canone</label>
+							<label>Canone Mensile</label>
 								<input id=\"OffertaCanone\" name=\"OffertaCanone\" type=\"text\" placeholder=\"Canone\"  value=\"".$rsOfferta['OffertaCanone']."\" required><br />
-							<label>Descrizione</label>
-								<input id=\"OffertaDescrizione\" name=\"OffertaDescrizione\" type=\"text\" placeholder=\"Descrizione\"  value=\"".$rsOfferta['OffertaDescrizione']."\" required><br />
 								
 							<label>Pagamento: </label>
-								<select name=\"OffertaPagamento\" id=\"OffertaPagamento\" placeholder=\"Pagamento\" required>
-									<option>Mensile</option>
-									<option>Bimestrale</option>
-									<option>Trimestrale</option>
-									<option>Semestrale</option>
-									<option>Annuale</option>
-								</select><br />
+								<select name=\"OffertaPagamento\" id=\"OffertaPagamento\" placeholder=\"Pagamento\" required>";
+								echo "<option value=\"".$rsOfferta['OffertaPagamento']."\">".$rsOfferta['OffertaPagamento']."</option>";
+										$scelta = array("Mensile", "Bimestrale", "Trimestrale", "Semestrale", "Annuale");
+										reset($scelta);
+										foreach ($scelta as $key => $value) {
+											if ( $value != $rsOfferta['OffertaPagamento'])
+												{
+													echo "<option value=\"".$value."\">".$value."</option>";
+												}
+											
+										}
+								echo"	</select> <br />
+								
 							<label>Destinazione: </label>
-								<select name=\"OffertaDestinazione\" id=\"OffertaPagamento\" placeholder=\"Pagamento\" required>
-									<option>Privato</option>
-									<option>Azienda</option>
-								</select><br />";
+								<select name=\"OffertaDestinazione\" id=\"OffertaDestinazione\" placeholder=\"Destinazione\" required>";
+									echo "<option value=\"".$rsOfferta['OffertaDestinazione']."\">".$rsOfferta['OffertaDestinazione']."</option>";
+										$scelta = array("Privato", "Azienda");
+										reset($scelta);
+										foreach ($scelta as $key => $value) {
+											if ( $value != $rsOfferta['OffertaDestinazione'])
+												{
+													echo "<option value=\"".$value."\">".$value."</option>";
+												}
+											
+										}
+								echo"	</select> <br />";
 								$query2 = "SELECT * FROM Tipologie";
 								$res2 = mysql_query($query2);
 								echo "<label>Tipologia</label>
 								<select id=\"TipologiaId\" name=\"TipologiaId\">";
-								
 								while($rsTipologie = mysql_fetch_assoc($res2))
 								{
-									echo "	<option value=\"".$rsTipologie['TipologiaId']."\">".$rsTipologie['TipologiaNome']."</option>";
+									if ($rsOfferta['TipologiaId'] == $rsTipologie['TipologiaId']){
+										echo "	<option value=\"".$rsTipologie['TipologiaId']."\" selected>".$rsTipologie['TipologiaNome']."</option>";
+										}
+									else {
+										echo "	<option value=\"".$rsTipologie['TipologiaId']."\">".$rsTipologie['TipologiaNome']."</option>";
+									}
 								}
 						echo "
 						</select><br />
 						<label>Punti: </label>
 							<input id=\"OffertaPunti\" name=\"OffertaPunti\" type=\"text\" placeholder=\"Punti\"  value=\"".$rsOfferta['OffertaPunti']."\" required><br />
+						<label>Descrizione</label>
+						<textarea id=\"OffertaDescrizione\" name=\"OffertaDescrizione\" type=\"text\" placeholder=\"Descrizione\" required>".$rsOfferta['OffertaDescrizione']."</textarea><br />
 						<label>Template Offerta Personalizzato: </label><br />";
 						if ($rsOfferta['OffertaPersonalizzata'] == '0') 
 						{
@@ -212,7 +230,6 @@ if(isset($stato)){
 								<input type=\"submit\" id=\"submit\" value=\"Aggiorna\">
 							</fieldset>
 						</form>";
-						
 			break;
 			
 		case update: // INIZIO AGGIORNAMENTO
@@ -253,7 +270,7 @@ if(isset($stato)){
 								<tr>
 								<td>Id Offerta</td>
 								<td>Nome</td>
-								<td>Canone</td>
+								<td>Canone Mensile</td>
 								<td>Pagamento</td>
 								<td>Descrizione</td>
 								<td>Destinazione</td>
