@@ -88,21 +88,6 @@ switch ($trimestre){
 		break;
 	}
 
-// Calcolo Semestre Corrente
-// $semestre = 1 (primo semestre);
-// $semestre = 2 (secondo semestre);
-
-$semestre = ($mese2<=6?1:2);
-switch ($semestre){
-	case 1:	// primo semestre
-			$meseda2 = "01";
-			$mesea2	= "06";
-		break;
-	case 2: // secondo semestre
-			$meseda2 = "07";
-			$mesea2	= "12";
-		break;
-	}
 // Punteggio Potenziale Trimestre Corrente
 $sqlTrimestreCorrente = "SELECT Sum(ContrattoPunti) as PuntiTrimestre FROM `Contratti` as C
 						JOIN Agenti_Clienti_Contratti as A on C.ContrattoId = A.ContrattoId WHERE A.AgenteId = '".$cod."' 
@@ -121,23 +106,39 @@ $sqlTrimestreCorrente2 = "SELECT Sum(ContrattoPunti) as PuntiTrimestre FROM `Con
 $resTrimestreCorrente2 = mysql_query($sqlTrimestreCorrente2);
 $rsTrimestreCorrente2 = mysql_fetch_assoc($resTrimestreCorrente2);
 
+// Calcolo Semestre Corrente
+// $semestre = 1 (primo semestre);
+// $semestre = 2 (secondo semestre);
+
+$semestre = ($mese2<=6?1:2);
+switch ($semestre){
+	case 1:	// primo semestre
+			$meseda2 = "01";
+			$mesea2	= "06";
+		break;
+	case 2: // secondo semestre
+			$meseda2 = "07";
+			$mesea2	= "12";
+		break;
+	}
 // Punteggio Potenziale Semetre Corrente
-$sqlSemetreCorrente = "SELECT Sum(ContrattoPunti) as PuntiSemestre FROM `Contratti` as C
+$sqlSemestreCorrente = "SELECT Sum(ContrattoPunti) as PuntiSemestre FROM `Contratti` as C
 						JOIN Agenti_Clienti_Contratti as A on C.ContrattoId = A.ContrattoId WHERE A.AgenteId = '".$cod."' 
 							AND  YEAR(C.ContrattoData) = '".$anno."' 
 						AND MONTH(C.ContrattoData) >= '".$meseda2."' 
 								AND MONTH(C.ContrattoData) <= '".$mesea2."'";
-$resSemetreCorrente = mysql_query($sqlSemetreCorrente);
-$rsSemetreCorrente = mysql_fetch_assoc($resMeseCorrente);
+$resSemestreCorrente = mysql_query($sqlSemestreCorrente);
+$rsSemestreCorrente = mysql_fetch_assoc($resSemestreCorrente);
+
 // Punteggio Reale Semestre Corrente
-$sqlSemetreCorrente2 = "SELECT Sum(ContrattoPunti) as PuntiSemestre FROM `Contratti`as C
+$sqlSemestreCorrente2 = "SELECT Sum(ContrattoPunti) as PuntiSemestre FROM `Contratti`as C
 						JOIN Agenti_Clienti_Contratti as A on C.ContrattoId = A.ContrattoId WHERE A.AgenteId = '".$cod."' 
 							AND YEAR(C.ContrattoData) = '".$anno."' 
 							AND MONTH(C.ContrattoData) >= '".$meseda2."' AND MONTH(C.ContrattoData) <= '".$mesea2."' 
 									AND MONTH(C.ContrattoDataAttivazione) >= '".$meseda2."' AND MONTH(C.ContrattoDataAttivazione) <= '".$mesea2."' 
 										AND C.ContrattoStato = 'Attivato'";
-$resSemetreCorrente2 = mysql_query($sqlSemetreCorrente2);
-$rsSemetreCorrente2 = mysql_fetch_assoc($resSemetreCorrente2);
+$resSemestreCorrente2 = mysql_query($sqlSemestreCorrente2);
+$rsSemestreCorrente2 = mysql_fetch_assoc($resSemestreCorrente2);
 
 
 // Punteggio Potenziale Anno Corrente
@@ -174,8 +175,8 @@ echo "
 			</tr>
 			<tr>
 				<td>Semetre Corrente</td>
-				<td bgcolor = \"#E5E5E5\">".$rsSemetreCorrente['PuntiSemestre']."</td>
-				<td bgcolor = \"#E5E5E5\">".$rsSemetreCorrente2['PuntiSemestre']."</td>
+				<td bgcolor = \"#E5E5E5\">".$rsSemestreCorrente['PuntiSemestre']."</td>
+				<td bgcolor = \"#E5E5E5\">".$rsSemestreCorrente2['PuntiSemestre']."</td>
 			</tr>
 			<tr>
 				<td>Anno Corrente</td>
