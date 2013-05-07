@@ -23,4 +23,9 @@
    // Variabile IVA
    $iva = "1.21";
    
+   // Variabili SMTP
+	$smtphost = "smtp.linkspace.it";
+	$smtpuser = "linkspace@linkspace.it";
+	$smtppass = "linkspace";
+	$email = "amministrazione@linkspace.it";
 ?>

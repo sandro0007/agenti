@@ -11,6 +11,7 @@ if (!session_is_registered('autorizzato')) {
 session_start();
 include ('include/header.php');
 require ('include/config.php');
+require ('class/class.phpmailer.php');
 $conn=mysql_connect($dbHost,$dbUser,$dbPassword);
 mysql_select_db($dbName);
 $codadmin = $_SESSION['admin']; //id cod recuperato nel file di verifica
@@ -35,6 +36,36 @@ if(isset($_POST['stato'])){ // CONTROLLO VARIABILE STATO
 					 $msg = 'Error Aggiornamento Contabilit&agrave: ' . mysql_error();
 					  echo '<script language=javascript>document.location.href="admincontabilita.php?id=koupdate&msg='.$msg.'"</script>';
 					  }
+				// Seleziono indirizzo dell'Agente per comunicazione
+				$sqlAgente = "SELECT AgenteMail,AgenteNome,AgenteCognome FROM Agenti as A JOIN Agenti_Clienti_Contratti as C ON A.idAgenti = C.AgenteId WHERE C.ContrattoId = ".$ContrattoId."";
+				$resAgente = mysql_query($sqlAgente);
+				$rsAgente = mysql_fetch_assoc($resAgente);
+				// INVIO EMAIL
+				$mail = new PHPMailer;
+
+				$mail->IsSMTP();                                      // Set mailer to use SMTP
+				$mail->Host = $smtphost;  							  // Specify main and backup server
+				$mail->SMTPAuth = true;                               // Enable SMTP authentication
+				$mail->Username = $smtpuser;                            // SMTP username
+				$mail->Password = $smtppass;                           // SMTP password
+				
+
+				$mail->From = 'agenti@linkspace.it';
+				$mail->FromName = 'Agenti Portal';
+				$mail->AddAddress($rsAgente['AgenteMail']);  // Add a recipient
+
+				$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
+
+				$mail->Subject = 'Pagamento Emesso - Contratto: '.$ContrattoId.'';
+				$mail->Body    = 'Pagamento Emesso Contratto: '.$ContrattoId.' - Agente: '.$rsAgente['AgenteNome'].' '.$rsAgente['AgenteCognome'].'';
+
+				if(!$mail->Send()) {
+				   echo 'E-mail non spedita!!.';
+				   echo 'Mailer Error: ' . $mail->ErrorInfo;
+				   //exit;
+				}
+
+				// END MAIL
 				$msg = 'Pagamento Emesso';
 				echo '<script language=javascript>document.location.href="admincontabilita.php?id=okupdate&msg='.$msg.'"</script>';
 				}
@@ -49,6 +80,36 @@ if(isset($_POST['stato'])){ // CONTROLLO VARIABILE STATO
 							  $msg = 'Error Aggiornamento Contabilit&agrave: ' . mysql_error();
 							  echo '<script language=javascript>document.location.href="admincontabilita.php?id=koupdate&msg='.$msg.'"</script>';
 							  }
+					    				// Seleziono indirizzo dell'Agente per comunicazione
+								$sqlAgente = "SELECT AgenteMail,AgenteNome,AgenteCognome FROM Agenti as A JOIN Agenti_Clienti_Contratti as C ON A.idAgenti = C.AgenteId WHERE C.ContrattoId = ".$ContrattoId."";
+								$resAgente = mysql_query($sqlAgente);
+								$rsAgente = mysql_fetch_assoc($resAgente);
+								// INVIO EMAIL
+								$mail = new PHPMailer;
+
+								$mail->IsSMTP();                                      // Set mailer to use SMTP
+								$mail->Host = $smtphost;  							  // Specify main and backup server
+								$mail->SMTPAuth = true;                               // Enable SMTP authentication
+								$mail->Username = $smtpuser;                            // SMTP username
+								$mail->Password = $smtppass;                           // SMTP password
+								
+
+								$mail->From = 'agenti@linkspace.it';
+								$mail->FromName = 'Agenti Portal';
+								$mail->AddAddress($rsAgente['AgenteMail']);  // Add a recipient
+
+								$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
+
+								$mail->Subject = 'Pagamento Emesso - Contratto: '.$ContrattoId.'';
+								$mail->Body    = 'Pagamento Emesso Contratto: '.$ContrattoId.' - Agente: '.$rsAgente['AgenteNome'].' '.$rsAgente['AgenteCognome'].'';
+
+								if(!$mail->Send()) {
+								   echo 'E-mail non spedita!!.';
+								   echo 'Mailer Error: ' . $mail->ErrorInfo;
+								   //exit;
+								}
+
+								// END MAIL
 						$msg = 'Pagamento Emesso';
 						echo '<script language=javascript>document.location.href="admincontabilita.php?id=okupdate&msg='.$msg.'"</script>';
 						}

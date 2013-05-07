@@ -11,6 +11,7 @@ define('EURO', chr(128));
 session_start();
 include ('include/header.php');
 require ('include/config.php');
+require ('class/class.phpmailer.php');
 $conn=mysql_connect($dbHost,$dbUser,$dbPassword);
 mysql_select_db($dbName);
 $codadmin = $_SESSION['admin']; //id cod recuperato nel file di verifica
@@ -1234,7 +1235,36 @@ if(isset($stato)) // se la variabile stato è settata
 				$msg = 'Error Aggiornamento Stato: ' . mysql_error();
 				echo '<script language=javascript>document.location.href="admincontratti.php?id=koedit&msg='.$msg.'"</script>';
 			  }
-			
+			// Seleziono indirizzo dell'Agente per comunicazione
+				$sqlAgente = "SELECT AgenteMail,AgenteNome,AgenteCognome FROM Agenti as A JOIN Agenti_Clienti_Contratti as C ON A.idAgenti = C.AgenteId WHERE C.ContrattoId = ".$_POST['ContrattoId']."";
+				$resAgente = mysql_query($sqlAgente);
+				$rsAgente = mysql_fetch_assoc($resAgente);
+				// INVIO EMAIL
+				$mail = new PHPMailer;
+
+				$mail->IsSMTP();                                      // Set mailer to use SMTP
+				$mail->Host = $smtphost;  							  // Specify main and backup server
+				$mail->SMTPAuth = true;                               // Enable SMTP authentication
+				$mail->Username = $smtpuser;                            // SMTP username
+				$mail->Password = $smtppass;                           // SMTP password
+				
+
+				$mail->From = 'agenti@linkspace.it';
+				$mail->FromName = 'Agenti Portal';
+				$mail->AddAddress($rsAgente['AgenteMail']);  // Add a recipient
+
+				$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
+
+				$mail->Subject = 'Modifica Stato - Contratto: '.$ContrattoId.'';
+				$mail->Body    = 'Modificato lo stato del Contratto: '.$ContrattoId.' - Agente: '.$rsAgente['AgenteNome'].' '.$rsAgente['AgenteCognome'].'';
+
+				if(!$mail->Send()) {
+				   echo 'E-mail non spedita!!.';
+				   echo 'Mailer Error: ' . $mail->ErrorInfo;
+				   //exit;
+				}
+
+				// END MAIL
 			$msg = "ESITO POSITOVO";
 			echo '<script language=javascript>document.location.href="admincontratti.php?id=okedit&msg'.$msg.'"</script>';
 			

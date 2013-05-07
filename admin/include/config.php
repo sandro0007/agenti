@@ -3,6 +3,11 @@
 	$dbName="cmr";
 	$dbUser="cmr";
 	$dbPassword="cmr";
+	   // Variabili SMTP
+	$smtphost = "smtp.linkspace.it";
+	$smtpuser = "linkspace@linkspace.it";
+	$smtppass = "linkspace";
+	$email = "amministrazione@linkspace.it";
 	
 	// Paginazione
 	

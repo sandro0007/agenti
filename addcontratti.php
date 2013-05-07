@@ -2,6 +2,7 @@
 session_start();
 include ('include/header.php');
 require ('include/config.php');
+require ('class/class.phpmailer.php');
 //se non c'è la sessione registrata
 if (!session_is_registered('autorizzato')) {
   echo "<h1>Area riservata, accesso negato.</h1>";
@@ -927,7 +928,32 @@ if(isset($_POST['step'])){
 					 echo '<script language=javascript>document.location.href="clienti.php?id=kocontratto&msg='.$msg.'"</script>';
 					  }
 			echo "Contratto Inserito Correttamente <br />";
-			mail("supporto@linkspace.it", "Inserito Contratto ".$ContrattoId."");
+			//mail("supporto@linkspace.it", "Inserito Contratto ".$ContrattoId."");
+			$mail = new PHPMailer;
+
+			$mail->IsSMTP();                                      // Set mailer to use SMTP
+			$mail->Host = $smtphost;  							  // Specify main and backup server
+			$mail->SMTPAuth = true;                               // Enable SMTP authentication
+			$mail->Username = $smtpuser;                            // SMTP username
+			$mail->Password = $smtppass;                           // SMTP password
+			
+
+			$mail->From = 'agenti@linkspace.it';
+			$mail->FromName = 'Agenti Portal';
+			$mail->AddAddress($email);  // Add a recipient
+
+			$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
+
+			$mail->Subject = 'Inserito Contratto '.$ContrattoId.'';
+			$mail->Body    = 'Inserito Contratto '.$ContrattoId.' per Agente '..'';
+
+			if(!$mail->Send()) {
+			   echo 'E-mail non spedita!!.';
+			   echo 'Mailer Error: ' . $mail->ErrorInfo;
+			   //exit;
+			}
+
+			// END MAIL
 			$msg = 'Contratto inserito correttamente';
 			echo '<script language=javascript>document.location.href="contratti.php?id=okcontratto&msg='.$msg.'"</script>';
 			break;
@@ -1155,7 +1181,30 @@ if(isset($_POST['step'])){
 					 echo '<script language=javascript>document.location.href="clienti.php?id=kocontratto&msg='.$msg.'"</script>';
 					  }
 			echo "Contratto Inserito Correttamente <br />";
-			mail("supporto@linkspace.it", "Inserito Contratto ".$ContrattoId."");
+			//mail("supporto@linkspace.it", "Inserito Contratto ".$ContrattoId."");
+			$mail = new PHPMailer;
+
+			$mail->IsSMTP();                                      // Set mailer to use SMTP
+			$mail->Host = $smtphost;  							  // Specify main and backup server
+			$mail->SMTPAuth = true;                               // Enable SMTP authentication
+			$mail->Username = $smtpuser;                            // SMTP username
+			$mail->Password = $smtppass;                           // SMTP password
+			
+
+			$mail->From = 'agenti@linkspace.it';
+			$mail->FromName = 'Agenti Portal';
+			$mail->AddAddress($email);  // Add a recipient
+
+			$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
+
+			$mail->Subject = 'Inserito Contratto '.$ContrattoId.'';
+			$mail->Body    = 'Inserito Contratto '.$ContrattoId.' per Agente '..'';
+
+			if(!$mail->Send()) {
+			   echo 'E-mail non spedita!!.';
+			   echo 'Mailer Error: ' . $mail->ErrorInfo;
+			   //exit;
+			}
 			$msg = 'Contratto inserito correttamente';
 			echo '<script language=javascript>document.location.href="contratti.php?id=okcontratto&msg='.$msg.'"</script>';
 			break;
